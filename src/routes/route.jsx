@@ -1,5 +1,8 @@
 import MatcherPage from "../pages/Matcher";
+import CVPage from "../pages/CVs";
 import NotFoundPage from "../pages/NotFound";
+import QuestionsPage from "../pages/Questions";
+import CVDetailPage from "../pages/CVDetail";
 
 export const routes = [
   {
@@ -8,11 +11,11 @@ export const routes = [
   },
   {
     path: "/cv",
-    element: <div>CV Page</div>, // TODO: Add CV page
+    element: <CVPage />,
   },
   {
     path: "/cv/:id",
-    element: <div>CV Page</div>, // TODO: Add CV Detail page
+    element: <CVDetailPage />, // TODO: Add CV Detail page
   },
   {
     path: "/jd/:id",
@@ -20,7 +23,7 @@ export const routes = [
   },
   {
     path: "/questions",
-    element: <div>Questions Page</div>, // TODO: Add Questions page
+    element: <QuestionsPage />,
   },
   {
     path: "/questions/:id",

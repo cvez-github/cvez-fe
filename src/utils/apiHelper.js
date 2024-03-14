@@ -1,10 +1,11 @@
 import axios from "axios";
+import { baseUrl } from "./constants";
 
 const api = axios.create({
+  baseURL: baseUrl,
   headers: {
     "Content-Type": "application/json",
   },
-  withCredentials: true,
 });
 
 const apiHelper = {
@@ -20,7 +21,7 @@ const apiHelper = {
       const response = await api.get(url, { params });
       return response.data;
     } catch (error) {
-      return { error };
+      throw new Error(error);
     }
   },
 
@@ -32,7 +33,7 @@ const apiHelper = {
       });
       return response.data;
     } catch (error) {
-      return { error };
+      throw new Error(error);
     }
   },
 
@@ -44,7 +45,7 @@ const apiHelper = {
       });
       return response.data;
     } catch (error) {
-      return { error };
+      throw new Error(error);
     }
   },
 
@@ -56,7 +57,7 @@ const apiHelper = {
       });
       return response.data;
     } catch (error) {
-      return { error };
+      throw new Error(error);
     }
   },
 
@@ -65,7 +66,7 @@ const apiHelper = {
       const response = await api.delete(url, { ...config });
       return response.data;
     } catch (error) {
-      return { error };
+      throw new Error(error);
     }
   },
 };
