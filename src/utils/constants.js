@@ -1,6 +1,6 @@
 import appStrings from "./strings";
 
-export const baseUrl = "http://localhost:8000";
+export const baseUrl = "https://mingdoan-cvez.hf.space";
 
 export const apiUrls = {
   cvs: "/api/get/cv",
