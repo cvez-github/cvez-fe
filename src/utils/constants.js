@@ -1,6 +1,6 @@
 import appStrings from "./strings";
 
-export const baseUrl = "https://mingdoan-cvez.hf.space";
+export const baseUrl = "http://localhost:8000";
 
 export const apiUrls = {
   cvs: "/api/get/cv",
@@ -13,8 +13,11 @@ export const apiUrls = {
   matchQuestion: "/api/match/question",
   uploadCV: "/api/new/cv",
   uploadJD: "/api/new/jd",
+  uploadQuestion: "/api/new/question",
   deleteCV: (id) => `/api/delete/cv/${id}`,
   deleteJD: (id) => `/api/delete/jd/${id}`,
+  deleteQuestion: (id) => `/api/delete/question/${id}`,
+  generateCV: "/api/generate/cv",
 };
 
 export const navItems = [

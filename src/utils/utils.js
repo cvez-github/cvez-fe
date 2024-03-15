@@ -44,3 +44,7 @@ export function formatJDData(data) {
     content: item.content.slice(0, 100) + "...",
   }));
 }
+
+export function roundNumber(num) {
+  return ((num + Number.EPSILON) * 100).toFixed(2);
+}

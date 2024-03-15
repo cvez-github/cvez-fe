@@ -129,7 +129,7 @@ export default function CVPage() {
 
   function handleDeleteJD(id) {
     deleteJD(id)
-      .then((data) => {
+      .then((_) => {
         setJds((prev) => prev.filter((jd) => jd.key !== id));
         messageApi.success(appStrings.language.msg.deleteJDSuccess);
       })

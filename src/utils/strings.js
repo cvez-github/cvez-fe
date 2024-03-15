@@ -19,6 +19,11 @@ const english = {
     tableCVName: "CV Name",
     tableMatchScore: "Match Score",
     tableAction: "Action",
+    generateMatchTitle: "Analyze CV and JD match",
+    generateMatchJDSummary: "JD Summary",
+    generateMatchJDRequirements: "JD Requirements",
+    generateMatchCVSummary: "CV Summary",
+    generateMatchCVFulfillment: "CV Fulfillment",
   },
   cvs: {
     cv: "CVs",
@@ -38,6 +43,11 @@ const english = {
   questions: {
     title: "Questions",
     btn: "Add Question",
+    newQuestionModalTitle: "Add new question",
+    newQuestionModalTextTitle: "Title",
+    newQuestionModalTextContent: "Content",
+    newQuestionModalTextAnswer: "Answer",
+    confirmDeleteQuestion: "Are you sure you want to delete this question?",
   },
   components: {
     search: {
@@ -63,6 +73,10 @@ const english = {
     deleteCVError: "Failed to delete CV!",
     deleteJDSuccess: "JD deleted successfully!",
     deleteJDError: "Failed to delete JD!",
+    uploadQuestionSuccess: "Question uploaded successfully!",
+    uploadQuestionError: "Failed to upload question!",
+    deleteQuestionSuccess: "Question deleted successfully!",
+    deleteQuestionError: "Failed to delete question!",
   },
 };
 
@@ -87,6 +101,11 @@ const vietnamese = {
     tableCVName: "Tên CV",
     tableMatchScore: "Điểm so khớp",
     tableAction: "Hành động",
+    generateMatchTitle: "Phân tích so khớp CV và JD",
+    generateMatchJDSummary: "Tóm tắt JD",
+    generateMatchJDRequirements: "Yêu cầu JD",
+    generateMatchCVSummary: "Tóm tắt CV",
+    generateMatchCVFulfillment: "Đáp ứng CV",
   },
   cvs: {
     cv: "CVs",
@@ -106,6 +125,11 @@ const vietnamese = {
   questions: {
     title: "Câu hỏi",
     btn: "Thêm câu hỏi",
+    newQuestionModalTitle: "Thêm câu hỏi mới",
+    newQuestionModalTextTitle: "Tiêu đề",
+    newQuestionModalTextContent: "Nội dung",
+    newQuestionModalTextAnswer: "Câu trả lời",
+    confirmDeleteQuestion: "Bạn có chắc chắn muốn xóa câu hỏi này?",
   },
   components: {
     search: {
@@ -131,6 +155,10 @@ const vietnamese = {
     deleteCVError: "Xóa CV thất bại!",
     deleteJDSuccess: "Xóa JD thành công!",
     deleteJDError: "Xóa JD thất bại!",
+    uploadQuestionSuccess: "Câu hỏi tải lên thành công!",
+    uploadQuestionError: "Tải lên câu hỏi thất bại!",
+    deleteQuestionSuccess: "Xóa câu hỏi thành công!",
+    deleteQuestionError: "Xóa câu hỏi thất bại!",
   },
 };
 

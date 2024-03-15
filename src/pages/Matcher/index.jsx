@@ -13,17 +13,20 @@ import {
   Tag,
   Modal,
   Radio,
-  Popconfirm,
   Spin,
+  Row,
+  Col,
+  Statistic,
+  Skeleton,
+  List,
 } from "antd";
-import {
-  DeleteOutlined,
-  EyeOutlined,
-  QuestionCircleOutlined,
-} from "@ant-design/icons";
+import Spacer from "../../components/Spacer";
+import { OpenAIOutlined, EyeOutlined } from "@ant-design/icons";
 import { getCVs } from "../../apis/cvs";
 import { getJDs } from "../../apis/jds";
 import { matchingCV } from "../../apis/match";
+import { generateCV } from "../../apis/generate";
+import { roundNumber } from "../../utils/utils";
 
 function formatCVData(data) {
   /**
@@ -68,6 +71,13 @@ export default function MatcherPage() {
   const [cvs, setCvs] = useState([]);
   const [jds, setJds] = useState([]);
   const [selectedJD, setSelectedJD] = useState(0);
+  const [isGenerateModalOpen, setIsGenerateModalOpen] = useState(false);
+  const [generateContent, setGenerateContent] = useState({
+    cvId: "",
+    jdId: "",
+    data: {},
+  });
+  const [isGenerateLoading, setIsGenerateLoading] = useState(true);
 
   function handleOpenModal() {
     setIsModalOpen(true);
@@ -105,6 +115,22 @@ export default function MatcherPage() {
 
   function handleNavigateToCVDetail(id) {
     navigate(`/cv/${id}`);
+  }
+
+  function handleGenerateMatch(cvId) {
+    setIsGenerateModalOpen(true);
+    if (
+      generateContent.cvId === cvId &&
+      generateContent.jdId === jds[selectedJD].key
+    ) {
+      return;
+    }
+    setIsGenerateLoading(true);
+    generateCV(cvId, jds[selectedJD].key).then((data) => {
+      console.log(data);
+      setGenerateContent((_) => ({ cvId, jdId: jds[selectedJD].key, data }));
+      setIsGenerateLoading(false);
+    });
   }
 
   useEffect(() => {
@@ -152,12 +178,13 @@ export default function MatcherPage() {
             icon={<EyeOutlined />}
             onClick={() => handleNavigateToCVDetail(cv.key)}
           ></Button>
-          <Popconfirm
-            title={appStrings.language.matchPage.deleteConfirm}
-            icon={<QuestionCircleOutlined style={{ color: "red" }} />}
-          >
-            <Button danger type="text" icon={<DeleteOutlined />} />
-          </Popconfirm>
+          <Button
+            type="text"
+            icon={<OpenAIOutlined />}
+            style={{ color: "#727BDE" }}
+            disabled={!cv.score}
+            onClick={() => handleGenerateMatch(cv.key)}
+          />
         </Space>
       ),
     },
@@ -229,6 +256,64 @@ export default function MatcherPage() {
             ))}
           </Space>
         </Radio.Group>
+      </Modal>
+      <Modal
+        open={isGenerateModalOpen}
+        title={appStrings.language.matchPage.generateMatchTitle}
+        onCancel={() => setIsGenerateModalOpen(false)}
+        footer={[]}
+      >
+        <Skeleton loading={isGenerateLoading} active>
+          <Row gutter={20}>
+            {generateContent.data["score"]
+              ? Object.keys(generateContent.data["score"]).map((key) => (
+                  <Col span={6}>
+                    <Statistic
+                      title={key}
+                      value={roundNumber(generateContent.data["score"][key])}
+                      suffix="%"
+                    />
+                  </Col>
+                ))
+              : null}
+          </Row>
+          <Spacer height={20} />
+          {generateContent.data["summarize"] ? (
+            <>
+              <Typography.Title level={5}>
+                {appStrings.language.matchPage.generateMatchJDSummary}
+              </Typography.Title>
+              <Typography.Text>
+                {generateContent.data["summarize"]["JDSummarization"]}
+              </Typography.Text>
+              <Typography.Title level={5}>
+                {appStrings.language.matchPage.generateMatchJDRequirements}
+              </Typography.Title>
+              <List
+                size="small"
+                bordered
+                dataSource={generateContent.data["summarize"]["JDRequirements"]}
+                renderItem={(item) => <List.Item>{item}</List.Item>}
+              />
+              <Spacer height={20} />
+              <Typography.Title level={5}>
+                {appStrings.language.matchPage.generateMatchCVSummary}
+              </Typography.Title>
+              <Typography.Text>
+                {generateContent.data["summarize"]["CVSummarization"]}
+              </Typography.Text>
+              <Typography.Title level={5}>
+                {appStrings.language.matchPage.generateMatchCVFulfillment}
+              </Typography.Title>
+              <List
+                size="small"
+                bordered
+                dataSource={generateContent.data["summarize"]["CVFulfillments"]}
+                renderItem={(item) => <List.Item>{item}</List.Item>}
+              />
+            </>
+          ) : null}
+        </Skeleton>
       </Modal>
     </>
   );
