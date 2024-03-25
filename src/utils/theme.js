@@ -1,24 +1,9 @@
-import { theme } from "antd";
+import { createTheme } from "@mantine/core";
 
-export const lightTheme = {
-  token: {
-    fontSize: 14,
-    colorPrimary: "#4181FF",
-    activeBarBorderWidth: 0,
-  },
-  algorithm: theme.lightTheme,
-  components: {
-    Layout: {
-      headerBg: "#A6D1E6",
-    },
-  },
-};
+export const lightTheme = createTheme({
+  fontFamily: "Inter, sans-serif",
+});
 
-export const darkTheme = {
-  token: {
-    fontSize: 14,
-    colorPrimary: "#4181FF",
-    activeBarBorderWidth: 0,
-  },
-  algorithm: theme.darkAlgorithm,
-};
+export const darkTheme = createTheme({
+  fontFamily: "Inter, sans-serif",
+});

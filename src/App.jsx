@@ -1,15 +1,14 @@
+import { MantineProvider } from "@mantine/core";
 import { useRoutes } from "react-router-dom";
-import { ConfigProvider } from "antd";
-import { routes } from "./routes/route";
-import GeneralLayout from "./components/Layout";
-import useAppState from "./hooks/appState";
-import { getThemeConfig } from "./utils/utils";
+import appRoutes from "./routes/routes";
+import useGlobalState from "./context/global";
 
 export default function App() {
-  const theme = useAppState((state) => state.theme);
+  const theme = useGlobalState((state) => state.theme);
+
   return (
-    <ConfigProvider theme={getThemeConfig(theme)}>
-      <GeneralLayout>{useRoutes(routes)}</GeneralLayout>
-    </ConfigProvider>
+    <MantineProvider defaultColorScheme={theme}>
+      {useRoutes(appRoutes)}
+    </MantineProvider>
   );
 }
