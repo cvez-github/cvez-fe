@@ -1,6 +1,7 @@
 import DashboardPageLayout from "../pages/Dashboard/Layout";
 import RedirectPage from "../pages/Redirect";
-
+import Home from "../pages/Dashboard/Home";
+import Projects from "../pages/Dashboard/Projects";
 const appRoutes = [
   {
     path: "/",
@@ -16,11 +17,11 @@ const appRoutes = [
     children: [
       {
         path: "/dashboard",
-        element: <div>Home Page</div>,
+        element: <Home />,
       },
       {
         path: "/dashboard/your-project",
-        element: <div>Your Project Page</div>,
+        element: <Projects />,
       },
       {
         path: "/dashboard/shared-project",
