@@ -1,11 +1,11 @@
 import { Table, ActionIcon, Badge } from '@mantine/core';
-import { IconLock, IconLockOpen } from '@tabler/icons-react';
+import { IconLock } from '@tabler/icons-react';
 
 const elements = [
     { CvName: "Nguyen Van A", date: "01/04/2024", score: "85%", actions: <ActionIcon variant="subtle" color="gray"><IconLock /></ActionIcon> },
-    { CvName: "Tran Thi B", date: "02/04/2024", score: "25%", actions: <ActionIcon variant="subtle" color="gray"><IconLockOpen /></ActionIcon> },
+    { CvName: "Tran Thi B", date: "02/04/2024", score: "25%", actions: <ActionIcon variant="subtle" color="gray"><IconLock /></ActionIcon> },
     { CvName: "Le Van C", date: "03/04/2024", score: "85%", actions: <ActionIcon variant="subtle" color="gray"><IconLock /></ActionIcon> },
-    { CvName: "Hoang Thi D", date: "04/04/2024", score: "75%", actions: <ActionIcon variant="subtle" color="gray"><IconLockOpen /></ActionIcon> },
+    { CvName: "Hoang Thi D", date: "04/04/2024", score: "75%", actions: <ActionIcon variant="subtle" color="gray"><IconLock /></ActionIcon> },
     { CvName: "Tran Van E", date: "05/04/2024", score: "1%", actions: <ActionIcon variant="subtle" color="gray"><IconLock /></ActionIcon> },
 ];
 
@@ -38,7 +38,7 @@ export default function Tables() {
         <Table>
             <Table.Thead>
                 <Table.Tr>
-                    <Table.Th>CvName</Table.Th>
+                    <Table.Th>Cv Name</Table.Th>
                     <Table.Th>Upload date</Table.Th>
                     <Table.Th>Score</Table.Th>
                     <Table.Th>Actions</Table.Th>

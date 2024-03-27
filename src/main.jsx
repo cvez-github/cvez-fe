@@ -6,6 +6,7 @@ import App from "./App.jsx";
 import "@mantine/core/styles.css";
 import "@mantine/dates/styles.css"
 import "./index.css";
+import '@mantine/dropzone/styles.css'
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
