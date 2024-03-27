@@ -1,32 +1,26 @@
-import { Card, Text, Avatar, Button, Group } from '@mantine/core';
-import { IconDots } from '@tabler/icons-react';
+import { Card, Text,  Button, Group,ActionIcon   } from '@mantine/core';
+import { IconDots   } from '@tabler/icons-react';
+import AvatarGroup from '../GroupAvatar/GroupAvatar';
 
-export default function CardComponent() {
-  const AvatarGroup = () => {
-    return (
-      <Avatar.Group>
-        <Avatar src="image.png" />
-        <Avatar src="image.png" />
-        <Avatar src="image.png" />
-        <Avatar>+5</Avatar>
-      </Avatar.Group>
-    );
-  };
+export default function CardComponent({ProjectName,ProjectDescription,ProjectId}) {
+  
 
   return (
     <Card shadow="sm" padding="xs" me="5px" withBorder style={{ maxWidth: 500 }}>
       <Card.Section>
       </Card.Section>
       <Group justify="space-between" mt="md" mb="xs">
-        <Text fw={500}>Sample Project</Text>
-        <Button variant="light" color="gray" justify='center'><IconDots size="1.5rem"/></Button>
+        <Text fw={500}>{ProjectName}</Text>
+        <ActionIcon variant="light" color="gray" size="md" radius="md" aria-label="Settings">
+      <IconDots  />
+      </ActionIcon>
       </Group>
       <Text size="sm">
-        This is the description of the first project
+        {ProjectDescription}
       </Text>
       <Group justify="space-between" mt="md" mb="xs">
         <Text size="xs" c="dimmed">
-          sample-project-d3gs2 </Text>
+          {ProjectId} </Text>
         <AvatarGroup />
       </Group>
     </Card>

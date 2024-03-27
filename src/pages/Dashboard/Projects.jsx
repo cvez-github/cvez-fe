@@ -17,14 +17,38 @@ export default function Home() {
 
             </Flex>
             <Group grow style={{ marginTop: '20px' }}>
-                <CardComponent />
-                <CardComponent />
-                <CardComponent />
+            <CardComponent  
+            ProjectName="Sample" 
+            ProjectDescription="This is the Description of the first project" 
+            ProjectId="axz121sa" 
+            />
+            <CardComponent 
+            ProjectName="Sample" 
+            ProjectDescription="This is the Description of the first project" 
+            ProjectId="axz121sa" 
+            />
+            <CardComponent 
+            ProjectName="Sample" 
+            ProjectDescription="This is the Description of the first project" 
+            ProjectId="axz121sa" 
+            />
             </Group>
             <Group grow style={{ marginTop: '20px' }}>
-                <CardComponent />
-                <CardComponent />
-                <CardComponent />
+            <CardComponent  
+            ProjectName="Sample" 
+            ProjectDescription="This is the Description of the first project" 
+            ProjectId="axz121sa" 
+            />
+            <CardComponent 
+            ProjectName="Sample" 
+            ProjectDescription="This is the Description of the first project" 
+            ProjectId="axz121sa" 
+            />
+            <CardComponent 
+            ProjectName="Sample" 
+            ProjectDescription="This is the Description of the first project" 
+            ProjectId="axz121sa" 
+            />
             </Group>
         </>
     );

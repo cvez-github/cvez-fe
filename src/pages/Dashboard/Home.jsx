@@ -1,27 +1,59 @@
 import Appbutton from "../../components/Home/Appbutton";
 import CardComponent from "../../components/Home/Card";
-import { Group, Flex } from '@mantine/core';
+import { SimpleGrid, Flex, Title } from '@mantine/core';
 
 export default function Home() {
+    
     return (
-        <>
+        <>  
+            <Flex direction="column" gap="xl">
             <Flex
             justify='space-between'>
-                <h1>Welcome</h1>
+                <Title order={1}>Welcome</Title>
                 <Appbutton />
             </Flex>
-            <p style={{ marginTop: '10px' }}>Your recent project</p>
-            <Group grow style={{ marginTop: '20px' }}>
-                <CardComponent />
-                <CardComponent />
-                <CardComponent />
-            </Group>
-            <p style={{ marginTop: '30px' }}>Shared width you</p>
-            <Group grow style={{ marginTop: '20px' }}>
-                <CardComponent />
-                <CardComponent />
-                <CardComponent />
-            </Group>
+            <Title order={3}>Your recent project</Title>
+            <SimpleGrid cols={3} spacing="md">
+            <CardComponent 
+            ProjectName="Sample" 
+            ProjectDescription="This is the Description of the first project" 
+            ProjectId="axz121sa" 
+            />
+            <CardComponent 
+            ProjectName="Sample" 
+            ProjectDescription="This is the Description of the first project" 
+            ProjectId="axz121sa" 
+            />
+            <CardComponent 
+            ProjectName="Sample" 
+            ProjectDescription="This is the Description of the first project" 
+            ProjectId="axz121sa" 
+            />
+            <CardComponent 
+            ProjectName="Sample" 
+            ProjectDescription="This is the Description of the first project" 
+            ProjectId="axz121sa" 
+            />
+            </SimpleGrid>
+            <Title order={3}>Shared with you</Title>
+            <SimpleGrid cols={3} spacing="md">
+            <CardComponent  
+            ProjectName="Sample" 
+            ProjectDescription="This is the Description of the first project" 
+            ProjectId="axz121sa" 
+            />
+            <CardComponent 
+            ProjectName="Sample" 
+            ProjectDescription="This is the Description of the first project" 
+            ProjectId="axz121sa" 
+            />
+            <CardComponent 
+            ProjectName="Sample" 
+            ProjectDescription="This is the Description of the first project" 
+            ProjectId="axz121sa" 
+            />
+            </SimpleGrid>
+            </Flex>
         </>
     );
     }
