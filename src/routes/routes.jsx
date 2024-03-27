@@ -3,6 +3,7 @@ import RedirectPage from "../pages/Redirect";
 import Home from "../pages/Dashboard/Home";
 import Projects from "../pages/Dashboard/Projects";
 import Shared from "../pages/Dashboard/Shared";
+import Trash from "../pages/Dashboard/Trash";
 const appRoutes = [
   {
     path: "/",
@@ -30,7 +31,7 @@ const appRoutes = [
       },
       {
         path: "/dashboard/deleted-project",
-        element: <div>Shared Project Page</div>,
+        element: <Trash/>,
       },
       {
         path: "/dashboard/setting",
