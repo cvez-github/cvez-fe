@@ -6,7 +6,7 @@ export default function Technical({ Ex }) {
         <Paper w='50%' shadow="xs" withBorder p="xl">
             <Group justify="space-between">
                 <Title order={4}>Technical Skill</Title>
-                <Popover width={110} position="top" withArrow shadow="md">
+                <Popover width={90} position="top" withArrow shadow="md">
                     <Popover.Target>
                         <ActionIcon variant="light" color="gray" size="md" radius="md" aria-label="Settings">
                             <IconDots />
@@ -14,12 +14,12 @@ export default function Technical({ Ex }) {
                     </Popover.Target>
                     <Popover.Dropdown bg="var(--mantine-color-body)">
                         <Group justify='space-between'>
-                            <ActionIcon variant="subtle" color="gray" aria-label="Settings">
-                                <IconEdit stroke={2} />
+                            <ActionIcon variant="subtle" color="gray" aria-label="Settings" size='xs'>
+                                <IconEdit/>
                             </ActionIcon>
 
-                            <ActionIcon variant="subtle" color="red" aria-label="Settings">
-                                <IconTrash stroke={2} />
+                            <ActionIcon variant="subtle" color="red" aria-label="Settings" size='xs'>
+                                <IconTrash/>
                             </ActionIcon>
                         </Group>
                     </Popover.Dropdown>
