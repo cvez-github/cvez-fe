@@ -1,7 +1,7 @@
 import Appbutton from "../../components/Home/Appbutton";
 import Search from "../../components/Search/Searchproject";
 import CardComponent from "../../components/Home/Card";
-import { Group, Flex } from '@mantine/core';
+import { Group, Flex, Popover } from '@mantine/core';
 
 export default function Home() {
     return (
