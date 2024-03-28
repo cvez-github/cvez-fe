@@ -1,6 +1,6 @@
 import { TextInput } from '@mantine/core';
 
-export default function Answer({title}) {
+export default function Tinput({title}) {
   return (
     <TextInput
       placeholder={title}
