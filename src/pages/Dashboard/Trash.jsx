@@ -1,7 +1,7 @@
 import Delete from "../../components/Button/Delete";
 import CardComponent from "../../components/Trash/Card";
 import { Flex, Title, SimpleGrid } from '@mantine/core';
-import CardComponents from "../../components/Card/CardComponents";
+import QuesAnsP from "../../components/Paper/Paper";
 export default function Trash() {
     return (
         <>
@@ -27,7 +27,7 @@ export default function Trash() {
             ProjectId="axz121sa" 
             />
             </SimpleGrid>
-            <CardComponents Question="What is the capital of India?" Answer="New Delhi"/>
+            <QuesAnsP Question="This is place holder text. The basic dialog for modals should contain only valuable and relevant information. Simplify dialogs by removing unnecessary elements or content that does not support user tasks. If you find that the number of required elements for your design are making the dialog excessively large, then try a different design solution. " Answer="New Delhi"/>
             </Flex>
             
         </>
