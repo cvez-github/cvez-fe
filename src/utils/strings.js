@@ -1,4 +1,5 @@
 const english = {
+  login: "Login to CVEZ",
   home: {
     title: "Home",
     welcome: "Welcome ",
@@ -75,6 +76,7 @@ const english = {
 };
 
 const vietnamese = {
+  login: "Đăng nhập vào CVEZ",
   home: {
     title: "Trang chủ",
     welcome: "Chào mừng ",

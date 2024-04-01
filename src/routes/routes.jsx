@@ -17,6 +17,7 @@ import RedirectPage from "../pages/Utils/Redirect";
 import CVDetailPage from "../pages/Position/CVDetail";
 import QuestionDetailPage from "../pages/Position/QuestionDetail";
 import NotFoundPage from "../pages/Utils/NotFound";
+import LoginPage from "../pages/Login/LoginPage";
 
 const appRoutes = [
   {
@@ -25,7 +26,7 @@ const appRoutes = [
   },
   {
     path: "/login",
-    element: <div>Login Page</div>,
+    element: <LoginPage />,
   },
   {
     path: "/404",
