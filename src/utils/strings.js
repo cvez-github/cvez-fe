@@ -72,6 +72,24 @@ const english = {
       message: "The page you are looking for does not exist",
     },
   },
+  createProject: {
+    title: "Create new project",
+    heading: "Create Project",
+    projectName: "Project Name",
+    projectAlias: "Project Alias",
+    projectDescription: "Project Description",
+    cancel: "Cancel",
+    create: "Create new project",
+  },  
+  createPosition: {
+    title: "Create new position",
+    heading: "Create Position",
+    positionName: "Position Name",
+    positionAlias: "Position Alias",
+    positionDescription: "Position Description",
+    cancel: "Cancel",
+    create: "Create",
+  },
 };
 
 const vietnamese = {
@@ -147,6 +165,15 @@ const vietnamese = {
       title: "Không tìm thấy trang",
       message: "Trang bạn đang tìm không tồn tại",
     },
+  },
+  createProject: {
+    title: "Tạo dự án mới",
+    heading: "Tạo dự án",
+    projectName: "Tên dự án",
+    projectAlias: "Tên viết tắt",
+    projectDescription: "Mô tả dự án",
+    cancel: "Hủy",
+    create: "Tạo dự án mới",
   },
 };
 
