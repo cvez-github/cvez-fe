@@ -2,7 +2,7 @@ import { Flex, Group, Text, rem } from '@mantine/core';
 import { IconUpload, IconFileTypePdf, IconX } from '@tabler/icons-react';
 import { Dropzone, IMAGE_MIME_TYPE } from '@mantine/dropzone';
 
-export default function uploadcv(props) {
+export default function Uploadcv(props) {
   return (
     <Dropzone
       onDrop={(files) => console.log('accepted files', files)}
