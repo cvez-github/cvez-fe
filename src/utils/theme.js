@@ -1,9 +1,7 @@
 import { createTheme } from "@mantine/core";
 
-export const lightTheme = createTheme({
+const customTheme = createTheme({
   fontFamily: "Inter, sans-serif",
 });
 
-export const darkTheme = createTheme({
-  fontFamily: "Inter, sans-serif",
-});
+export default customTheme;

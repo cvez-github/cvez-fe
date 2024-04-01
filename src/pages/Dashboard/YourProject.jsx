@@ -1,10 +1,10 @@
-import { Flex, Title, Button } from "@mantine/core";
-import { IconTrash } from "@tabler/icons-react";
+import { Title, Flex, Button, Input } from "@mantine/core";
+import { IconPlus, IconSearch } from "@tabler/icons-react";
 import HeadingLayout from "../../components/Layout/HeadingLayout";
 import ProjectGridLayout from "../../components/Layout/ProjectGridLayout";
 import ProjectCard from "../../components/ProjectCard";
 import appStrings from "../../utils/strings";
-import DeleteProjectAction from "../../components/Actions/DeletedProjectAction";
+import YourProjectAction from "../../components/Actions/YourProjectAction";
 
 const mockData = [
   {
@@ -54,14 +54,18 @@ const mockData = [
   },
 ];
 
-export default function TrashPage() {
+export default function YourProjectPage() {
   return (
     <Flex direction="column" gap={30}>
       <HeadingLayout>
-        <Title order={2}>{appStrings.language.trash.heading}</Title>
-        <Flex>
-          <Button color="red" leftSection={<IconTrash size="1rem" />}>
-            {appStrings.language.trash.deletePermanently}
+        <Title order={2}>{appStrings.language.yourProject.heading}</Title>
+        <Flex gap={15}>
+          <Input
+            placeholder={appStrings.language.yourProject.searchPlaceholder}
+            rightSection={<IconSearch size="1rem" />}
+          />
+          <Button leftSection={<IconPlus size="1rem" />}>
+            {appStrings.language.yourProject.createBtn}
           </Button>
         </Flex>
       </HeadingLayout>
@@ -72,7 +76,8 @@ export default function TrashPage() {
             title={data.title}
             description={data.description}
             alias={data.alias}
-            actions={<DeleteProjectAction />}
+            members={data.members}
+            actions={<YourProjectAction />}
           />
         ))}
       </ProjectGridLayout>

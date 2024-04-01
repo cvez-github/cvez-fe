@@ -1,11 +1,10 @@
-import style from "./style.module.css";
 import { AppShell, Flex, Group, Container, Burger } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import Logo from "../Logo";
 import Navbar from "../Navbar";
 import User from "../User";
 
-export default function Layout({
+export default function AppLayout({
   children,
   navItems = [],
   navPreItems = [],
@@ -41,7 +40,14 @@ export default function Layout({
         />
       </AppShell.Navbar>
       <AppShell.Main>
-        <Container className={style.contentContainer}>{children}</Container>
+        <Container
+          style={{
+            maxWidth: "1400px",
+            width: "100%",
+          }}
+        >
+          {children}
+        </Container>
       </AppShell.Main>
     </AppShell>
   );

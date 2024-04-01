@@ -1,10 +1,9 @@
-import { Flex, Title, Button } from "@mantine/core";
-import { IconTrash } from "@tabler/icons-react";
+import { Flex, Title, Input } from "@mantine/core";
+import { IconSearch } from "@tabler/icons-react";
 import HeadingLayout from "../../components/Layout/HeadingLayout";
 import ProjectGridLayout from "../../components/Layout/ProjectGridLayout";
 import ProjectCard from "../../components/ProjectCard";
 import appStrings from "../../utils/strings";
-import DeleteProjectAction from "../../components/Actions/DeletedProjectAction";
 
 const mockData = [
   {
@@ -54,15 +53,16 @@ const mockData = [
   },
 ];
 
-export default function TrashPage() {
+export default function SharedProjectPage() {
   return (
     <Flex direction="column" gap={30}>
       <HeadingLayout>
-        <Title order={2}>{appStrings.language.trash.heading}</Title>
+        <Title order={2}>{appStrings.language.sharedProjects.heading}</Title>
         <Flex>
-          <Button color="red" leftSection={<IconTrash size="1rem" />}>
-            {appStrings.language.trash.deletePermanently}
-          </Button>
+          <Input
+            placeholder={appStrings.language.sharedProjects.searchPlaceholder}
+            rightSection={<IconSearch size="1rem" />}
+          />
         </Flex>
       </HeadingLayout>
       <ProjectGridLayout>
@@ -72,7 +72,7 @@ export default function TrashPage() {
             title={data.title}
             description={data.description}
             alias={data.alias}
-            actions={<DeleteProjectAction />}
+            members={data.members}
           />
         ))}
       </ProjectGridLayout>

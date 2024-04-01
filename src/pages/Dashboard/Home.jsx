@@ -1,59 +1,119 @@
-import Appbutton from "../../components/Home/Appbutton";
-import CardComponent from "../../components/Home/Card";
-import { SimpleGrid, Flex, Title } from '@mantine/core';
+import { Flex, Title, Button } from "@mantine/core";
+import { IconPlus } from "@tabler/icons-react";
+import HeadingLayout from "../../components/Layout/HeadingLayout";
+import ProjectGridLayout from "../../components/Layout/ProjectGridLayout";
+import ProjectCard from "../../components/ProjectCard";
+import appStrings from "../../utils/strings";
+import YourProjectAction from "../../components/Actions/YourProjectAction";
 
-export default function Home() {
-    
-    return (
-        <>  
-            <Flex direction="column" gap="xl">
-            <Flex
-            justify='space-between'>
-                <Title order={1}>Welcome</Title>
-                <Appbutton />
-            </Flex>
-            <Title order={3}>Your recent project</Title>
-            <SimpleGrid cols={3} spacing="md">
-            <CardComponent 
-            ProjectName="Sample" 
-            ProjectDescription="This is the Description of the first project" 
-            ProjectId="axz121sa" 
-            />
-            <CardComponent 
-            ProjectName="Sample" 
-            ProjectDescription="This is the Description of the first project" 
-            ProjectId="axz121sa" 
-            />
-            <CardComponent 
-            ProjectName="Sample" 
-            ProjectDescription="This is the Description of the first project" 
-            ProjectId="axz121sa" 
-            />
-            <CardComponent 
-            ProjectName="Sample" 
-            ProjectDescription="This is the Description of the first project" 
-            ProjectId="axz121sa" 
-            />
-            </SimpleGrid>
-            <Title order={3}>Shared with you</Title>
-            <SimpleGrid cols={3} spacing="md">
-            <CardComponent  
-            ProjectName="Sample" 
-            ProjectDescription="This is the Description of the first project" 
-            ProjectId="axz121sa" 
-            />
-            <CardComponent 
-            ProjectName="Sample" 
-            ProjectDescription="This is the Description of the first project" 
-            ProjectId="axz121sa" 
-            />
-            <CardComponent 
-            ProjectName="Sample" 
-            ProjectDescription="This is the Description of the first project" 
-            ProjectId="axz121sa" 
-            />
-            </SimpleGrid>
-            </Flex>
-        </>
-    );
-    }
+const mockData = [
+  {
+    title: "Project 1",
+    description: "Description 1",
+    alias: "P1",
+    members: [
+      {
+        name: "Member 1",
+        avatar: "https://i.pravatar.cc/150",
+      },
+      {
+        name: "Member 1",
+        avatar: "https://i.pravatar.cc/150",
+      },
+      {
+        name: "Member 1",
+        avatar: "https://i.pravatar.cc/150",
+      },
+      {
+        name: "Member 1",
+        avatar: "https://i.pravatar.cc/150",
+      },
+      {
+        name: "Member 1",
+        avatar: "https://i.pravatar.cc/150",
+      },
+      {
+        name: "Member 1",
+        avatar: "https://i.pravatar.cc/150",
+      },
+      {
+        name: "Member 1",
+        avatar: "https://i.pravatar.cc/150",
+      },
+      {
+        name: "Member 1",
+        avatar: "https://i.pravatar.cc/150",
+      },
+    ],
+  },
+  {
+    title: "Project 1",
+    description: "Description 1",
+    alias: "P1",
+    members: [
+      {
+        name: "Member 1",
+        avatar: "https://i.pravatar.cc/150",
+      },
+      {
+        name: "Member 1",
+        avatar: "https://i.pravatar.cc/150",
+      },
+    ],
+  },
+  {
+    title: "Project 1",
+    description: "Description 1",
+    alias: "P1",
+    members: [
+      {
+        name: "Member 1",
+        avatar: "https://i.pravatar.cc/150",
+      },
+      {
+        name: "Member 1",
+        avatar: "https://i.pravatar.cc/150",
+      },
+    ],
+  },
+];
+
+export default function HomePage() {
+  return (
+    <Flex direction="column" gap={30}>
+      <HeadingLayout>
+        <Title order={1}>
+          {appStrings.language.home.welcome}Quang Minh Doan
+        </Title>
+        <Flex>
+          <Button leftSection={<IconPlus size="1rem" />}>
+            {appStrings.language.home.createBtn}
+          </Button>
+        </Flex>
+      </HeadingLayout>
+      <ProjectGridLayout title={appStrings.language.home.recentProjects}>
+        {mockData.map((data, index) => (
+          <ProjectCard
+            key={index}
+            title={data.title}
+            description={data.description}
+            alias={data.alias}
+            members={data.members}
+            actions={<YourProjectAction />}
+          />
+        ))}
+      </ProjectGridLayout>
+      <ProjectGridLayout title={appStrings.language.home.sharedProjects}>
+        {mockData.map((data, index) => (
+          <ProjectCard
+            key={index}
+            title={data.title}
+            description={data.description}
+            alias={data.alias}
+            members={data.members}
+          />
+        ))}
+      </ProjectGridLayout>
+    </Flex>
+  );
+}
