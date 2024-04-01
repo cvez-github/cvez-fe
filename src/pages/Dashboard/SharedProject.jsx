@@ -1,7 +1,7 @@
 import { Flex, Title, Input } from "@mantine/core";
 import { IconSearch } from "@tabler/icons-react";
 import HeadingLayout from "../../components/Layout/HeadingLayout";
-import ProjectGridLayout from "../../components/Layout/ProjectGridLayout";
+import GridLayout from "../../components/Layout/GridLayout";
 import ProjectCard from "../../components/ProjectCard";
 import appStrings from "../../utils/strings";
 
@@ -65,7 +65,7 @@ export default function SharedProjectPage() {
           />
         </Flex>
       </HeadingLayout>
-      <ProjectGridLayout>
+      <GridLayout>
         {mockData.map((data, index) => (
           <ProjectCard
             key={index}
@@ -75,7 +75,7 @@ export default function SharedProjectPage() {
             members={data.members}
           />
         ))}
-      </ProjectGridLayout>
+      </GridLayout>
     </Flex>
   );
 }

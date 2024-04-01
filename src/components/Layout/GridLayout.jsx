@@ -1,6 +1,6 @@
 import { Flex, SimpleGrid, Title } from "@mantine/core";
 
-export default function ProjectGridLayout({ title, children }) {
+export default function GridLayout({ title, children }) {
   return (
     <Flex direction="column" gap="md">
       {title ? <Title order={4}>{title}</Title> : null}

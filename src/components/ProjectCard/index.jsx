@@ -6,9 +6,11 @@ import {
   ActionIcon,
   Avatar,
   Tooltip,
-  Popover,
+  Menu,
 } from "@mantine/core";
+import { useHover } from "@mantine/hooks";
 import { IconDots } from "@tabler/icons-react";
+import { useNavigate } from "react-router-dom";
 
 export default function ProjectCard({
   title,
@@ -16,20 +18,38 @@ export default function ProjectCard({
   alias,
   members,
   actions,
+  disableNavigate = false,
 }) {
+  const { hovered, ref } = useHover();
+  const navigate = useNavigate();
+
+  function handleNavigateToProject(alias) {
+    if (!disableNavigate) {
+      navigate(`/${alias}`);
+    }
+  }
+
   return (
-    <Card withBorder>
+    <Card withBorder ref={ref} shadow={hovered ? "xl" : "md"}>
       <Group justify="space-between">
-        <Title order={5}>{title}</Title>
+        <Title
+          order={5}
+          onClick={() => handleNavigateToProject(alias)}
+          style={{
+            cursor: "pointer",
+          }}
+        >
+          {title}
+        </Title>
         {actions ? (
-          <Popover shadow="md" position="top-end" width={150}>
-            <Popover.Target>
+          <Menu withinPortal shadow="md" position="top-end" width={150}>
+            <Menu.Target>
               <ActionIcon variant="light" color="gray">
                 <IconDots />
               </ActionIcon>
-            </Popover.Target>
-            <Popover.Dropdown p={5}>{actions}</Popover.Dropdown>
-          </Popover>
+            </Menu.Target>
+            <Menu.Dropdown p={5}>{actions}</Menu.Dropdown>
+          </Menu>
         ) : null}
       </Group>
       <Text size="sm">{description}</Text>

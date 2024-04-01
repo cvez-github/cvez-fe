@@ -1,10 +1,12 @@
 import { Flex, Title, Button } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 import { IconPlus } from "@tabler/icons-react";
 import HeadingLayout from "../../components/Layout/HeadingLayout";
-import ProjectGridLayout from "../../components/Layout/ProjectGridLayout";
+import GridLayout from "../../components/Layout/GridLayout";
 import ProjectCard from "../../components/ProjectCard";
 import appStrings from "../../utils/strings";
 import YourProjectAction from "../../components/Actions/YourProjectAction";
+import CreateProjectDrawer from "../Drawer/CreateProjectDrawer";
 
 const mockData = [
   {
@@ -79,6 +81,7 @@ const mockData = [
 ];
 
 export default function HomePage() {
+  const [isNewProjectOpen, newProjectToggle] = useDisclosure(false);
   return (
     <Flex direction="column" gap={30}>
       <HeadingLayout>
@@ -86,12 +89,15 @@ export default function HomePage() {
           {appStrings.language.home.welcome}Quang Minh Doan
         </Title>
         <Flex>
-          <Button leftSection={<IconPlus size="1rem" />}>
+          <Button
+            leftSection={<IconPlus size="1rem" />}
+            onClick={newProjectToggle.open}
+          >
             {appStrings.language.home.createBtn}
           </Button>
         </Flex>
       </HeadingLayout>
-      <ProjectGridLayout title={appStrings.language.home.recentProjects}>
+      <GridLayout title={appStrings.language.home.recentProjects}>
         {mockData.map((data, index) => (
           <ProjectCard
             key={index}
@@ -102,8 +108,8 @@ export default function HomePage() {
             actions={<YourProjectAction />}
           />
         ))}
-      </ProjectGridLayout>
-      <ProjectGridLayout title={appStrings.language.home.sharedProjects}>
+      </GridLayout>
+      <GridLayout title={appStrings.language.home.sharedProjects}>
         {mockData.map((data, index) => (
           <ProjectCard
             key={index}
@@ -113,7 +119,11 @@ export default function HomePage() {
             members={data.members}
           />
         ))}
-      </ProjectGridLayout>
+      </GridLayout>
+      <CreateProjectDrawer
+        open={isNewProjectOpen}
+        onClose={newProjectToggle.close}
+      />
     </Flex>
   );
 }

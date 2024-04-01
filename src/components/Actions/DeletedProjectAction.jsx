@@ -1,26 +1,17 @@
-import { Button, Flex } from "@mantine/core";
+import { Fragment } from "react";
+import { Menu } from "@mantine/core";
 import { IconRestore, IconTrash } from "@tabler/icons-react";
 import appStrings from "../../utils/strings";
 
 export default function DeleteProjectAction() {
   return (
-    <Flex direction="column" gap={5}>
-      <Button
-        color="gray"
-        variant="light"
-        leftSection={<IconRestore size="1rem" />}
-        size="xs"
-      >
+    <Fragment>
+      <Menu.Item leftSection={<IconRestore size="1rem" />}>
         {appStrings.language.btn.restore}
-      </Button>
-      <Button
-        color="red"
-        variant="light"
-        leftSection={<IconTrash size="1rem" />}
-        size="xs"
-      >
+      </Menu.Item>
+      <Menu.Item leftSection={<IconTrash size="1rem" />} c="red">
         {appStrings.language.trash.deletePermanently}
-      </Button>
-    </Flex>
+      </Menu.Item>
+    </Fragment>
   );
 }

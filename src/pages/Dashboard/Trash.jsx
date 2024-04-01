@@ -1,7 +1,7 @@
 import { Flex, Title, Button } from "@mantine/core";
 import { IconTrash } from "@tabler/icons-react";
 import HeadingLayout from "../../components/Layout/HeadingLayout";
-import ProjectGridLayout from "../../components/Layout/ProjectGridLayout";
+import ProjectGridLayout from "../../components/Layout/GridLayout";
 import ProjectCard from "../../components/ProjectCard";
 import appStrings from "../../utils/strings";
 import DeleteProjectAction from "../../components/Actions/DeletedProjectAction";
@@ -73,6 +73,7 @@ export default function TrashPage() {
             description={data.description}
             alias={data.alias}
             actions={<DeleteProjectAction />}
+            disableNavigate
           />
         ))}
       </ProjectGridLayout>

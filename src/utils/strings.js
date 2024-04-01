@@ -24,12 +24,53 @@ const english = {
   },
   setting: {
     title: "Setting",
+    heading: "Setting",
+    requiredRestart: "Required restart to apply changes",
+    general: {
+      title: "General",
+      language: "Language",
+      theme: "Theme",
+    },
+  },
+  position: {
+    title: "Positions",
+    heading: "Positions",
+    createBtn: "Create new position",
+    searchPlaceholder: "Search position",
+    activePosition: "Active position",
+    closedPosition: "Closed position",
+  },
+  insight: {
+    title: "Insights",
+  },
+  positionGeneral: {
+    title: "General",
+    heading: "General",
+  },
+  cv: {
+    title: "CV",
+    heading: "CV",
+  },
+  jd: {
+    title: "JD",
+    heading: "JD",
+  },
+  questions: {
+    title: "Questions",
+    heading: "Questions",
   },
   btn: {
     view: "View",
     share: "Share",
     delete: "Delete",
     restore: "Restore",
+    return: "Return",
+  },
+  utils: {
+    notFound: {
+      title: "Not Found",
+      message: "The page you are looking for does not exist",
+    },
   },
 };
 
@@ -59,12 +100,53 @@ const vietnamese = {
   },
   setting: {
     title: "Cài đặt",
+    heading: "Cài đặt",
+    requiredRestart: "Yêu cầu khởi động lại để áp dụng thay đổi",
+    general: {
+      title: "Chung",
+      language: "Ngôn ngữ",
+      theme: "Giao diện",
+    },
+  },
+  position: {
+    title: "Vị trí",
+    heading: "Vị trí",
+    createBtn: "Tạo vị trí mới",
+    searchPlaceholder: "Tìm kiếm vị trí",
+    activePosition: "Vị trí đang hoạt động",
+    closedPosition: "Vị trí đã đóng",
+  },
+  insight: {
+    title: "Thống kê",
+  },
+  positionGeneral: {
+    title: "Tổng quan",
+    heading: "Tổng quan",
+  },
+  cv: {
+    title: "CV",
+    heading: "CV",
+  },
+  jd: {
+    title: "JD",
+    heading: "JD",
+  },
+  questions: {
+    title: "Câu hỏi",
+    heading: "Câu hỏi",
   },
   btn: {
     view: "Xem",
     share: "Chia sẻ",
     delete: "Xóa",
     restore: "Khôi phục",
+    return: "Quay lại",
+  },
+  utils: {
+    notFound: {
+      title: "Không tìm thấy trang",
+      message: "Trang bạn đang tìm không tồn tại",
+    },
   },
 };
 
@@ -81,7 +163,7 @@ function getLanguageStrings(language) {
 
 const appStrings = {
   appName: "CVEZ",
-  language: getLanguageStrings(localStorage.getItem("language") || "vi"),
+  language: getLanguageStrings(localStorage.getItem("language") || "en"),
 };
 
 export default appStrings;
