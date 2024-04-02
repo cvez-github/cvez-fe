@@ -244,6 +244,99 @@ const vietnamese = {
     save: "Lưu",
   },
 };
+const japanese = {
+  home: {
+    title: "ホーム",
+    welcome: "ようこそ ",
+    createBtn: "新しいプロジェクトを作成する",
+    recentProjects: "最近のプロジェクト",
+    sharedProjects: "共有プロジェクト",
+  },
+  yourProject: {
+    title: "プロジェクト",
+    heading: "あなたのプロジェクト",
+    createBtn: "新しいプロジェクトを作成する",
+    searchPlaceholder: "プロジェクトを検索する",
+  },
+  sharedProjects: {
+    title: "共有",
+    heading: "共有プロジェクト",
+    searchPlaceholder: "プロジェクトを検索する",
+  },
+  trash: {
+    title: "ゴミ箱",
+    heading: "削除されたプロジェクト",
+    deletePermanently: "永久に削除する",
+  },
+  setting: {
+    title: "設定",
+    heading: "設定",
+    requiredRestart: "変更を適用するには再起動が必要です",
+    general: {
+      title: "一般",
+      language: "言語",
+      theme: "テーマ",
+    },
+  },
+  position: {
+    title: "ポジション",
+    heading: "ポジション",
+    createBtn: "新しいポジションを作成する",
+    searchPlaceholder: "ポジションを検索する",
+    activePosition: "アクティブなポジション",
+    closedPosition: "閉じたポジション",
+  },
+  insight: {
+    title: "インサイト",
+  },
+  positionGeneral: {
+    title: "一般",
+    heading: "一般",
+  },
+  cv: {
+    title: "履歴書",
+    heading: "履歴書",
+  },
+  jd: {
+    title: "JD",
+    heading: "JD",
+  },
+  questions: {
+    title: "質問",
+    heading: "質問",
+  },
+  btn: {
+    view: "表示",
+    share: "共有",
+    delete: "削除",
+    restore: "復元",
+    return: "戻る",
+  },
+  utils: {
+    notFound: {
+      title: "見つかりません",
+      message: "お探しのページは存在しません",
+    },
+  },
+  createProject: {
+    title: "新しいプロジェクトを作成する",
+    heading: "プロジェクトを作成する",
+    projectName: "プロジェクト名",
+    projectAlias: "プロジェクトエイリアス",
+    projectDescription: "プロジェクトの説明",
+    cancel: "キャンセル",
+    create: "新しいプロジェクトを作成する",
+  },
+  createPosition: {
+    title: "新しいポジションを作成する",
+    heading: "ポジションを作成する",
+    positionName: "ポジション名",
+    positionAlias: "ポジションエイリアス",
+    positionDescription: "ポジションの説明",
+    cancel: "キャンセル",
+    create: "作成する",
+  },
+};
 
 function getLanguageStrings(language) {
   switch (language) {
@@ -251,6 +344,8 @@ function getLanguageStrings(language) {
       return english;
     case "vi":
       return vietnamese;
+    case "ja":
+      return japanese;
     default:
       return english;
   }
