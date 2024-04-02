@@ -336,6 +336,36 @@ const japanese = {
     cancel: "キャンセル",
     create: "作成する",
   },
+  cvData: {
+    title: "CVデータ",
+  },
+  jdData: {
+    title: "JDデータ",
+  },
+  uploadCv: {
+    title: "CVをアップロードする",
+  },
+  uploadJd: {
+    title:'PDFから抽出',
+    message:'ファイルからテキストを素早く抽出します。',
+    upload:'PDFをアップロード'
+  },
+  addAlert: {
+    title: "共有リンク",
+    message: "このリンクを使用してアクセスし、CVをストレージにアップロードします。",
+  },
+  tableCv: {
+    title: "CVデータ",
+    cvName: "CV名",
+    uploadDate: "アップロード日",
+    score: "スコア",
+    actions: "アクション",
+  },
+  button: {
+    cancel: "キャンセル",
+    save: "保存",
+  },
+  
 };
 
 function getLanguageStrings(language) {
