@@ -90,6 +90,36 @@ const english = {
     cancel: "Cancel",
     create: "Create",
   },
+  cvData: {
+    title: "CV Data",
+  },
+  jdData: {
+    title: "JD Data",
+  },
+  uploadCv: {
+    title: "drop to upload CV",
+  },
+  uploadJd: {
+    title:'Extracted from PDF',
+    message:'Quick extraction text from to file.',
+    upload:'Upload PDF'
+  },
+    
+  addAlert: {
+    title: "Share link",
+    message: "Use this link to get access and upload CV to the storage.",
+  },
+  tableCv: {
+    title: "CV Data",
+    cvName: "CV Name",
+    uploadDate: "Upload Date",
+    score: "Score",
+    actions: "Actions",
+  },
+  button: {
+    cancel: "Cancel",
+    save: "Save",
+  },
 };
 
 const vietnamese = {
@@ -174,6 +204,44 @@ const vietnamese = {
     projectDescription: "Mô tả dự án",
     cancel: "Hủy",
     create: "Tạo dự án mới",
+  },
+  createPosition: {
+    title: "Tạo vị trí mới",
+    heading: "Tạo vị trí",
+    positionName: "Tên vị trí",
+    positionAlias: "Tên viết tắt",
+    positionDescription: "Mô tả vị trí",
+    cancel: "Hủy",
+    create: "Tạo",
+  },
+  cvData: {
+    title: "Dữ liệu CV",
+  },
+  jdData: {
+    title: "Dữ liệu JD",
+  },
+  uploadCv: {
+    title: "Kéo thả để tải lên CV",
+  },
+  uploadJd: {
+    title:'Trích xuất từ PDF',
+    message:'Trích xuất nhanh văn bản từ tệp.',
+    upload:'Tải lên PDF'
+  },
+  addAlert: {
+    title: "Chia sẻ liên kết",
+    message: "Sử dụng liên kết này để truy cập và tải lên CV lên lưu trữ.",
+  },
+  tableCv: {
+    title: "Dữ liệu CV",
+    cvName: "Tên CV",
+    uploadDate: "Ngày tải lên",
+    score: "Điểm",
+    actions: "Hành động",
+  },
+  button: {
+    cancel: "Hủy",
+    save: "Lưu",
   },
 };
 

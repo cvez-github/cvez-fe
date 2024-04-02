@@ -1,7 +1,7 @@
 import { Flex, Group, Text, rem } from '@mantine/core';
 import { IconUpload, IconFileTypePdf, IconX } from '@tabler/icons-react';
 import { Dropzone, IMAGE_MIME_TYPE } from '@mantine/dropzone';
-
+import appStrings from '../../utils/strings';
 export default function Uploadcv(props) {
   return (
     <Dropzone
@@ -35,7 +35,7 @@ export default function Uploadcv(props) {
           />
                   <div>
                     <Text size="xl" inline>
-                      Drop to upload CV
+                      {appStrings.language.uploadCv.title}
                     </Text>
                   </div>
           </Flex>
