@@ -65,6 +65,7 @@ const english = {
     delete: "Delete",
     restore: "Restore",
     return: "Return",
+    edit: "Edit",
   },
   utils: {
     notFound: {
@@ -89,6 +90,10 @@ const english = {
     positionDescription: "Position Description",
     cancel: "Cancel",
     create: "Create",
+  },
+  date: {
+    startDate: "Start Date",
+    endDate: "End Date",
   },
   cvData: {
     title: "CV Data",
@@ -116,11 +121,40 @@ const english = {
     score: "Score",
     actions: "Actions",
   },
+  tableBank: {
+    title: "Question Bank",
+    search: "search question",
+    bankname: "Bank Name",
+    totalquestion: "Total Question",
+    level: "Level",
+    actions: "Actions",  
+  },
   button: {
     cancel: "Cancel",
     save: "Save",
   },
+  search: {
+    placeholder: "Search",
+  },
+  questionDetail: {
+    title: "Bank Name",
+    search: "Search question",
+    level: "Level",
+    questions: "Questions",
+    create: "Create new question",
+    questioncontent: "Question Content",
+    answer: "Answer",
+    ok: "OK",
+  },
+  choice: {
+    title: "Choice",
+  },
+  breadcrumb: {
+    questionBank: "Question Bank",
+    bankName: "Bank Name",
+  },
 };
+
 
 const vietnamese = {
   home: {
@@ -189,6 +223,7 @@ const vietnamese = {
     delete: "Xóa",
     restore: "Khôi phục",
     return: "Quay lại",
+    edit: "Sửa",
   },
   utils: {
     notFound: {
@@ -213,6 +248,10 @@ const vietnamese = {
     positionDescription: "Mô tả vị trí",
     cancel: "Hủy",
     create: "Tạo",
+  },
+  date: {
+    startDate: "Ngày bắt đầu",
+    endDate: "Ngày kết thúc",
   },
   cvData: {
     title: "Dữ liệu CV",
@@ -239,9 +278,38 @@ const vietnamese = {
     score: "Điểm",
     actions: "Hành động",
   },
+  tableBank: {
+    title: "Ngân hàng câu hỏi",
+    search: "tìm kiếm câu hỏi",
+    choices: "lựa chọn",
+    bankname: "Tên ngân hàng",
+    totalquestion: "Tổng số câu hỏi",
+    level: "Cấp độ",
+    actions: "Hành động",
+  },
   button: {
     cancel: "Hủy",
     save: "Lưu",
+  },
+  search: {
+    placeholder: "Tìm kiếm",
+  },
+  questionDetail: {
+    title: "Tên ngân hàng",
+    search: "Tìm kiếm câu hỏi",
+    level: "Cấp độ",
+    questions: "Câu hỏi",
+    create: "Tạo câu hỏi mới",
+    questioncontent: "Nội dung câu hỏi",
+    answer: "Câu trả lời",
+    ok: "OK",
+  },
+  choice: {
+    title: "Lựa chọn",
+  },
+  breadcrumb: {
+    questionBank: "Ngân hàng câu hỏi",
+    bankName: "Tên ngân hàng",
   },
 };
 const japanese = {
@@ -311,6 +379,7 @@ const japanese = {
     delete: "削除",
     restore: "復元",
     return: "戻る",
+    edit: "編集",
   },
   utils: {
     notFound: {
@@ -335,6 +404,10 @@ const japanese = {
     positionDescription: "ポジションの説明",
     cancel: "キャンセル",
     create: "作成する",
+  },
+  date: {
+    startDate: "開始日",
+    endDate: "終了日",
   },
   cvData: {
     title: "CVデータ",
@@ -361,11 +434,40 @@ const japanese = {
     score: "スコア",
     actions: "アクション",
   },
+  tableBank: {
+    title: "質問銀行",
+    search: "質問を検索",
+    choices: "選択肢",
+    bankname: "銀行名",
+    totalquestion: "合計質問",
+    level: "レベル",
+    actions: "アクション",
+  },
   button: {
     cancel: "キャンセル",
     save: "保存",
   },
-  
+  search: {
+    placeholder: "検索",
+  },
+  questionDetail: {
+    title: "銀行名",
+    search: "質問を検索",
+    level: "レベル",
+    questions: "質問",
+    create: "新しい質問を作成する",
+    questioncontent: "質問内容",
+    answer: "回答",
+    ok: "OK",
+  },
+  choice: {
+    title: "選択",
+  },
+  breadcrumb: {
+    questionBank: "質問銀行",
+    bankName: "銀行名",
+  },
+
 };
 
 function getLanguageStrings(language) {
