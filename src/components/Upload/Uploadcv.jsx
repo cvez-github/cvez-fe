@@ -1,6 +1,6 @@
 import { Flex, Group, Text, rem } from '@mantine/core';
 import { IconUpload, IconFileTypePdf, IconX } from '@tabler/icons-react';
-import { Dropzone, IMAGE_MIME_TYPE } from '@mantine/dropzone';
+import { Dropzone } from '@mantine/dropzone';
 import appStrings from '../../utils/strings';
 export default function Uploadcv(props) {
   return (
@@ -8,7 +8,7 @@ export default function Uploadcv(props) {
       onDrop={(files) => console.log('accepted files', files)}
       onReject={(files) => console.log('rejected files', files)}
       maxSize={5 * 1024 ** 2}
-      accept={IMAGE_MIME_TYPE}
+      accept='application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document'
       {...props}
     >
       <Group justify="center" gap="xl" mih={220} style={{ pointerEvents: 'none' }}>

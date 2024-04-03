@@ -1,7 +1,7 @@
 import { Alert, CopyButton, Tooltip, rem, ActionIcon, Flex } from '@mantine/core';
 import { IconHelp, IconCopy, IconCheck } from '@tabler/icons-react';
 import appStrings from '../../utils/strings';
-export default function addalert({title}) {
+export default function ExtraLink({title}) {
   const icon = <IconHelp />;
   return (
     <Alert variant="light" color="grape" radius="xs" title={appStrings.language.addAlert.title} icon={icon}>

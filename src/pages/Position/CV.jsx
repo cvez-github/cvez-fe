@@ -3,7 +3,7 @@ import { IconTrash, IconEye, IconSearch } from '@tabler/icons-react';
 import { useState, useEffect } from 'react';
 import HeadingLayout from "../../components/Layout/HeadingLayout";
 import Uploadcv from "../../components/Upload/Uploadcv";
-import Addalert from "../../components/Alert/Addalert";
+import Addalert from "../../components/Upload/ExtraLink";
 import appStrings from "../../utils/strings";
 const SelectData = [
   { value: '1', label: '1' },

@@ -109,7 +109,11 @@ const english = {
     message:'Quick extraction text from to file.',
     upload:'Upload PDF'
   },
-    
+  uploadQuestion: {
+    title: "Upload Question frome file",
+    message: "Upload question to bank from JSON question data.",
+    upload: "Upload Question",
+  },
   addAlert: {
     title: "Share link",
     message: "Use this link to get access and upload CV to the storage.",
@@ -267,6 +271,11 @@ const vietnamese = {
     message:'Trích xuất nhanh văn bản từ tệp.',
     upload:'Tải lên PDF'
   },
+  uploadQuestion: {
+    title: "Tải lên câu hỏi từ tệp",
+    message: "Tải lên câu hỏi vào ngân hàng từ dữ liệu câu hỏi JSON.",
+    upload: "Tải lên câu hỏi",
+  },
   addAlert: {
     title: "Chia sẻ liên kết",
     message: "Sử dụng liên kết này để truy cập và tải lên CV lên lưu trữ.",
@@ -422,6 +431,11 @@ const japanese = {
     title:'PDFから抽出',
     message:'ファイルからテキストを素早く抽出します。',
     upload:'PDFをアップロード'
+  },
+  uploadQuestion: {
+    title: "ファイルから質問をアップロードする",
+    message: "JSON質問データから銀行に質問をアップロードします。",
+    upload: "質問をアップロード",
   },
   addAlert: {
     title: "共有リンク",
