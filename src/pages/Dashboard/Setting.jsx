@@ -68,6 +68,7 @@ export default function SettingPage() {
           options={[
             { value: "en", label: "English" },
             { value: "vi", label: "Tiếng Việt" },
+            { value: "ja", label: "日本語" },
           ]}
           value={currentLanguage}
           onChange={(value) => handleSetLanguage(value)}

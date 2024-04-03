@@ -1,7 +1,7 @@
 import { Alert, FileButton, Button, Group} from '@mantine/core';
 import { useState } from 'react';
 import { Title } from '@mantine/core';
-
+import appStrings from '../../utils/strings';
 export default function Uploadqu() {
   const [file, setFile] = useState(null);
 
@@ -9,14 +9,13 @@ export default function Uploadqu() {
     <Alert variant="light" color="blue">
       <Group justify="space-between" align='center'>
         <div>
-        <Title order={4}>Upload question from file</Title>
-          Upload question to bank from JSON question data.
+        <Title order={4}>{appStrings.language.uploadQuestion.title}</Title>
+          {appStrings.language.uploadQuestion.message}
         </div>
           <FileButton onChange={setFile} accept="application/json">
-          {(props) => <Button {...props}>Upload Question</Button>}
+          {(props) => <Button {...props}>{appStrings.language.uploadQuestion.upload}</Button>}
           </FileButton>
       </Group>
-
     </Alert>
   );
 }

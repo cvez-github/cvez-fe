@@ -54,7 +54,7 @@ export default function CreatePositionModal({ title, open, onClose }) {
           <DateInput
             rightSection={<IconCalendarEvent />}
             valueFormat="DD/MM/YYYY"
-            label="Start date"
+            label={appStrings.language.date.startDate}
             placeholder="3/26/2024"
             size="sm"
             value={startDate}
@@ -63,8 +63,8 @@ export default function CreatePositionModal({ title, open, onClose }) {
           <DateInput
             rightSection={<IconCalendarEvent />}
             valueFormat="DD/MM/YYYY"
-            label="End date"
-            placeholder="3/26/2024"
+            label={appStrings.language.date.endDate}
+            placeholder="3/26/2025"
             size="sm"
             value={endDate}
             onChange={handleEndDateChange}

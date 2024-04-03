@@ -86,7 +86,7 @@ export default function HomePage() {
     <Flex direction="column" gap={30}>
       <HeadingLayout>
         <Title order={1}>
-          {appStrings.language.home.welcome}Quang Minh Doan
+          {appStrings.language.home.welcome}
         </Title>
         <Flex>
           <Button
