@@ -67,6 +67,7 @@ const english = {
     restore: "Restore",
     return: "Return",
     edit: "Edit",
+    download: "Download",
   },
   utils: {
     notFound: {
@@ -151,12 +152,23 @@ const english = {
     answer: "Answer",
     ok: "OK",
   },
+  cvDetail :{
+    title: "CV Name",
+    summary: "Summary",
+    Experience: "Experience",
+    skillcert: "Skills and Certifications",
+    technical: "Technical Skills",
+    soft: "Soft Skills",
+    certificate: "Certifications",
+  },
   choice: {
     title: "Choice",
   },
   breadcrumb: {
     questionBank: "Question Bank",
     bankName: "Bank Name",
+    cv: "CVs",
+    cvdetail: "CV Detail",
   },
 };
 
@@ -230,6 +242,7 @@ const vietnamese = {
     restore: "Khôi phục",
     return: "Quay lại",
     edit: "Sửa",
+    download: "Tải xuống",
   },
   utils: {
     notFound: {
@@ -315,12 +328,23 @@ const vietnamese = {
     answer: "Câu trả lời",
     ok: "OK",
   },
+  cvDetail :{
+    title: "Tên CV",
+    summary: "Tóm tắt",
+    Experience: "Kinh nghiệm",
+    skillcert: "Kỹ năng và Chứng chỉ",
+    technical: "Kỹ năng kỹ thuật",
+    soft: "Kỹ năng mềm",
+    certificate: "Chứng chỉ",
+  },
   choice: {
     title: "Lựa chọn",
   },
   breadcrumb: {
     questionBank: "Ngân hàng câu hỏi",
     bankName: "Tên ngân hàng",
+    cv: "CVs",
+    cvdetail: "Chi tiết CV",
   },
 };
 const japanese = {
@@ -391,6 +415,7 @@ const japanese = {
     restore: "復元",
     return: "戻る",
     edit: "編集",
+    download: "ダウンロード",
   },
   utils: {
     notFound: {
@@ -476,12 +501,23 @@ const japanese = {
     answer: "回答",
     ok: "OK",
   },
+  cvDetail :{
+    title: "CV名",
+    summary: "概要",
+    Experience: "経験",
+    skillcert: "スキルと認定",
+    technical: "技術スキル",
+    soft: "ソフトスキル",
+    certificate: "認定",
+  },
   choice: {
     title: "選択",
   },
   breadcrumb: {
     questionBank: "質問銀行",
     bankName: "銀行名",
+    cv: "CVs",
+    cvdetail: "CVの詳細",
   },
 };
 
@@ -553,6 +589,7 @@ const korean = {
     restore: "복원",
     return: "돌아가기",
     edit: "편집",
+    download: "다운로드",
   },
   utils: {
     notFound: {
@@ -638,12 +675,23 @@ const korean = {
     answer: "대답",
     ok: "OK",
   },
+  cvDetail :{
+    title: "CV 이름",
+    summary: "개요",
+    Experience: "경험",
+    skillcert: "기술 및 인증",
+    technical: "기술 스킬",
+    soft: "소프트 스킬",
+    certificate: "인증",
+  },
   choice: {
     title: "선택",
   },
   breadcrumb: {
     questionBank: "질문 은행",
     bankName: "은행 이름",
+    cv: "CVs",
+    cvdetail: "CV 세부 정보",
   },
 };
 

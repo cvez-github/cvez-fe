@@ -14,6 +14,7 @@ import HeadingLayout from "../../components/Layout/HeadingLayout";
 import Uploadcv from "../../components/Upload/Uploadcv";
 import Addalert from "../../components/Upload/ExtraLink";
 import appStrings from "../../utils/strings";
+import { useNavigate } from 'react-router-dom';
 const SelectData = [
   { value: "1", label: "1" },
   { value: "2", label: "2" },
@@ -43,6 +44,7 @@ const totalPages = Math.ceil(totalItems / itemsPerPage);
 export default function CVPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [rows, setRows] = useState([]);
+  const navigate = useNavigate();
 
   const getColor = (score) => {
     const numericScore = parseFloat(score.replace("%", ""));
@@ -79,7 +81,8 @@ export default function CVPage() {
                 color="gray"
                 aria-label="Settings"
                 size="xs"
-              >
+                onClick={() => navigate(`/${mockData.projectId}/${mockData.positionId}/cv/${mockData.cvId}`)}>
+              
                 <IconEye stroke={1.5} />
               </ActionIcon>
               <ActionIcon
