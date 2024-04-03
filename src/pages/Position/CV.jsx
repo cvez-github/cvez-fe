@@ -4,9 +4,8 @@ import Uploadcv from "../../components/Upload/Uploadcv";
 import Addalert from "../../components/Alert/Addalert";
 import Tables from "../../components/Table/Table";
 export default function CVPage() {
-
   return (
-    <Flex direction="column" gap="md" w='60%'>
+    <Flex direction="column" gap="md" w="60%">
       <HeadingLayout>
         <Title order={1}>CV Data</Title>
       </HeadingLayout>
