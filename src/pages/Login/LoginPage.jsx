@@ -1,12 +1,31 @@
-import { Button, Card, Center, Flex, Modal, Text, Title } from "@mantine/core";
+import React from 'react';
+import { GoogleOAuthProvider, useGoogleLogin } from '@react-oauth/google'; // Import necessary components and hooks
+import { Button, Flex, Modal, Text } from "@mantine/core";
 import { IconBrandGoogleFilled } from "@tabler/icons-react";
 import bg from "../../assets/bg.webp";
 import Logo from "../../components/Logo";
 import appStrings from "../../utils/strings";
+import { setCookie } from '../../utils/Cookies';
+
 
 export default function LoginPage() {
   return (
-    <Flex
+    <GoogleOAuthProvider clientId="765198139881-0vdveqqf338q0g9nvkclphnockf9f35n.apps.googleusercontent.com">
+      <LoginPageContent />
+    </GoogleOAuthProvider>
+  );
+}
+
+function LoginPageContent() {
+  const login = useGoogleLogin({
+    onSuccess: tokenResponse => {
+      console.log(tokenResponse);
+      setCookie('access_token', tokenResponse.access_token); // Save the access token to a cookie
+    },
+  });
+
+  return (
+    <Flex 
       style={{
         backgroundImage: `url(${bg})`,
         backgroundSize: "cover",
@@ -37,10 +56,11 @@ export default function LoginPage() {
             variant="gradient"
             gradient={{ from: "#89C4DF", to: "#31AFD8", deg: 90 }}
             style={{ marginTop: 40 }}
+            onClick={() => login()}
             leftSection={<IconBrandGoogleFilled size="1rem" />}
           >
             Google
-          </Button>
+          </Button> 
         </Flex>
       </Modal>
     </Flex>
