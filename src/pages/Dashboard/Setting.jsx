@@ -70,6 +70,8 @@ export default function SettingPage() {
             { value: "vi", label: "Tiếng Việt" },
             { value: "ja", label: "日本語" },
             { value: "ko", label: "한국어" },
+            { value: "zh", label: "中文" },
+            { value: "hi", label: "हिन्दी" },
           ]}
           value={currentLanguage}
           onChange={(value) => handleSetLanguage(value)}
