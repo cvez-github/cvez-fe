@@ -170,6 +170,18 @@ const japanese = {
         cv: "CVs",
         cvdetail: "CVの詳細",
     },
+    matching: {
+        title: "マッチング",
+    },
+    criteria: {
+        title: "フロントエンド開発者",
+        criteria: "基準",
+        create: "新しい基準を作成する",
+        descript: "このポジションの説明",
+        name: "基準名",
+        priority: "優先度",
+        example: "例",
+    },
 };
 
 export default japanese;

@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import HeadingLayout from "../../components/Layout/HeadingLayout";
 import Uploadqu from "../../components/Upload/Uploadquestion";
 import appStrings from "../../utils/strings";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const mockData = [
   { bankname: "React", totalquestion: "10", level: "easy" },
@@ -24,6 +24,14 @@ export default function QuestionBankPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [rows, setRows] = useState([]);
   const navigate = useNavigate();
+  const location = useLocation();
+  const projectId = location.pathname.split("/")[1];
+  const positionId = location.pathname.split("/")[2];
+
+  function handleNavigateToQuestionDetail(questionId) {
+    navigate(`/${projectId}/${positionId}/questions/${questionId}`)
+  }
+
 
 
   const getColor = (level) => {
@@ -51,7 +59,9 @@ export default function QuestionBankPage() {
           </Table.Td>
           <Table.Td>
             <Flex gap='xs'>
-              <ActionIcon variant="subtle" color="gray" aria-label="Settings" size='xs' onClick={() => navigate(`/${mockData.projectId}/${mockData.positionId}/questions/${mockData.questionId}`)}>
+              <ActionIcon variant="subtle" color="gray" aria-label="Settings" size='xs' onClick={
+                () => handleNavigateToQuestionDetail(mockData.bankname)
+              }>
                 <IconEye stroke={1.5} />
               </ActionIcon>
               <ActionIcon variant="subtle" color="red" aria-label="Settings" size='xs'>

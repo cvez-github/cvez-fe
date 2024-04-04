@@ -171,5 +171,18 @@ const hindi = {
         cv: "सीवी",
         cvdetail: "सीवी विवरण",
     },
+    matching: {
+        title: "मिलान",
+    },
+    criteria: {
+        title: "फ्रंट-एंड डेवलपर",
+        criteria: "मानदंड",
+        create: "नया मानदंड बनाएं",
+        descript: "इस पद का विवरण",
+        name: "मानदंड का नाम",
+        priority: "प्राथमिकता",
+        example: "उदाहरण",
+    },
 };
+
 export default hindi;

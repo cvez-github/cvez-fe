@@ -20,6 +20,7 @@ import { IconDots, IconTrash, IconEdit } from "@tabler/icons-react";
 import { useState } from 'react';
 import appStrings from "../../utils/strings";
 import HeadingLayout from "../../components/Layout/HeadingLayout";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function QuestionDetailPage() {
   const [content, setContent] = useState('');
@@ -28,7 +29,16 @@ export default function QuestionDetailPage() {
   const [questions, setQuestions] = useState([]);
   const [editingIndex, setEditingIndex] = useState(null);
   const [isCreating, setIsCreating] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const projectId = location.pathname.split("/")[1];
+  const positionId = location.pathname.split("/")[2];
 
+  const bankname = location.pathname.split("/")[4];
+
+  function handleNavigateToQuestionBank() {
+    navigate(`/${projectId}/${positionId}/questions`)
+  }
 
   const handleOk = () => {
     if (editingIndex !== null) {
@@ -56,15 +66,18 @@ export default function QuestionDetailPage() {
       <Flex direction="column" gap="xl" w='60%'>
         <HeadingLayout>
           <Breadcrumbs>
-            <Anchor href="/questionbank">{appStrings.language.breadcrumb.questionBank}</Anchor>
-            <Anchor href="/questionbank/questions">{appStrings.language.breadcrumb.bankName}</Anchor>
+            <Anchor onClick={handleNavigateToQuestionBank}>{appStrings.language.breadcrumb.questionBank}</Anchor>
+            <Anchor>{bankname}</Anchor>
           </Breadcrumbs>
         </HeadingLayout>
         <Flex justify='space-between'>
-          <Title order={1}>{appStrings.language.questionDetail.title}</Title>
+          <Title order={1}>{bankname}</Title>
           <Flex gap='xs'>
             <Button>{appStrings.language.button.save}</Button>
-            <Button variant="default" >{appStrings.language.button.cancel}</Button>
+            <Button variant="default" onClick={
+              () => handleNavigateToQuestionBank()
+            }>
+              {appStrings.language.button.cancel}</Button>
           </Flex>
         </Flex>
         <Flex gap='md'>
@@ -93,6 +106,7 @@ export default function QuestionDetailPage() {
               <Flex gap='md'>
                 <TextInput w='90%'
                   placeholder={appStrings.language.questionDetail.answer}
+                  value={answer}
                   onChange={(event) => setAnswer(event.target.value)}
                 />
                 <TextInput w='10%'
@@ -123,6 +137,7 @@ export default function QuestionDetailPage() {
                   <Flex gap='md'>
                     <TextInput w='90%'
                       placeholder={appStrings.language.questionDetail.answer}
+                      value={answer}
                       onChange={(event) => setAnswer(event.target.value)}
                     />
                     <TextInput w='10%'

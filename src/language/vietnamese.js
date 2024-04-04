@@ -171,6 +171,18 @@ const vietnamese = {
       cv: "CVs",
       cvdetail: "Chi tiết CV",
     },
+    matching: {
+      title: "Chấm điểm",
+    },
+    criteria: {
+      title: "Nhân viên phát triển Front-end",
+      criteria: "Tiêu chí",
+      create: "Tạo tiêu chí mới",
+      descript: "Mô tả công việc này",
+      name: "Tên tiêu chí",
+      priority: "Ưu tiên",
+      example: "Ví dụ",
+    },
   };
 
 export default vietnamese;

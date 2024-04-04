@@ -172,5 +172,18 @@ const chinese = {
         cv: "CV",
         cvdetail: "CV详情",
     },
+    matching: {
+        title: "匹配",
+    },
+    criteria: {
+        title: "前端开发人员",
+        criteria: "标准",
+        create: "创建新标准",
+        descript: "此职位的描述",
+        name: "标准名称",
+        priority: "优先级",
+        example: "示例",
+    },
 };
+
 export default chinese;

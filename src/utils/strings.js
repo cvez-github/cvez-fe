@@ -4,6 +4,7 @@ import japanese from "../language/japanese";
 import korean from "../language/korean";
 import chinese from "../language/chinese";
 import hindi from "../language/hindi";
+import france from "../language/france";
 
 function getLanguageStrings(language) {
   switch (language) {
@@ -19,6 +20,8 @@ function getLanguageStrings(language) {
       return chinese;
     case "hi":
       return hindi;
+    case "fr":
+      return france;
     default:
       return english;
   }

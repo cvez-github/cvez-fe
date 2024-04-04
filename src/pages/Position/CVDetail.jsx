@@ -13,14 +13,15 @@ import {
 } from "@mantine/core";
 import HeadingLayout from "../../components/Layout/HeadingLayout";
 import appStrings from "../../utils/strings";
-import { IconDownload,IconDots,IconTrash  } from "@tabler/icons-react";
+import { IconDownload, IconDots, IconTrash } from "@tabler/icons-react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const mockExperience = [
   { company: "Company 1", project1: "Description of this project", project2: "Description of this project" },
   { company: "Company 2", project1: "Description of this project", project2: "Description of this project" },
 ]
 const mockData = [
-  {technical: "React", soft: "Teamwork", certificate: "Certificate 1" },
+  { technical: "React", soft: "Teamwork", certificate: "Certificate 1" },
   { technical: "Vue.js", soft: "Problem solving", certificate: "Certificate 2" },
   { technical: "Angular", soft: "Communication", certificate: "Certificate 3" },
   { technical: "Node.js", soft: "Time management", certificate: "Certificate 4" },
@@ -30,36 +31,46 @@ const mockData = [
 
 ]
 export default function CVDetailPage() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const projectId = location.pathname.split("/")[1];
+  const positionId = location.pathname.split("/")[2];
+  const cvname = location.pathname.split("/")[4];
+
+  function handleNavigateToCvName() {
+    navigate(`/${projectId}/${positionId}/cv`)
+  }
+
   return (
     <Flex direction="column" gap="xl" w="60%">
       <Breadcrumbs>
-        <Anchor href="/cv">{appStrings.language.breadcrumb.cv}</Anchor>
-        <Anchor href="/cv/cvdetail">
-          {appStrings.language.breadcrumb.cvdetail}
+        <Anchor onClick={handleNavigateToCvName}>{appStrings.language.breadcrumb.cv}</Anchor>
+        <Anchor>
+          {decodeURIComponent(cvname)}
         </Anchor>
       </Breadcrumbs>
-      <Paper  p="sm" withBorder>
+      <Paper p="sm" withBorder>
         <ScrollArea h={300} offsetScrollbars>
-          
+
         </ScrollArea>
       </Paper>
       <Flex justify="space-between">
-        <Title order={1}>{appStrings.language.cvDetail.title}</Title>
+        <Title order={1}>{decodeURIComponent(cvname)}</Title>
         <Menu withinPortal shadow="md" position="top-end" width={150}>
-        <Menu.Target>
-          <ActionIcon variant="light" color="gray">
-            <IconDots />
-          </ActionIcon>
-        </Menu.Target>
-        <Menu.Dropdown p={5}>
-          <Menu.Item c="gray" leftSection={<IconDownload size="1rem" />} onClick={() => handleEdit(question, index)}>
-            {appStrings.language.btn.download}
-          </Menu.Item>
-          <Menu.Item c="red" leftSection={<IconTrash size="1rem" />}>
-            {appStrings.language.btn.delete}
-          </Menu.Item>
-        </Menu.Dropdown>
-      </Menu>
+          <Menu.Target>
+            <ActionIcon variant="light" color="gray">
+              <IconDots />
+            </ActionIcon>
+          </Menu.Target>
+          <Menu.Dropdown p={5}>
+            <Menu.Item c="gray" leftSection={<IconDownload size="1rem" />} onClick={() => handleEdit(question, index)}>
+              {appStrings.language.btn.download}
+            </Menu.Item>
+            <Menu.Item c="red" leftSection={<IconTrash size="1rem" />}>
+              {appStrings.language.btn.delete}
+            </Menu.Item>
+          </Menu.Dropdown>
+        </Menu>
       </Flex>
       <Title order={2}>{appStrings.language.cvDetail.summary}</Title>
       Description of this CV
@@ -72,24 +83,24 @@ export default function CVDetailPage() {
         </div>
       ))}
       <SimpleGrid cols={1} spacing="xl" verticalSpacing="lg">
-      <Title order={3}>{appStrings.language.cvDetail.technical}</Title>
-      <SimpleGrid cols={4}  spacing ='xs' verticalSpacing='md'>
-      {mockData.map((data, index) => (
+        <Title order={3}>{appStrings.language.cvDetail.technical}</Title>
+        <SimpleGrid cols={4} spacing='xs' verticalSpacing='md'>
+          {mockData.map((data, index) => (
             <Badge variant="light" key={index} size='lg' c="blue">{data.technical}</Badge>
           ))}
-      </SimpleGrid>
-      <Title order={3}>{appStrings.language.cvDetail.soft}</Title>
-      <SimpleGrid cols={4}  spacing ='xs' verticalSpacing='md'>
-      {mockData.map((data, index) => (
+        </SimpleGrid>
+        <Title order={3}>{appStrings.language.cvDetail.soft}</Title>
+        <SimpleGrid cols={4} spacing='xs' verticalSpacing='md'>
+          {mockData.map((data, index) => (
             <Badge variant="light" key={index} size='lg' c="blue">{data.soft}</Badge >
           ))}
-      </SimpleGrid>  
-      <Title order={3}>{appStrings.language.cvDetail.certificate}</Title> 
-      <SimpleGrid cols={4}  spacing ='xs' verticalSpacing='md'>
-      {mockData.map((data, index) => (
+        </SimpleGrid>
+        <Title order={3}>{appStrings.language.cvDetail.certificate}</Title>
+        <SimpleGrid cols={4} spacing='xs' verticalSpacing='md'>
+          {mockData.map((data, index) => (
             <Badge variant="light" key={index} size='lg' c="blue">{data.certificate}</Badge>
           ))}
-      </SimpleGrid>  
+        </SimpleGrid>
       </SimpleGrid>
     </Flex>
   );

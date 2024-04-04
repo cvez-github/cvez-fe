@@ -7,6 +7,7 @@ import {
   Pagination,
   Select,
   Input,
+  Button,
 } from "@mantine/core";
 import { IconTrash, IconEye, IconSearch } from "@tabler/icons-react";
 import { useState, useEffect } from "react";
@@ -14,7 +15,8 @@ import HeadingLayout from "../../components/Layout/HeadingLayout";
 import Uploadcv from "../../components/Upload/Uploadcv";
 import Addalert from "../../components/Upload/ExtraLink";
 import appStrings from "../../utils/strings";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
+
 const SelectData = [
   { value: "1", label: "1" },
   { value: "2", label: "2" },
@@ -41,10 +43,18 @@ const itemsPerPage = 5;
 const totalItems = mockData.length;
 const totalPages = Math.ceil(totalItems / itemsPerPage);
 
+
 export default function CVPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [rows, setRows] = useState([]);
   const navigate = useNavigate();
+  const location = useLocation();
+  const projectId = location.pathname.split("/")[1];
+  const positionId = location.pathname.split("/")[2];
+
+  function handleNavigateToCVDetail(cvId) {
+    navigate(`/${projectId}/${positionId}/cv/${cvId}`)
+  }
 
   const getColor = (score) => {
     const numericScore = parseFloat(score.replace("%", ""));
@@ -81,8 +91,10 @@ export default function CVPage() {
                 color="gray"
                 aria-label="Settings"
                 size="xs"
-                onClick={() => navigate(`/${mockData.projectId}/${mockData.positionId}/cv/${mockData.cvId}`)}>
-              
+                onClick={
+                  () => handleNavigateToCVDetail(mockData.CvName)
+                }>
+
                 <IconEye stroke={1.5} />
               </ActionIcon>
               <ActionIcon
@@ -107,12 +119,15 @@ export default function CVPage() {
       </HeadingLayout>
       <Uploadcv />
       <Addalert title="https://www.example.com/cv" />
+      <Flex justify='space-between'>
       <Flex gap="md">
         <Input
           placeholder={appStrings.language.search.placeholder}
           rightSection={<IconSearch size="1rem" />}
         />
         <Select w="15%" placeholder="choices" data={SelectData} />
+      </Flex>
+      <Button w="20%">{appStrings.language.matching.title}</Button>
       </Flex>
       <div style={{ height: "220px", overflow: "auto" }}>
         <Table>
