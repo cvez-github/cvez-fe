@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import {
   Card,
   Title,
@@ -13,6 +14,7 @@ import { IconDots } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
 
 export default function ProjectCard({
+  id,
   title,
   description,
   alias,
@@ -23,9 +25,9 @@ export default function ProjectCard({
   const { hovered, ref } = useHover();
   const navigate = useNavigate();
 
-  function handleNavigateToProject(alias) {
+  function handleNavigateToProject() {
     if (!disableNavigate) {
-      navigate(`/${alias}`);
+      navigate(`/${id}`);
     }
   }
 
@@ -34,7 +36,7 @@ export default function ProjectCard({
       <Group justify="space-between">
         <Title
           order={5}
-          onClick={() => handleNavigateToProject(alias)}
+          onClick={handleNavigateToProject}
           style={{
             cursor: "pointer",
           }}

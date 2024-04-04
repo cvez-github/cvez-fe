@@ -1,10 +1,12 @@
-import { Modal, Title, TextInput, Textarea, Flex, Group, Button } from "@mantine/core";
+import { Modal, Title, TextInput, Textarea, Flex, Group, Button, Select } from "@mantine/core";
 import { DateInput } from '@mantine/dates';
 import { IconCalendarEvent } from '@tabler/icons-react';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import appStrings from "../../utils/strings";
+import criteriaSet from "../../utils/criteria";
 
 
+// eslint-disable-next-line react/prop-types
 export default function CreatePositionModal({ title, open, onClose }) {
   const [positionName, setpositionName] = useState('');
   const [startDate, setStartDate] = useState(null);
@@ -25,6 +27,7 @@ export default function CreatePositionModal({ title, open, onClose }) {
     }
     setEndDate(value);
   };
+
   return (
     <Modal
       opened={open}
@@ -71,6 +74,7 @@ export default function CreatePositionModal({ title, open, onClose }) {
             minDate={startDate}
           />
         </Flex>
+        <Select w="100%" label="Criteria Set" data={criteriaSet.map((criteria, index) => ({ value: `${index}`, label: criteria.label }))} defaultValue="0"/>
       </Group>
       <Flex justify="flex-end" gap='md' style={{ marginTop: '20px' }}>
           <Button variant="default" onClick={onClose}>{appStrings.language.createPosition.cancel}</Button>

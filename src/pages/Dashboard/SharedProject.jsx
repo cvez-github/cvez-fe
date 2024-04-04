@@ -1,59 +1,22 @@
+import { useEffect } from "react";
 import { Flex, Title, Input } from "@mantine/core";
 import { IconSearch } from "@tabler/icons-react";
 import HeadingLayout from "../../components/Layout/HeadingLayout";
 import GridLayout from "../../components/Layout/GridLayout";
 import ProjectCard from "../../components/ProjectCard";
 import appStrings from "../../utils/strings";
+import { getSharedProjectsControl } from "../../controllers/dashboard";
+import useProjectsState from "../../context/project";
 
-const mockData = [
-  {
-    title: "Project 1",
-    description: "Description 1",
-    alias: "P1",
-    members: [
-      {
-        name: "Member 1",
-        avatar: "https://i.pravatar.cc/150",
-      },
-      {
-        name: "Member 1",
-        avatar: "https://i.pravatar.cc/150",
-      },
-    ],
-  },
-  {
-    title: "Project 1",
-    description: "Description 1",
-    alias: "P1",
-    members: [
-      {
-        name: "Member 1",
-        avatar: "https://i.pravatar.cc/150",
-      },
-      {
-        name: "Member 1",
-        avatar: "https://i.pravatar.cc/150",
-      },
-    ],
-  },
-  {
-    title: "Project 1",
-    description: "Description 1",
-    alias: "P1",
-    members: [
-      {
-        name: "Member 1",
-        avatar: "https://i.pravatar.cc/150",
-      },
-      {
-        name: "Member 1",
-        avatar: "https://i.pravatar.cc/150",
-      },
-    ],
-  },
-];
 
 export default function SharedProjectPage() {
+  const shared = useProjectsState((state) => state.shared);
+  const setShared = useProjectsState((state) => state.setShared);
+
+  useEffect(() => {
+    getSharedProjectsControl().then((data) => setShared(data));
+  }, [setShared]);
+
   return (
     <Flex direction="column" gap={30}>
       <HeadingLayout>
@@ -65,17 +28,19 @@ export default function SharedProjectPage() {
           />
         </Flex>
       </HeadingLayout>
-      <GridLayout>
-        {mockData.map((data, index) => (
-          <ProjectCard
-            key={index}
-            title={data.title}
-            description={data.description}
-            alias={data.alias}
-            members={data.members}
-          />
-        ))}
-      </GridLayout>
+      {shared ? (
+        <GridLayout>
+          {shared.map((data, index) => (
+            <ProjectCard
+              key={index}
+              title={data.title}
+              description={data.description}
+              alias={data.alias}
+              members={data.members}
+            />
+          ))}
+        </GridLayout>
+      ) : null}
     </Flex>
   );
 }

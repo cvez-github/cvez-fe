@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import {
   AppShell,
   Flex,
@@ -12,21 +13,8 @@ import Navbar from "../Navbar";
 import User from "../User";
 import { useLocation, useNavigate } from "react-router-dom";
 import appStrings from "../../utils/strings";
+import useProjectsState from "../../context/project";
 
-const mockData = [
-  {
-    title: "Project 1",
-    description: "Description 1",
-    alias: "P1",
-    members: [],
-  },
-  {
-    title: "Project 2",
-    description: "Description 2",
-    alias: "P2",
-    members: [],
-  },
-];
 
 export default function AppLayout({
   children,
@@ -36,6 +24,7 @@ export default function AppLayout({
 }) {
   const [opened, { toggle }] = useDisclosure();
   const location = useLocation();
+  const projects = useProjectsState((state) => state.projects);
   const projectId = location.pathname.split("/")[1];
   const isDashboard = location.pathname.includes("dashboard");
   const navigate = useNavigate();
@@ -69,9 +58,9 @@ export default function AppLayout({
                 data={[
                   {
                     group: appStrings.language.yourProject.title,
-                    items: mockData.map((item) => ({
-                      value: item.alias,
-                      label: item.title,
+                    items: projects.map((item) => ({
+                      value: item.id,
+                      label: item.name,
                     })),
                   },
                 ]}

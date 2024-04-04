@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Flex, Title, Button } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconPlus } from "@tabler/icons-react";
@@ -7,87 +8,33 @@ import ProjectCard from "../../components/ProjectCard";
 import appStrings from "../../utils/strings";
 import YourProjectAction from "../../components/Actions/YourProjectAction";
 import CreateProjectDrawer from "../Drawer/CreateProjectDrawer";
+import {
+  getSharedProjectsControl,
+  getYourProjectsControl,
+} from "../../controllers/dashboard";
+import useGlobalState from "../../context/global";
+import useProjectsState from "../../context/project";
 
-const mockData = [
-  {
-    title: "Project 1",
-    description: "Description 1",
-    alias: "P1",
-    members: [
-      {
-        name: "Member 1",
-        avatar: "https://i.pravatar.cc/150",
-      },
-      {
-        name: "Member 1",
-        avatar: "https://i.pravatar.cc/150",
-      },
-      {
-        name: "Member 1",
-        avatar: "https://i.pravatar.cc/150",
-      },
-      {
-        name: "Member 1",
-        avatar: "https://i.pravatar.cc/150",
-      },
-      {
-        name: "Member 1",
-        avatar: "https://i.pravatar.cc/150",
-      },
-      {
-        name: "Member 1",
-        avatar: "https://i.pravatar.cc/150",
-      },
-      {
-        name: "Member 1",
-        avatar: "https://i.pravatar.cc/150",
-      },
-      {
-        name: "Member 1",
-        avatar: "https://i.pravatar.cc/150",
-      },
-    ],
-  },
-  {
-    title: "Project 1",
-    description: "Description 1",
-    alias: "P1",
-    members: [
-      {
-        name: "Member 1",
-        avatar: "https://i.pravatar.cc/150",
-      },
-      {
-        name: "Member 1",
-        avatar: "https://i.pravatar.cc/150",
-      },
-    ],
-  },
-  {
-    title: "Project 1",
-    description: "Description 1",
-    alias: "P1",
-    members: [
-      {
-        name: "Member 1",
-        avatar: "https://i.pravatar.cc/150",
-      },
-      {
-        name: "Member 1",
-        avatar: "https://i.pravatar.cc/150",
-      },
-    ],
-  },
-];
 
 export default function HomePage() {
   const [isNewProjectOpen, newProjectToggle] = useDisclosure(false);
+  const user = useGlobalState((state) => state.user);
+  const projects = useProjectsState((state) => state.projects);
+  const setProjects = useProjectsState((state) => state.setProjects);
+  const shared = useProjectsState((state) => state.shared);
+  const setShared = useProjectsState((state) => state.setShared);
+
+  useEffect(() => {
+    // Get your projects
+    getYourProjectsControl().then((data) => setProjects(data));
+    // Get shared projects
+    getSharedProjectsControl().then((data) => setShared(data));
+  }, [setProjects, setShared]);
+
   return (
     <Flex direction="column" gap={30}>
       <HeadingLayout>
-        <Title order={1}>
-          {appStrings.language.home.welcome}
-        </Title>
+        <Title order={1}>{appStrings.language.home.welcome}{user?.name}</Title>
         <Flex>
           <Button
             leftSection={<IconPlus size="1rem" />}
@@ -97,29 +44,35 @@ export default function HomePage() {
           </Button>
         </Flex>
       </HeadingLayout>
-      <GridLayout title={appStrings.language.home.recentProjects}>
-        {mockData.map((data, index) => (
-          <ProjectCard
-            key={index}
-            title={data.title}
-            description={data.description}
-            alias={data.alias}
-            members={data.members}
-            actions={<YourProjectAction />}
-          />
-        ))}
-      </GridLayout>
-      <GridLayout title={appStrings.language.home.sharedProjects}>
-        {mockData.map((data, index) => (
-          <ProjectCard
-            key={index}
-            title={data.title}
-            description={data.description}
-            alias={data.alias}
-            members={data.members}
-          />
-        ))}
-      </GridLayout>
+      {projects ? (
+        <GridLayout title={appStrings.language.home.recentProjects}>
+          {projects.map((data, index) => (
+            <ProjectCard
+              key={index}
+              id={data.id}
+              title={data.name}
+              description={data.description}
+              alias={data.alias}
+              members={data.members}
+              actions={<YourProjectAction />}
+            />
+          ))}
+        </GridLayout>
+      ) : null}
+      {shared ? (
+        <GridLayout title={appStrings.language.home.sharedProjects}>
+          {shared.map((data, index) => (
+            <ProjectCard
+              key={index}
+              id={data.id}
+              title={data.name}
+              description={data.description}
+              alias={data.alias}
+              members={data.members}
+            />
+          ))}
+        </GridLayout>
+      ) : null}
       <CreateProjectDrawer
         open={isNewProjectOpen}
         onClose={newProjectToggle.close}

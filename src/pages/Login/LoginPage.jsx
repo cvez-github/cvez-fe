@@ -1,11 +1,11 @@
-import React from 'react';
 import { GoogleOAuthProvider, useGoogleLogin } from '@react-oauth/google'; // Import necessary components and hooks
 import { Button, Flex, Modal, Text } from "@mantine/core";
 import { IconBrandGoogleFilled } from "@tabler/icons-react";
+import { useNavigate } from 'react-router-dom';
 import bg from "../../assets/bg.webp";
 import Logo from "../../components/Logo";
 import appStrings from "../../utils/strings";
-import { setCookie } from '../../utils/Cookies';
+import { loginControl } from '../../controllers/auth';
 
 
 export default function LoginPage() {
@@ -17,10 +17,11 @@ export default function LoginPage() {
 }
 
 function LoginPageContent() {
+  const navigate = useNavigate();
+  
   const login = useGoogleLogin({
-    onSuccess: tokenResponse => {
-      console.log(tokenResponse);
-      setCookie('access_token', tokenResponse.access_token); // Save the access token to a cookie
+    onSuccess: (tokenResponse) => {
+      loginControl(tokenResponse.access_token).then(() => navigate('/dashboard'));
     },
   });
 
@@ -37,6 +38,7 @@ function LoginPageContent() {
     >
       <Modal
         opened
+        onClose={() => {}}
         withCloseButton={false}
         overlayProps={{
           backgroundOpacity: 0.1,
