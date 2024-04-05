@@ -1,0 +1,81 @@
+/* style.module.css */
+
+.image-container {
+  max-width: 500px; /* Đặt kích thước tối đa cho phần tử div */
+  transform: translateY(-40px);
+
+}
+
+.image-container img {
+  width: 100%; /* Kích thước hình ảnh sẽ chiếm toàn bộ chiều rộng của phần tử div */
+  height: 500px; /* Đảm bảo tỷ lệ khung hình không bị biến đổi */
+}
+
+.text {
+  font-size: 1.5rem; /* Đặt kích thước chữ cho phần tử div */
+  max-width: 500px;
+  margin: 1.5rem 0rem;
+  
+}
+
+.about-image-container {
+  flex: 0.9;
+  margin-right: 1rem;
+  max-width: 530px;
+  transform: translateY(-30px);
+}
+
+.about-image-container img {
+  width: 100%;
+  height: auto;
+}
+
+/* style.module.css */
+.image-container {
+  max-width: 550px; /* Đặt kích thước tối đa cho phần tử div */
+}
+
+.image-container img {
+  width: 100%; /* Kích thước hình ảnh sẽ chiếm toàn bộ chiều rộng của phần tử div */
+  height: auto; /* Đảm bảo tỷ lệ khung hình không bị biến đổi */
+}
+
+.text {
+  font-size: 1.5rem; /* Đặt kích thước chữ cho phần tử div */
+  max-width: 500px;
+  margin: 1.5rem 0rem;
+  
+}
+
+.about-image-container {
+  flex: 0.9;
+  margin-right: 1rem;
+  max-width: 530px
+}
+
+.about-image-container img {
+  width: 100%;
+  height: auto;
+}
+.app-shell-main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.app-shell-main-contact {
+  margin-top: 200px;
+}
+
+.app-shell-footer {
+  height: 70px;
+  font-size: 18px;
+  padding: 20px;
+}
+
+.flex-row {
+  justify-content: center;
+  align-items: center;
+}
+
+

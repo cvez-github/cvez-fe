@@ -1,6 +1,6 @@
 import apiHelper from "../utils/apiHelper";
 import { apiUrls } from "../utils/constants";
-import { getCookie, setCookie } from "../utils/cookies";
+import { getCookie, setCookie } from "../utils/Cookies";
 
 export async function loginControl(accessToken) {
   const response = await apiHelper.post(apiUrls.login, {

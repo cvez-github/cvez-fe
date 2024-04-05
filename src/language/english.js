@@ -68,6 +68,11 @@ const english = {
     return: "Return",
     edit: "Edit",
     download: "Download",
+    home: "Home",
+    about: "About",
+    contact: "Contact",
+    sign: "Sign in",
+    start: "Getting Started",
   },
   utils: {
     notFound: {
@@ -182,6 +187,18 @@ const english = {
     priority: "Priority",
     example: "Example",
   },
+  landing:{
+    title:'Career Potential Unlocked',
+    take:'Take the Next Step Towards Your Dream Job Today!',
+    abouttitle:'About',
+    about:'Career Growth Through Strategic Connections',
+    aboutcontent1:'At CVEZ, we recognize that unlocking your career potential demands a holistic approach. Our platform goes beyond traditional CV submissions, serving as a conduit to connect job seekers with the right opportunities. We believe that the right connections can make all the difference in your career journey. Our platform is designed to help you make those connections, so you can take the next step towards your dream job today.',
+    aboutcontent2:'We advocate for every individual\'s right to thrive in their chosen career trajectory. CVEZ empowers users by furnishing insights into their compatibility with job descriptions, enabling informed career decisions and fostering professional growth. Our platform is designed to help you make those connections, so you can take the next step towards your dream job today.',
+    contacttitle:'Contact Us',
+    contactcontent1:'We\'d love to hear from you! Feel free to reach out to us through the contact form below, and we\'ll get back to you as soon as possible.',
+    contactcontent2:'Or drop us an email at:',
+    contactcontent3:'We\'ll get back to you as soon as we can.',
+  }
 };
 
 export default english;

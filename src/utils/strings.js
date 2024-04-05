@@ -29,7 +29,7 @@ function getLanguageStrings(language) {
 
 const appStrings = {
   appName: "CVEZ",
-  language: getLanguageStrings(localStorage.getItem("language") || "en"),
+  language: getLanguageStrings(localStorage.getItem("language") || "ja"),
 };
 
 export default appStrings;

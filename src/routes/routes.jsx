@@ -19,12 +19,13 @@ import QuestionDetailPage from "../pages/Position/QuestionDetail";
 import NotFoundPage from "../pages/Utils/NotFound";
 import LoginPage from "../pages/Login/LoginPage";
 import UploadId from "../pages/UploadId/UploadId";
+import LandingPage from "../pages/Landing/LandingPage";
 
 const appRoutes = [
 
   {
     path: "/",
-    element: <div>LangdingPage</div>,
+    element: <LandingPage/>,
   },
   {
     path: "/login",

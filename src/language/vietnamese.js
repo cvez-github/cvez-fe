@@ -68,6 +68,11 @@ const vietnamese = {
       return: "Quay lại",
       edit: "Sửa",
       download: "Tải xuống",
+      home: "Trang chủ",
+      about: "Về chúng tôi",
+      contact: "Liên hệ",
+      sign: "Đăng nhập",
+      start: "Bắt đầu",
     },
     utils: {
       notFound: {
@@ -183,6 +188,18 @@ const vietnamese = {
       priority: "Ưu tiên",
       example: "Ví dụ",
     },
+    landing:{
+      title:'Khám phá tiềm năng nghề nghiệp',
+      take:'Hãy bắt đầu bước tiếp theo hướng tới công việc mơ ước của bạn ngay hôm nay!',
+      abouttitle:'Về chúng tôi',
+      about:'Thăng tiến nghề nghiệp thông qua các kết nối chiến lược',
+      aboutcontent1:'Tại CVEZ, chúng tôi nhận ra rằng để khám phá tiềm năng nghề nghiệp của bạn cần một cách tiếp cận toàn diện. Nền tảng của chúng tôi vượt xa việc nộp hồ sơ truyền thống, phục vụ như một kênh để kết nối người tìm việc với những cơ hội phù hợp. Chúng tôi tin rằng những kết nối đúng đắn có thể tạo ra sự khác biệt trong hành trình nghề nghiệp của bạn. Nền tảng của chúng tôi được thiết kế để giúp bạn tạo ra những kết nối đó, để bạn có thể bắt đầu bước tiếp theo hướng tới công việc mơ ước của bạn ngay hôm nay.',
+      aboutcontent2:'Chúng tôi ủng hộ quyền của mỗi cá nhân được phát triển trong lộ trình nghề nghiệp mà họ chọn. CVEZ trao quyền cho người dùng bằng cách cung cấp thông tin về sự tương thích của họ với mô tả công việc, cho phép ra quyết định nghề nghiệp dựa trên thông tin và thúc đẩy sự phát triển chuyên môn. Nền tảng của chúng tôi được thiết kế để giúp bạn tạo ra những kết nối đó, để bạn có thể bắt đầu bước tiếp theo hướng tới công việc mơ ước của bạn ngay hôm nay.',
+      contacttitle:'Liên hệ với chúng tôi',
+      contactcontent1:'Chúng tôi rất mong muốn nghe từ bạn! Hãy liên hệ với chúng tôi qua biểu mẫu liên hệ dưới đây, và chúng tôi sẽ phản hồi lại bạn càng sớm càng tốt.',
+      contactcontent2:'Hoặc gửi email cho chúng tôi tại:',
+      contactcontent3:'Chúng tôi sẽ phản hồi lại bạn càng sớm càng tốt.',
+  }
   };
 
 export default vietnamese;
