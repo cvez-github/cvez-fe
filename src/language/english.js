@@ -198,6 +198,13 @@ const english = {
     contactcontent1:'We\'d love to hear from you! Feel free to reach out to us through the contact form below, and we\'ll get back to you as soon as possible.',
     contactcontent2:'Or drop us an email at:',
     contactcontent3:'We\'ll get back to you as soon as we can.',
+  },
+  share:{
+    title: "Share member",
+    search: "Share to member",
+    cancel: "Cancel",
+    share: "Share",
+    shareproject: "Share project",
   }
 };
 

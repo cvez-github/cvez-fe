@@ -200,6 +200,14 @@ const france = {
     contactcontent1:'Nous aimerions avoir de vos nouvelles! N\'hésitez pas à nous contacter via le formulaire de contact ci-dessous, et nous vous répondrons dès que possible.',
     contactcontent2:'Ou envoyez-nous un email à:',
     contactcontent3:'Nous vous répondrons dès que possible.',
+  },
+  share:{
+    title: "Partager le membre",
+    search: "Partager au membre",
+    cancel: "Annuler",
+    share: "Partager",
+    Shareproject: "Partager le projet",
+  
   }
 
 };

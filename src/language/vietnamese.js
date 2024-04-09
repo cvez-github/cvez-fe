@@ -199,7 +199,14 @@ const vietnamese = {
       contactcontent1:'Chúng tôi rất mong muốn nghe từ bạn! Hãy liên hệ với chúng tôi qua biểu mẫu liên hệ dưới đây, và chúng tôi sẽ phản hồi lại bạn càng sớm càng tốt.',
       contactcontent2:'Hoặc gửi email cho chúng tôi tại:',
       contactcontent3:'Chúng tôi sẽ phản hồi lại bạn càng sớm càng tốt.',
+  },
+  share:{
+    title: "Chia sẻ thành viên",
+    search: "Chia sẻ cho thành viên",
+    cancel: "Hủy",
+    share: "Chia sẻ",
+    Shareproject: "Chia sẻ dự án",
   }
-  };
 
+  };
 export default vietnamese;
