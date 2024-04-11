@@ -199,8 +199,13 @@ const japanese = {
         contactcontent1:'あなたからの連絡をお待ちしています！下の連絡フォームからお気軽にお問い合わせください。できるだけ早くご連絡いたします。',
         contactcontent2:'または、以下のメールアドレスにメールを送ってください：',
         contactcontent3:'できるだけ早くご連絡いたします。',
+    },
+    share:{
+        title: "メンバーを共有する",
+        search: "メンバーに共有",
+        cancel: "キャンセル",
+        share: "共有",
+        Shareproject: "プロジェクトを共有する",
     }
 };
-
-
 export default japanese;

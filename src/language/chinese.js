@@ -201,8 +201,13 @@ const chinese = {
         contactcontent1:'我们很乐意听到你的声音！请通过下面的联系表格向我们发出信息，我们会尽快回复你。',
         contactcontent2:'或者给我们发邮件：',
         contactcontent3:'我们会尽快回复你。',
-    }
-      
+    },
+    share:{
+        title: "分享成员",
+        search: "分享给成员",
+        cancel: "取消",
+        share: "分享",
+        Shareproject: "分享项目",
+      }
 };
-
 export default chinese;
