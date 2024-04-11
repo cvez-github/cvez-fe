@@ -1,18 +1,22 @@
 import { Fragment } from "react";
 import { Menu } from "@mantine/core";
-import { IconTrash, IconShare } from "@tabler/icons-react";
+import { IconEdit, IconTrash } from "@tabler/icons-react";
 import appStrings from "../../utils/strings";
 
-export default function YourProjectAction({ onShareTap, onDeleteTap }) {
+export default function CriteriaAction({ onEdit, onDelete }) {
   return (
     <Fragment>
-      <Menu.Item leftSection={<IconShare size="1rem" />} onClick={onShareTap}>
-        {appStrings.language.btn.share}
+      <Menu.Item
+        c="gray"
+        leftSection={<IconEdit size="1rem" />}
+        onClick={onEdit}
+      >
+        {appStrings.language.btn.edit}
       </Menu.Item>
       <Menu.Item
         c="red"
         leftSection={<IconTrash size="1rem" />}
-        onClick={onDeleteTap}
+        onClick={onDelete}
       >
         {appStrings.language.btn.delete}
       </Menu.Item>

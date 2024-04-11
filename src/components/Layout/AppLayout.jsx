@@ -14,7 +14,7 @@ import User from "../User";
 import { useLocation, useNavigate } from "react-router-dom";
 import appStrings from "../../utils/strings";
 import useProjectsState from "../../context/project";
-
+import { logoutControl } from "../../controllers/auth";
 
 export default function AppLayout({
   children,
@@ -23,14 +23,44 @@ export default function AppLayout({
   navPostItems = [],
 }) {
   const [opened, { toggle }] = useDisclosure();
+  const navigate = useNavigate();
   const location = useLocation();
   const projects = useProjectsState((state) => state.projects);
   const projectId = location.pathname.split("/")[1];
   const isDashboard = location.pathname.includes("dashboard");
-  const navigate = useNavigate();
 
-  function handleNavigateToProject(value) {
-    navigate(`/${value}`);
+  function handleNavigateToDashboard() {
+    navigate("/dashboard");
+  }
+
+  function handleLogout() {
+    // Logout
+    logoutControl();
+    // Navigate to login page
+    navigate("/login");
+  }
+
+  function handleViewUser() {}
+
+  function handleChangeProject(id) {
+    navigate(`/${id}`);
+  }
+
+  function getActiveIndex() {
+    let activeIndex = navItems.findIndex(
+      (item) => item.to === location.pathname
+    );
+    if (activeIndex === -1) {
+      activeIndex = navPreItems.findIndex(
+        (item) => item.to === location.pathname
+      );
+    }
+    if (activeIndex === -1) {
+      activeIndex = navPostItems.findIndex(
+        (item) => item.to === location.pathname
+      );
+    }
+    return activeIndex;
   }
 
   return (
@@ -48,8 +78,8 @@ export default function AppLayout({
               hiddenFrom="sm"
               size="sm"
             />
-            <Logo size={35} />
-            {!isDashboard ? (
+            <Logo size={35} onTap={handleNavigateToDashboard} />
+            {projects && !isDashboard ? (
               <Select
                 w="13rem"
                 allowDeselect={false}
@@ -64,15 +94,16 @@ export default function AppLayout({
                     })),
                   },
                 ]}
-                onChange={(value) => handleNavigateToProject(value)}
+                onChange={(value) => handleChangeProject(value)}
               />
             ) : null}
           </Group>
-          <User />
+          <User onUserTap={handleViewUser} onLogoutTap={handleLogout} />
         </Flex>
       </AppShell.Header>
       <AppShell.Navbar>
         <Navbar
+          activeIndex={getActiveIndex()}
           preItems={navPreItems}
           items={navItems}
           postItems={navPostItems}

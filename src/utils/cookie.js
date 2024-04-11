@@ -1,4 +1,4 @@
-import Cookies from 'js-cookie';
+import Cookies from "js-cookie";
 
 export function setCookie(key, value, options) {
   Cookies.set(key, value, options);

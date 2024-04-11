@@ -10,18 +10,18 @@ function getLanguageStrings(language) {
   switch (language) {
     case "en":
       return english;
-    case "vi":
-      return vietnamese;
-    case "ja":
-      return japanese;
-    case "ko":
-      return korean;
-    case "zh":
-      return chinese;
-    case "hi":
-      return hindi;
-    case "fr":
-      return france;
+    // case "vi":
+    //   return vietnamese;
+    // case "ja":
+    //   return japanese;
+    // case "ko":
+    //   return korean;
+    // case "zh":
+    //   return chinese;
+    // case "hi":
+    //   return hindi;
+    // case "fr":
+    //   return france;
     default:
       return english;
   }
@@ -29,7 +29,7 @@ function getLanguageStrings(language) {
 
 const appStrings = {
   appName: "CVEZ",
-  language: getLanguageStrings(localStorage.getItem("language") || "ja"),
+  language: getLanguageStrings(localStorage.getItem("language") || "en"),
 };
 
 export default appStrings;

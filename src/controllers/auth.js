@@ -1,6 +1,6 @@
 import apiHelper from "../utils/apiHelper";
 import { apiUrls } from "../utils/constants";
-import { getCookie, setCookie } from "../utils/Cookies";
+import { getCookie, setCookie, removeCookie } from "../utils/cookie";
 
 export async function loginControl(accessToken) {
   const response = await apiHelper.post(apiUrls.login, {
@@ -9,6 +9,13 @@ export async function loginControl(accessToken) {
   console.log(response.msg);
   // Set cookies
   setCookie("token", response?.data.token);
+}
+
+export async function logoutControl() {
+  // Remove token from cookie storage
+  removeCookie("token");
+  // Logout from server
+  await apiHelper.post(apiUrls.logout);
 }
 
 export async function getCurrentUserControl({ onFail, onSuccess }) {

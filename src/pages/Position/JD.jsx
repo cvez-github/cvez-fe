@@ -1,20 +1,24 @@
-import { Flex, Title, Button } from "@mantine/core";
-import { RichTextEditor, Link } from '@mantine/tiptap';
-import { useEditor } from '@tiptap/react';
-import Highlight from '@tiptap/extension-highlight';
-import StarterKit from '@tiptap/starter-kit';
-import Underline from '@tiptap/extension-underline';
-import TextAlign from '@tiptap/extension-text-align';
-import Superscript from '@tiptap/extension-superscript';
-import SubScript from '@tiptap/extension-subscript';
+import { useEffect, useState } from "react";
+import { Flex, Title, Button, Alert, Group, FileButton } from "@mantine/core";
+import { RichTextEditor, Link } from "@mantine/tiptap";
+import { useEditor } from "@tiptap/react";
+import Highlight from "@tiptap/extension-highlight";
+import StarterKit from "@tiptap/starter-kit";
+import Underline from "@tiptap/extension-underline";
+import TextAlign from "@tiptap/extension-text-align";
+import Superscript from "@tiptap/extension-superscript";
+import SubScript from "@tiptap/extension-subscript";
 import HeadingLayout from "../../components/Layout/HeadingLayout";
-import Uploadjd from "../../components/Upload/Uploadjd";
 import appStrings from "../../utils/strings";
-
-let content = "Upload JD data here";
+import { useLocation } from "react-router-dom";
+import { getJD, uploadJD } from "../../controllers/jd";
 
 export default function JDPage() {
-  const editor = useEditor({
+  const location = useLocation();
+  const projectId = location.pathname.split("/")[1];
+  const positionId = location.pathname.split("/")[2];
+
+  const editorController = useEditor({
     extensions: [
       StarterKit,
       Underline,
@@ -22,17 +26,45 @@ export default function JDPage() {
       Superscript,
       SubScript,
       Highlight,
-      TextAlign.configure({ types: ['heading', 'paragraph'] }),
+      TextAlign.configure({ types: ["heading", "paragraph"] }),
     ],
-    content,
+    content: "",
   });
+  // const { editor } = useRichTextEditorContext();
+  const [isLoading, setIsLoading] = useState(false);
+
+  function handleSaveJD() {
+    setIsLoading(true);
+    uploadJD(projectId, positionId, editorController?.getHTML()).then((_) =>
+      setIsLoading(false)
+    );
+  }
+
+  useEffect(() => {
+    getJD(projectId, positionId).then((data) => {
+      editorController.commands.setContent(data.content);
+    });
+  }, [editorController]);
+
   return (
-    <Flex direction="column" gap="md" w='60%'>
+    <Flex direction="column" gap="md">
       <HeadingLayout>
-        <Title order={1}>{appStrings.language.jdData.title}</Title>
+        <Title order={1}>{appStrings.language.jd.heading}</Title>
       </HeadingLayout>
-      <Uploadjd />
-      <RichTextEditor editor={editor} style={{ height: '400px' }}>
+      <Alert variant="light" color="blue">
+        <Group justify="space-between" align="center">
+          <div>
+            <Title order={4}>{appStrings.language.jd.uploadJDTitle}</Title>
+            {appStrings.language.jd.uploadJDMessage}
+          </div>
+          <FileButton accept="application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+            {(props) => (
+              <Button {...props}>{appStrings.language.jd.uploadJDBtn}</Button>
+            )}
+          </FileButton>
+        </Group>
+      </Alert>
+      <RichTextEditor editor={editorController} style={{ height: "400px" }}>
         <RichTextEditor.Toolbar sticky stickyOffset={60}>
           <RichTextEditor.ControlsGroup>
             <RichTextEditor.Bold />
@@ -78,11 +110,14 @@ export default function JDPage() {
           </RichTextEditor.ControlsGroup>
         </RichTextEditor.Toolbar>
 
-        <RichTextEditor.Content style={{ maxHeight: '340px', overflowY: 'auto' }} />
+        <RichTextEditor.Content
+          style={{ maxHeight: "350px", overflowY: "auto" }}
+        />
       </RichTextEditor>
-      <Flex justify="flex-end" gap='md'>
-        <Button variant="default">{appStrings.language.button.cancel}</Button>
-        <Button>{appStrings.language.button.save}</Button>
+      <Flex justify="flex-end" gap="md">
+        <Button loading={isLoading} onClick={handleSaveJD}>
+          {appStrings.language.btn.save}
+        </Button>
       </Flex>
     </Flex>
   );

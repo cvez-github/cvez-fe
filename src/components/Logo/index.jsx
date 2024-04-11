@@ -3,17 +3,15 @@ import logow from "../../assets/logow512.png";
 import { Flex, Title } from "@mantine/core";
 import useGlobalState from "../../context/global";
 import appStrings from "../../utils/strings";
-import { useNavigate } from "react-router-dom";
 
-export default function Logo({ size = 40 }) {
+export default function Logo({ size = 40, onTap }) {
   const theme = useGlobalState((state) => state.theme);
-  const navigate = useNavigate();
 
   return (
     <Flex
       align="center"
       gap={10}
-      onClick={() => navigate("/dashboard")}
+      onClick={onTap}
       style={{
         cursor: "pointer",
       }}

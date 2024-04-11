@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { NavLink, Divider } from "@mantine/core";
 import { IconChevronRight } from "@tabler/icons-react";
 
@@ -9,7 +10,7 @@ import { IconChevronRight } from "@tabler/icons-react";
  *  description?: string,
  *  icon: React.ReactNode,
  *  activeIcon?: React.ReactNode,
- *  action: () => void,
+ *  to: string,
  *  disabled?: boolean,
  * }]
  */
@@ -23,6 +24,7 @@ export default function Navbar({
   const [navPreIndex, setNavPreIndex] = useState(null);
   const [navIndex, setNavIndex] = useState(activeIndex);
   const [navPostIndex, setNavPostIndex] = useState(null);
+  const navigate = useNavigate();
 
   return (
     <>
@@ -39,7 +41,7 @@ export default function Navbar({
             setNavPreIndex(index);
             setNavPostIndex(null);
             setNavIndex(null);
-            item.action();
+            navigate(item.to);
           }}
           disabled={item.disabled}
         />
@@ -63,7 +65,7 @@ export default function Navbar({
             setNavIndex(index);
             setNavPostIndex(null);
             setNavPreIndex(null);
-            item.action();
+            navigate(item.to);
           }}
           disabled={item.disabled}
         />
@@ -82,7 +84,7 @@ export default function Navbar({
             setNavPostIndex(index);
             setNavPreIndex(null);
             setNavIndex(null);
-            item.action();
+            navigate(item.to);
           }}
           disabled={item.disabled}
         />

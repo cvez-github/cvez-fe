@@ -8,14 +8,23 @@ import {
   Select,
   Input,
   Button,
+  Alert,
+  Tooltip,
+  CopyButton,
 } from "@mantine/core";
-import { IconTrash, IconEye, IconSearch } from "@tabler/icons-react";
+import {
+  IconTrash,
+  IconEye,
+  IconSearch,
+  IconCheck,
+  IconCopy,
+  IconShare3,
+} from "@tabler/icons-react";
 import { useState, useEffect } from "react";
 import HeadingLayout from "../../components/Layout/HeadingLayout";
-import Uploadcv from "../../components/Upload/Uploadcv";
-import Addalert from "../../components/Upload/ExtraLink";
+import UploadZone from "../../components/Upload/UploadZone";
 import appStrings from "../../utils/strings";
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from "react-router-dom";
 
 const SelectData = [
   { value: "1", label: "1" },
@@ -43,7 +52,6 @@ const itemsPerPage = 5;
 const totalItems = mockData.length;
 const totalPages = Math.ceil(totalItems / itemsPerPage);
 
-
 export default function CVPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [rows, setRows] = useState([]);
@@ -53,7 +61,7 @@ export default function CVPage() {
   const positionId = location.pathname.split("/")[2];
 
   function handleNavigateToCVDetail(cvId) {
-    navigate(`/${projectId}/${positionId}/cv/${cvId}`)
+    navigate(`/${projectId}/${positionId}/cv/${cvId}`);
   }
 
   const getColor = (score) => {
@@ -79,7 +87,7 @@ export default function CVPage() {
               radius="sm"
               variant="light"
               color={getColor(mockData.score)}
-              style={{ minWidth: "50px" }}
+              style={{ minWidth: "3rem" }}
             >
               {mockData.score}
             </Badge>
@@ -91,10 +99,8 @@ export default function CVPage() {
                 color="gray"
                 aria-label="Settings"
                 size="xs"
-                onClick={
-                  () => handleNavigateToCVDetail(mockData.CvName)
-                }>
-
+                onClick={() => handleNavigateToCVDetail(mockData.CvName)}
+              >
                 <IconEye stroke={1.5} />
               </ActionIcon>
               <ActionIcon
@@ -113,35 +119,64 @@ export default function CVPage() {
   }, [currentPage]);
 
   return (
-    <Flex direction="column" gap="md" w="60%">
+    <Flex direction="column" gap="md">
       <HeadingLayout>
-        <Title order={1}>{appStrings.language.cvData.title}</Title>
+        <Title order={1}>{appStrings.language.cv.title}</Title>
       </HeadingLayout>
-      <Uploadcv />
-      <Addalert title="https://www.example.com/cv" />
-      <Flex justify='space-between'>
-      <Flex gap="md">
-        <Input
-          placeholder={appStrings.language.search.placeholder}
-          rightSection={<IconSearch size="1rem" />}
-        />
-        <Select w="15%" placeholder="choices" data={SelectData} />
+      <UploadZone />
+      <Alert
+        variant="light"
+        color="grape"
+        radius="xs"
+        title={appStrings.language.cv.shareUrlTitle}
+        icon={<IconShare3 />}
+      >
+        <Flex align="center" gap="md">
+          {appStrings.language.cv.shareUrlMessage}
+          {/* <CopyButton value={""} timeout={2000}>
+            {({ copied, copy }) => (
+              <Tooltip
+                label={copied ? "Copied" : "Copy"}
+                withArrow
+                position="right"
+              >
+                <ActionIcon
+                  color={copied ? "teal" : "gray"}
+                  variant="subtle"
+                  onClick={copy}
+                >
+                  {copied ? (
+                    <IconCheck style={{ width: rem(16) }} />
+                  ) : (
+                    <IconCopy style={{ width: rem(16) }} />
+                  )}
+                </ActionIcon>
+              </Tooltip>
+            )}
+          </CopyButton> */}
+        </Flex>
+      </Alert>
+      <Flex justify="space-between">
+        <Flex gap="md">
+          <Input
+            placeholder={appStrings.language.cv.searchPlaceholder}
+            rightSection={<IconSearch size="1rem" />}
+          />
+          <Select w="10rem" placeholder="choices" data={SelectData} />
+        </Flex>
+        <Button>{appStrings.language.cv.matchBtn}</Button>
       </Flex>
-      <Button w="20%">{appStrings.language.matching.title}</Button>
-      </Flex>
-      <div style={{ height: "220px", overflow: "auto" }}>
-        <Table>
-          <Table.Thead>
-            <Table.Tr>
-              <Table.Th>{appStrings.language.tableCv.cvName}</Table.Th>
-              <Table.Th>{appStrings.language.tableCv.uploadDate}</Table.Th>
-              <Table.Th>{appStrings.language.tableCv.score}</Table.Th>
-              <Table.Th>{appStrings.language.tableCv.actions}</Table.Th>
-            </Table.Tr>
-          </Table.Thead>
-          <Table.Tbody>{rows}</Table.Tbody>
-        </Table>
-      </div>
+      <Table verticalSpacing="md">
+        <Table.Thead>
+          <Table.Tr>
+            <Table.Th>{appStrings.language.cv.tableCVName}</Table.Th>
+            <Table.Th>{appStrings.language.cv.tableUploadDate}</Table.Th>
+            <Table.Th>{appStrings.language.cv.tableScore}</Table.Th>
+            <Table.Th>{appStrings.language.cv.tableAction}</Table.Th>
+          </Table.Tr>
+        </Table.Thead>
+        <Table.Tbody>{rows}</Table.Tbody>
+      </Table>
       <Flex justify="center">
         <Pagination
           total={totalPages}

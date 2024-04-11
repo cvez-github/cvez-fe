@@ -1,5 +1,3 @@
-import { v4 as uuidv4 } from "uuid";
-import { useRef, useState } from "react";
 import {
   Drawer,
   Flex,
@@ -10,10 +8,13 @@ import {
   Container,
 } from "@mantine/core";
 import appStrings from "../../utils/strings";
+
+import { v4 as uuidv4 } from "uuid";
 import { getAliasByName } from "../../utils/utils";
-import { createProjectControl } from "../../controllers/createProject";
-import useProjectsState from "../../context/project";
+import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { createProjectControl } from "../../controllers/projects";
+import useProjectsState from "../../context/project";
 
 const demoProps = {
   h: 50,
@@ -24,6 +25,7 @@ export default function CreateProjectDrawer({ open, onClose }) {
   const navigate = useNavigate();
   const [projectName, setProjectName] = useState("");
   const [description, setDescription] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const addProject = useProjectsState((state) => state.addProject);
   const idAlias = useRef(uuidv4());
 
@@ -33,8 +35,10 @@ export default function CreateProjectDrawer({ open, onClose }) {
 
   function handleCreateProject() {
     const alias = getAliasByName(projectName, idAlias.current);
+    setIsLoading(true);
     createProjectControl(projectName, alias, description).then((project) => {
       addProject(project);
+      setIsLoading(false);
       navigate(`/${project.id}`);
     });
   }
@@ -53,8 +57,8 @@ export default function CreateProjectDrawer({ open, onClose }) {
             {appStrings.language.createProject.title}
           </Title>
           <TextInput
-            label={appStrings.language.createProject.projectName}
-            placeholder={appStrings.language.createProject.projectName}
+            label={appStrings.language.createProject.nameLabel}
+            placeholder={appStrings.language.createProject.nameLabel}
             variant="filled"
             style={{ width: "100%" }}
             onChange={handleInputChange}
@@ -62,15 +66,15 @@ export default function CreateProjectDrawer({ open, onClose }) {
           />
           <TextInput
             disabled
-            label={appStrings.language.createProject.projectAlias}
-            placeholder={appStrings.language.createProject.projectAlias}
+            label={appStrings.language.createProject.aliasLabel}
+            placeholder={appStrings.language.createProject.aliasLabel}
             style={{ width: "100%" }}
             value={getAliasByName(projectName, idAlias.current)}
           />
           <Textarea
             variant="filled"
-            label={appStrings.language.createProject.projectDescription}
-            placeholder={appStrings.language.createProject.projectDescription}
+            label={appStrings.language.createProject.descriptionLabel}
+            placeholder={appStrings.language.createProject.descriptionLabel}
             style={{ width: "100%" }}
             onChange={(event) => setDescription(event.target.value)}
             value={description}
@@ -78,10 +82,10 @@ export default function CreateProjectDrawer({ open, onClose }) {
         </Flex>
         <Flex justify="flex-end" gap="md" style={{ marginTop: "20px" }}>
           <Button variant="default" onClick={onClose}>
-            {appStrings.language.createProject.cancel}
+            {appStrings.language.btn.cancel}
           </Button>
-          <Button onClick={handleCreateProject}>
-            {appStrings.language.createProject.create}
+          <Button onClick={handleCreateProject} loading={isLoading}>
+            {appStrings.language.btn.create}
           </Button>
         </Flex>
       </Container>

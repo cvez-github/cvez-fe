@@ -18,14 +18,12 @@ import CVDetailPage from "../pages/Position/CVDetail";
 import QuestionDetailPage from "../pages/Position/QuestionDetail";
 import NotFoundPage from "../pages/Utils/NotFound";
 import LoginPage from "../pages/Login/LoginPage";
-import UploadId from "../pages/UploadId/UploadId";
 import LandingPage from "../pages/Landing/LandingPage";
 
 const appRoutes = [
-
   {
     path: "/",
-    element: <LandingPage/>,
+    element: <LandingPage />,
   },
   {
     path: "/login",
@@ -34,10 +32,6 @@ const appRoutes = [
   {
     path: "/404",
     element: <NotFoundPage />,
-  },
-  {
-    path: "/upload/:position-id",
-    element: <UploadId />,
   },
   {
     path: "/dashboard",

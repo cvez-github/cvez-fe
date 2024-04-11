@@ -7,7 +7,7 @@ import ProjectCard from "../../components/ProjectCard";
 import appStrings from "../../utils/strings";
 import { getSharedProjectsControl } from "../../controllers/dashboard";
 import useProjectsState from "../../context/project";
-
+import Empty from "../../components/Empty";
 
 export default function SharedProjectPage() {
   const shared = useProjectsState((state) => state.shared);
@@ -29,17 +29,21 @@ export default function SharedProjectPage() {
         </Flex>
       </HeadingLayout>
       {shared ? (
-        <GridLayout>
-          {shared.map((data, index) => (
-            <ProjectCard
-              key={index}
-              title={data.title}
-              description={data.description}
-              alias={data.alias}
-              members={data.members}
-            />
-          ))}
-        </GridLayout>
+        shared.length !== 0 ? (
+          <GridLayout>
+            {shared.map((data, index) => (
+              <ProjectCard
+                key={index}
+                title={data.name}
+                description={data.description}
+                alias={data.alias}
+                members={data.members}
+              />
+            ))}
+          </GridLayout>
+        ) : (
+          <Empty />
+        )
       ) : null}
     </Flex>
   );

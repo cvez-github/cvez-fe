@@ -1,32 +1,30 @@
-import { GoogleOAuthProvider, useGoogleLogin } from '@react-oauth/google'; // Import necessary components and hooks
-import { Button, Flex, Modal, Text } from "@mantine/core";
-import { IconBrandGoogleFilled } from "@tabler/icons-react";
-import { useNavigate } from 'react-router-dom';
 import bg from "../../assets/bg.webp";
 import Logo from "../../components/Logo";
+import { IconBrandGoogleFilled } from "@tabler/icons-react";
+import { Button, Flex, Modal, Text } from "@mantine/core";
 import appStrings from "../../utils/strings";
-import { loginControl } from '../../controllers/auth';
 
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useGoogleLogin } from "@react-oauth/google";
+import { loginControl } from "../../controllers/auth";
 
 export default function LoginPage() {
-  return (
-    <GoogleOAuthProvider clientId="765198139881-0vdveqqf338q0g9nvkclphnockf9f35n.apps.googleusercontent.com">
-      <LoginPageContent />
-    </GoogleOAuthProvider>
-  );
-}
-
-function LoginPageContent() {
   const navigate = useNavigate();
-  
+  const [isLogin, setIsLogin] = useState(false);
+
   const login = useGoogleLogin({
     onSuccess: (tokenResponse) => {
-      loginControl(tokenResponse.access_token).then(() => navigate('/dashboard'));
+      setIsLogin(true);
+      loginControl(tokenResponse.access_token).then(() => {
+        navigate("/dashboard");
+        setIsLogin(false);
+      });
     },
   });
 
   return (
-    <Flex 
+    <Flex
       style={{
         backgroundImage: `url(${bg})`,
         backgroundSize: "cover",
@@ -51,7 +49,7 @@ function LoginPageContent() {
         <Flex direction="column" align="center">
           <Logo size={25} />
           <Text size="1.3rem" style={{ marginTop: 20 }}>
-            {appStrings.language.login}
+            {appStrings.language.auth.login}
           </Text>
           <Button
             w="100%"
@@ -60,9 +58,10 @@ function LoginPageContent() {
             style={{ marginTop: 40 }}
             onClick={() => login()}
             leftSection={<IconBrandGoogleFilled size="1rem" />}
+            loading={isLogin}
           >
             Google
-          </Button> 
+          </Button>
         </Flex>
       </Modal>
     </Flex>

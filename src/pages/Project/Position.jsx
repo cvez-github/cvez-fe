@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { Button, Flex, Title, Input } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconSearch, IconPlus } from "@tabler/icons-react";
@@ -7,6 +9,10 @@ import appStrings from "../../utils/strings";
 import CreatePositionModal from "../Modal/CreatePositionModal";
 import PositionCard from "../../components/PositionCard";
 import YourProjectAction from "../../components/Actions/YourProjectAction";
+import usePositionsState from "../../context/position";
+import Empty from "../../components/Empty";
+import { getPositionsControl } from "../../controllers/positions";
+import { formatDate } from "../../utils/utils";
 
 const mockData = [
   {
@@ -29,13 +35,30 @@ const mockData = [
     alias: "P3",
     start_date: "Jan, 5",
     end_date: "Jan, 10",
-
   },
-
 ];
 
 export default function YourPositionPage() {
   const [isNewPositionOpen, isNewPositionToggle] = useDisclosure(false);
+  const location = useLocation();
+  const projectId = location.pathname.split("/")[1];
+
+  const positions = usePositionsState((state) => state.positions);
+  const setPositions = usePositionsState((state) => state.setPositions);
+  const closedPositions = usePositionsState((state) => state.closedPositions);
+  const setClosedPositions = usePositionsState(
+    (state) => state.setClosedPositions
+  );
+
+  useEffect(() => {
+    getPositionsControl(projectId).then((data) => {
+      const activePositions = data.filter((position) => !position.is_closed);
+      const closedPositions = data.filter((position) => position.is_closed);
+      setPositions(activePositions);
+      setClosedPositions(closedPositions);
+    });
+  }, [setPositions, setClosedPositions]);
+
   return (
     <Flex direction="column" gap="md">
       <HeadingLayout>
@@ -53,22 +76,44 @@ export default function YourPositionPage() {
           </Button>
         </Flex>
       </HeadingLayout>
-      <GridLayout title={appStrings.language.position.activePosition}>
-          {mockData.map((data, index) =>
-          <PositionCard
-            key={index}
-            title={data.title}
-            description={data.description}
-            alias={data.alias}
-            start_date={data.start_date}
-            end_date={data.end_date}
-            actions={<YourProjectAction />}
-          />
-        )}
-      </GridLayout>
-      <GridLayout
-        title={appStrings.language.position.closedPosition}
-      ></GridLayout>
+      {positions ? (
+        positions.length !== 0 ? (
+          <GridLayout title={appStrings.language.position.activePositions}>
+            {positions.map((data) => (
+              <PositionCard
+                key={data.id}
+                id={data.id}
+                title={data.name}
+                description={data.description}
+                alias={data.alias}
+                startDate={formatDate(data.start_date)}
+                endDate={formatDate(data.end_date)}
+                // actions={<YourProjectAction />}
+              />
+            ))}
+          </GridLayout>
+        ) : (
+          <Empty />
+        )
+      ) : null}
+      {closedPositions ? (
+        closedPositions.length !== 0 ? (
+          <GridLayout title={appStrings.language.position.closedPositions}>
+            {closedPositions.map((data) => (
+              <PositionCard
+                key={data.id}
+                id={data.id}
+                title={data.name}
+                description={data.description}
+                alias={data.alias}
+                startDate={formatDate(data.start_date)}
+                endDate={formatDate(data.end_date)}
+                // actions={<YourProjectAction />}
+              />
+            ))}
+          </GridLayout>
+        ) : null
+      ) : null}
       <CreatePositionModal
         title={appStrings.language.position.createBtn}
         open={isNewPositionOpen}

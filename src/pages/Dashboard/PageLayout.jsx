@@ -13,7 +13,7 @@ import {
 import appStrings from "../../utils/strings";
 import useGlobalState from "../../context/global";
 import { useEffect } from "react";
-import { getCurrentUserControl } from "../../controllers/auth";
+import { getCurrentUserControl, logoutControl } from "../../controllers/auth";
 
 export default function DashboardPageLayout() {
   const navigate = useNavigate();
@@ -24,25 +24,25 @@ export default function DashboardPageLayout() {
       label: appStrings.language.home.title,
       icon: <IconHome size="1rem" />,
       activeIcon: <IconHomeFilled size="1rem" />,
-      action: () => navigate("/dashboard"),
+      to: "/dashboard",
     },
     {
       label: appStrings.language.yourProject.title,
       icon: <IconPerspective size="1rem" />,
       activeIcon: <IconPerspective size="1rem" />,
-      action: () => navigate("/dashboard/your-project"),
+      to: "/dashboard/your-project",
     },
     {
       label: appStrings.language.sharedProjects.title,
       icon: <IconShare size="1rem" />,
       activeIcon: <IconShare size="1rem" />,
-      action: () => navigate("/dashboard/shared-project"),
+      to: "/dashboard/shared-project",
     },
     {
-      label: appStrings.language.trash.title,
+      label: appStrings.language.trashProjects.title,
       icon: <IconTrash size="1rem" />,
       activeIcon: <IconTrashFilled size="1rem" />,
-      action: () => navigate("/dashboard/deleted-project"),
+      to: "/dashboard/deleted-project",
     },
   ];
 
@@ -51,15 +51,15 @@ export default function DashboardPageLayout() {
       label: appStrings.language.setting.title,
       icon: <IconSettings size="1rem" />,
       activeIcon: <IconSettingsFilled size="1rem" />,
-      action: () => navigate("/dashboard/setting"),
+      to: "/dashboard/setting",
     },
   ];
 
   useEffect(() => {
     getCurrentUserControl({
       onFail: () => navigate("/login"),
-      onSuccess: (user) => setUser(user)
-    })
+      onSuccess: (user) => setUser(user),
+    });
   }, [navigate, setUser]);
 
   return (

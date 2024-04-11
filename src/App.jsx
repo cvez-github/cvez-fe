@@ -1,4 +1,5 @@
 import { MantineProvider } from "@mantine/core";
+import { Notifications } from "@mantine/notifications";
 import { useRoutes } from "react-router-dom";
 import appRoutes from "./routes/routes";
 import useGlobalState from "./context/global";
@@ -9,6 +10,7 @@ export default function App() {
 
   return (
     <MantineProvider theme={customTheme} defaultColorScheme={theme}>
+      <Notifications />
       {useRoutes(appRoutes)}
     </MantineProvider>
   );
