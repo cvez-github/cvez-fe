@@ -1,4 +1,5 @@
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Box, LoadingOverlay } from "@mantine/core";
 import {
   IconSquare,
   IconChartBar,
@@ -7,8 +8,11 @@ import {
 } from "@tabler/icons-react";
 import AppLayout from "../../components/Layout/AppLayout";
 import appStrings from "../../utils/strings";
-import { useEffect } from "react";
-import { getYourProjectsControl } from "../../controllers/dashboard";
+import { useEffect, useState } from "react";
+import {
+  getSharedProjectsControl,
+  getYourProjectsControl,
+} from "../../controllers/dashboard";
 import useProjectsState from "../../context/project";
 import { getCurrentUserControl } from "../../controllers/auth";
 import useGlobalState from "../../context/global";
@@ -18,7 +22,9 @@ export default function ProjectPageLayout() {
   const location = useLocation();
   const projectId = location.pathname.split("/")[1];
   const setProjects = useProjectsState((state) => state.setProjects);
+  const setShared = useProjectsState((state) => state.setShared);
   const setUser = useGlobalState((state) => state.setUser);
+  const [isLoading, setIsLoading] = useState(true);
 
   const navbarItems = [
     {
@@ -51,14 +57,26 @@ export default function ProjectPageLayout() {
       onSuccess: (user) => {
         setUser(user);
         // Fetch projects data
-        getYourProjectsControl().then((data) => setProjects(data));
+        getYourProjectsControl().then((data) => {
+          setProjects(data);
+          getSharedProjectsControl().then((data) => {
+            setShared(data);
+            setIsLoading(false);
+          });
+        });
       },
     });
-  }, [setProjects]);
+  }, [setProjects, setShared]);
 
   return (
-    <AppLayout navItems={navbarItems} navPostItems={navbarSettings}>
-      <Outlet />
-    </AppLayout>
+    <Box pos="relative">
+      <LoadingOverlay
+        visible={isLoading}
+        overlayProps={{ radius: "sm", blur: 2, opacity: 0.5 }}
+      />
+      <AppLayout navItems={navbarItems} navPostItems={navbarSettings}>
+        <Outlet />
+      </AppLayout>
+    </Box>
   );
 }

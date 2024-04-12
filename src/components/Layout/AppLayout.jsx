@@ -26,6 +26,7 @@ export default function AppLayout({
   const navigate = useNavigate();
   const location = useLocation();
   const projects = useProjectsState((state) => state.projects);
+  const shared = useProjectsState((state) => state.shared);
   const projectId = location.pathname.split("/")[1];
   const isDashboard = location.pathname.includes("dashboard");
 
@@ -79,7 +80,7 @@ export default function AppLayout({
               size="sm"
             />
             <Logo size={35} onTap={handleNavigateToDashboard} />
-            {projects && !isDashboard ? (
+            {projects && shared && !isDashboard ? (
               <Select
                 w="13rem"
                 allowDeselect={false}
@@ -89,6 +90,13 @@ export default function AppLayout({
                   {
                     group: appStrings.language.yourProject.title,
                     items: projects.map((item) => ({
+                      value: item.id,
+                      label: item.name,
+                    })),
+                  },
+                  {
+                    group: appStrings.language.sharedProjects.title,
+                    items: shared.map((item) => ({
                       value: item.id,
                       label: item.name,
                     })),

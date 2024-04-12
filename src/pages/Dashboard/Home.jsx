@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Flex, Title, Button, Box, LoadingOverlay } from "@mantine/core";
+import { Flex, Title, Button } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { useDisclosure } from "@mantine/hooks";
 import { IconPlus } from "@tabler/icons-react";
@@ -45,67 +45,66 @@ export default function HomePage() {
   }, [setProjects, setShared]);
 
   return (
-    <Box pos="relative">
-      <LoadingOverlay visible={!projects || !shared} />
-      <Flex direction="column" gap={30}>
-        <HeadingLayout>
-          <Title order={1}>
-            {appStrings.language.home.welcome}
-            {user?.name}
-          </Title>
-          <Flex>
-            <Button
-              leftSection={<IconPlus size="1rem" />}
-              onClick={newProjectToggle.open}
-            >
-              {appStrings.language.home.createBtn}
-            </Button>
-          </Flex>
-        </HeadingLayout>
-        {projects ? (
-          projects.length !== 0 ? (
-            <GridLayout title={appStrings.language.home.recentProjects}>
-              {projects.map((data, index) => (
-                <ProjectCard
-                  key={index}
-                  id={data.id}
-                  title={data.name}
-                  description={data.description}
-                  alias={data.alias}
-                  members={data.members}
-                  actions={
-                    <YourProjectAction
-                      onDeleteTap={() => handleDeleteProject(data.id)}
-                    />
-                  }
+    <Flex direction="column" gap={30}>
+      <HeadingLayout loading={!user}>
+        <Title order={1}>
+          {appStrings.language.home.welcome}
+          {user?.name}
+        </Title>
+        <Flex>
+          <Button
+            leftSection={<IconPlus size="1rem" />}
+            onClick={newProjectToggle.open}
+          >
+            {appStrings.language.home.createBtn}
+          </Button>
+        </Flex>
+      </HeadingLayout>
+      {projects?.length !== 0 ? (
+        <GridLayout
+          title={appStrings.language.home.recentProjects}
+          loading={!projects}
+        >
+          {projects?.map((data, index) => (
+            <ProjectCard
+              key={index}
+              id={data.id}
+              title={data.name}
+              description={data.description}
+              alias={data.alias}
+              members={data.members}
+              actions={
+                <YourProjectAction
+                  onDeleteTap={() => handleDeleteProject(data.id)}
                 />
-              ))}
-            </GridLayout>
-          ) : (
-            <Empty />
-          )
-        ) : null}
-        {shared ? (
-          shared.length !== 0 ? (
-            <GridLayout title={appStrings.language.home.sharedProjects}>
-              {shared.map((data, index) => (
-                <ProjectCard
-                  key={index}
-                  id={data.id}
-                  title={data.name}
-                  description={data.description}
-                  alias={data.alias}
-                  members={data.members}
-                />
-              ))}
-            </GridLayout>
-          ) : null
-        ) : null}
-        <CreateProjectDrawer
-          open={isNewProjectOpen}
-          onClose={newProjectToggle.close}
-        />
-      </Flex>
-    </Box>
+              }
+            />
+          ))}
+        </GridLayout>
+      ) : !shared?.length ? (
+        <Empty />
+      ) : null}
+      {shared?.length !== 0 ? (
+        <GridLayout
+          title={appStrings.language.home.sharedProjects}
+          loading={!shared}
+        >
+          {shared?.map((data, index) => (
+            <ProjectCard
+              key={index}
+              id={data.id}
+              title={data.name}
+              description={data.description}
+              alias={data.alias}
+              members={data.members}
+            />
+          ))}
+        </GridLayout>
+      ) : null}
+      <CreateProjectDrawer
+        open={isNewProjectOpen}
+        onClose={newProjectToggle.close}
+      />
+    </Flex>
   );
 }

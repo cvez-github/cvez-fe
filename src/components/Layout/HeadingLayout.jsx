@@ -1,15 +1,17 @@
-import { Flex } from "@mantine/core";
+import { Flex, Skeleton } from "@mantine/core";
 
-export default function HeadingLayout({ children }) {
+export default function HeadingLayout({ children, loading = false }) {
   return (
-    <Flex
-      align="flex-start"
-      justify="space-between"
-      style={{
-        padding: "2rem 0 0 0",
-      }}
-    >
-      {children}
-    </Flex>
+    <Skeleton visible={loading}>
+      <Flex
+        align="flex-start"
+        justify="space-between"
+        style={{
+          padding: "2rem 0 0 0",
+        }}
+      >
+        {children}
+      </Flex>
+    </Skeleton>
   );
 }

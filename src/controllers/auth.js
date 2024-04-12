@@ -21,6 +21,7 @@ export async function logoutControl() {
 export async function getCurrentUserControl({ onFail, onSuccess }) {
   // Get token from cookie storage
   const token = getCookie("token");
+  console.log(token);
   if (!token) {
     onFail("No token found");
   }

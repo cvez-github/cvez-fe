@@ -1,4 +1,5 @@
 import { Outlet, useNavigate } from "react-router-dom";
+import { Box, LoadingOverlay } from "@mantine/core";
 import AppLayout from "../../components/Layout/AppLayout";
 import {
   IconHome,
@@ -12,12 +13,13 @@ import {
 } from "@tabler/icons-react";
 import appStrings from "../../utils/strings";
 import useGlobalState from "../../context/global";
-import { useEffect } from "react";
-import { getCurrentUserControl, logoutControl } from "../../controllers/auth";
+import { useEffect, useState } from "react";
+import { getCurrentUserControl } from "../../controllers/auth";
 
 export default function DashboardPageLayout() {
   const navigate = useNavigate();
   const setUser = useGlobalState((state) => state.setUser);
+  const [isLoading, setIsLoading] = useState(true);
 
   const navbarItems = [
     {
@@ -58,13 +60,22 @@ export default function DashboardPageLayout() {
   useEffect(() => {
     getCurrentUserControl({
       onFail: () => navigate("/login"),
-      onSuccess: (user) => setUser(user),
+      onSuccess: (user) => {
+        setUser(user);
+        setIsLoading(false);
+      },
     });
   }, [navigate, setUser]);
 
   return (
-    <AppLayout navItems={navbarItems} navPostItems={navbarSettings}>
-      <Outlet />
-    </AppLayout>
+    <Box pos="relative">
+      <LoadingOverlay
+        visible={isLoading}
+        overlayProps={{ radius: "sm", blur: 2, opacity: 0.5 }}
+      />
+      <AppLayout navItems={navbarItems} navPostItems={navbarSettings}>
+        <Outlet />
+      </AppLayout>
+    </Box>
   );
 }
