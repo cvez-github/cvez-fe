@@ -8,11 +8,11 @@ import HeadingLayout from "../../components/Layout/HeadingLayout";
 import appStrings from "../../utils/strings";
 import CreatePositionModal from "../Modal/CreatePositionModal";
 import PositionCard from "../../components/PositionCard";
-import YourProjectAction from "../../components/Actions/YourProjectAction";
 import usePositionsState from "../../context/position";
 import Empty from "../../components/Empty";
 import { getPositionsControl } from "../../controllers/positions";
 import { formatDate } from "../../utils/utils";
+import PositionAction from "../../components/Actions/PositionAction";
 
 const mockData = [
   {
@@ -51,17 +51,19 @@ export default function YourPositionPage() {
   );
 
   useEffect(() => {
-    getPositionsControl(projectId).then((data) => {
-      const activePositions = data.filter((position) => !position.is_closed);
-      const closedPositions = data.filter((position) => position.is_closed);
-      setPositions(activePositions);
-      setClosedPositions(closedPositions);
-    });
+    if (!positions || !closedPositions) {
+      getPositionsControl(projectId).then((data) => {
+        const activePositions = data.filter((position) => !position.is_closed);
+        const closedPositions = data.filter((position) => position.is_closed);
+        setPositions(activePositions);
+        setClosedPositions(closedPositions);
+      });
+    }
   }, [setPositions, setClosedPositions]);
 
   return (
     <Flex direction="column" gap="md">
-      <HeadingLayout>
+      <HeadingLayout loading={!positions || !closedPositions}>
         <Title order={2}>{appStrings.language.position.heading}</Title>
         <Flex gap={15}>
           <Input
@@ -76,43 +78,45 @@ export default function YourPositionPage() {
           </Button>
         </Flex>
       </HeadingLayout>
-      {positions ? (
-        positions.length !== 0 ? (
-          <GridLayout title={appStrings.language.position.activePositions}>
-            {positions.map((data) => (
-              <PositionCard
-                key={data.id}
-                id={data.id}
-                title={data.name}
-                description={data.description}
-                alias={data.alias}
-                startDate={formatDate(data.start_date)}
-                endDate={formatDate(data.end_date)}
-                // actions={<YourProjectAction />}
-              />
-            ))}
-          </GridLayout>
-        ) : (
-          <Empty />
-        )
+      {positions?.length !== 0 ? (
+        <GridLayout
+          title={appStrings.language.position.activePositions}
+          loading={!positions}
+        >
+          {positions?.map((data) => (
+            <PositionCard
+              key={data.id}
+              id={data.id}
+              title={data.name}
+              description={data.description}
+              alias={data.alias}
+              startDate={formatDate(data.start_date)}
+              endDate={formatDate(data.end_date)}
+              actions={<PositionAction />}
+            />
+          ))}
+        </GridLayout>
+      ) : closedPositions?.length ? (
+        <Empty />
       ) : null}
-      {closedPositions ? (
-        closedPositions.length !== 0 ? (
-          <GridLayout title={appStrings.language.position.closedPositions}>
-            {closedPositions.map((data) => (
-              <PositionCard
-                key={data.id}
-                id={data.id}
-                title={data.name}
-                description={data.description}
-                alias={data.alias}
-                startDate={formatDate(data.start_date)}
-                endDate={formatDate(data.end_date)}
-                // actions={<YourProjectAction />}
-              />
-            ))}
-          </GridLayout>
-        ) : null
+      {closedPositions?.length !== 0 ? (
+        <GridLayout
+          title={appStrings.language.position.closedPositions}
+          loading={!closedPositions}
+        >
+          {closedPositions?.map((data) => (
+            <PositionCard
+              key={data.id}
+              id={data.id}
+              title={data.name}
+              description={data.description}
+              alias={data.alias}
+              startDate={formatDate(data.start_date)}
+              endDate={formatDate(data.end_date)}
+              actions={<PositionAction isClose />}
+            />
+          ))}
+        </GridLayout>
       ) : null}
       <CreatePositionModal
         title={appStrings.language.position.createBtn}

@@ -1,16 +1,15 @@
 import {
   Flex,
   Title,
-  Table,
   ActionIcon,
-  Badge,
-  Pagination,
-  Select,
+  Text,
   Input,
   Button,
   Alert,
   Tooltip,
   CopyButton,
+  Spoiler,
+  Badge,
 } from "@mantine/core";
 import {
   IconTrash,
@@ -19,172 +18,237 @@ import {
   IconCheck,
   IconCopy,
   IconShare3,
+  IconSparkles,
+  IconChevronUp,
+  IconChevronDown,
+  IconFileTypePdf,
+  IconFileTypeDocx,
+  IconFile,
 } from "@tabler/icons-react";
-import { useState, useEffect } from "react";
 import HeadingLayout from "../../components/Layout/HeadingLayout";
 import UploadZone from "../../components/Upload/UploadZone";
 import appStrings from "../../utils/strings";
 import { useNavigate, useLocation } from "react-router-dom";
+import AppTable from "../../components/AppTable";
+import { useEffect, useState } from "react";
+import { notifications } from "@mantine/notifications";
+import {
+  getCVsControl,
+  uploadCVDataControl,
+  watchUploadProgressControl,
+} from "../../controllers/cv";
+import ProgressList from "../../components/Upload/ProgressList";
+import useCVState from "../../context/cv";
+import { getMatchControl } from "../../controllers/match";
+import { getScoreColor } from "../../utils/utils";
 
-const SelectData = [
-  { value: "1", label: "1" },
-  { value: "2", label: "2" },
-  { value: "3", label: "3" },
-  { value: "4", label: "4" },
-  { value: "5", label: "5" },
-  { value: "6", label: "6" },
-  { value: "7", label: "7" },
-  { value: "8", label: "8" },
-  { value: "9", label: "9" },
-  { value: "10", label: "10" },
+const columns = [
+  {
+    key: "cvName",
+    label: appStrings.language.cv.tableCVName,
+  },
+  {
+    key: "upload",
+    label: appStrings.language.cv.tableUploadDate,
+  },
+  {
+    key: "score",
+    label: appStrings.language.cv.tableScore,
+  },
+  {
+    key: "actions",
+    label: appStrings.language.cv.tableAction,
+  },
 ];
-const mockData = [
-  { CvName: "Nguyen Van A", date: "01/04/2024", score: "85%" },
-  { CvName: "Tran Thi B", date: "02/04/2024", score: "25%" },
-  { CvName: "Le Van C", date: "03/04/2024", score: "85%" },
-  { CvName: "Hoang Thi D", date: "04/04/2024", score: "75%" },
-  { CvName: "Tran Van E", date: "05/04/2024", score: "1%" },
-  { CvName: "Tran Van E", date: "05/04/2024", score: "1%" },
-  { CvName: "Tran Van E", date: "05/04/2024", score: "1%" },
-  { CvName: "Tran Van E", date: "05/04/2024", score: "1%" },
-];
-const itemsPerPage = 5;
-const totalItems = mockData.length;
-const totalPages = Math.ceil(totalItems / itemsPerPage);
 
 export default function CVPage() {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [rows, setRows] = useState([]);
   const navigate = useNavigate();
   const location = useLocation();
   const projectId = location.pathname.split("/")[1];
   const positionId = location.pathname.split("/")[2];
+  const cvs = useCVState((state) => state.cvs);
+  const setCVs = useCVState((state) => state.setCVs);
+  const setCVScores = useCVState((state) => state.setCVScores);
+  const uploadFiles = useCVState((state) => state.uploadFiles);
+  const setUploadFiles = useCVState((state) => state.setUploadFiles);
+  const [isMatching, setIsMatching] = useState(false);
 
   function handleNavigateToCVDetail(cvId) {
     navigate(`/${projectId}/${positionId}/cv/${cvId}`);
   }
 
-  const getColor = (score) => {
-    const numericScore = parseFloat(score.replace("%", ""));
-    if (numericScore < 50) {
-      return "red";
-    } else if (numericScore >= 80) {
-      return "green";
-    } else {
-      return "orange";
-    }
-  };
+  function handleUploadFiles(files) {
+    setUploadFiles(files);
+    uploadCVDataControl(projectId, positionId, files).then((data) => {
+      watchUploadProgressControl(data.progress_id).then(() => {
+        setUploadFiles(null);
+        notifications.show({
+          title: appStrings.language.cv.uploadSuccessTitle,
+          message: appStrings.language.cv.uploadSuccessMessage,
+          color: "teal",
+        });
+      });
+    });
+  }
+
+  function handleMatchCVJD() {
+    setIsMatching(true);
+    getMatchControl(projectId, positionId).then((data) => {
+      setIsMatching(false);
+      notifications.show({
+        title: appStrings.language.cv.matchSuccessTitle,
+        message: appStrings.language.cv.matchSuccessMessage,
+        color: "teal",
+      });
+      // Set score to CVs
+      const formatedData = Object.entries(data).map(([key, value]) => ({
+        id: key,
+        score: value.overall,
+      }));
+      setCVScores(formatedData);
+    });
+  }
 
   useEffect(() => {
-    const newRows = mockData
-      .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
-      .map((mockData, index) => (
-        <Table.Tr key={index}>
-          <Table.Td>{mockData.CvName}</Table.Td>
-          <Table.Td>{mockData.date}</Table.Td>
-          <Table.Td>
-            <Badge
-              radius="sm"
-              variant="light"
-              color={getColor(mockData.score)}
-              style={{ minWidth: "3rem" }}
-            >
-              {mockData.score}
-            </Badge>
-          </Table.Td>
-          <Table.Td>
-            <Flex gap="xs">
-              <ActionIcon
-                variant="subtle"
-                color="gray"
-                aria-label="Settings"
-                size="xs"
-                onClick={() => handleNavigateToCVDetail(mockData.CvName)}
-              >
-                <IconEye stroke={1.5} />
-              </ActionIcon>
-              <ActionIcon
-                variant="subtle"
-                color="red"
-                aria-label="Settings"
-                size="xs"
-              >
-                <IconTrash stroke={1.5} />
-              </ActionIcon>
-            </Flex>
-          </Table.Td>
-        </Table.Tr>
-      ));
-    setRows(newRows);
-  }, [currentPage]);
+    getCVsControl(projectId, positionId).then((data) => {
+      // Sort data by score
+      data.sort((a, b) => b.score.overall - a.score.overall);
+      setCVs(
+        data.map((cv) => ({
+          id: cv.id,
+          cvName: cv.name,
+          upload: cv.upload_at,
+          score: cv.score.overall,
+        }))
+      );
+    });
+  }, [setCVs]);
 
   return (
     <Flex direction="column" gap="md">
       <HeadingLayout>
         <Title order={1}>{appStrings.language.cv.title}</Title>
       </HeadingLayout>
-      <UploadZone />
-      <Alert
-        variant="light"
-        color="grape"
-        radius="xs"
-        title={appStrings.language.cv.shareUrlTitle}
-        icon={<IconShare3 />}
+      <Spoiler
+        initialState={true}
+        maxHeight={0}
+        showLabel={
+          <Flex align="center" gap="xs">
+            <Text>{appStrings.language.cv.showUploadZone}</Text>
+            <IconChevronDown size="1rem" />
+          </Flex>
+        }
+        hideLabel={
+          <Flex align="center" gap="xs">
+            <Text c="dimmed">{appStrings.language.cv.hideUploadZone}</Text>
+            <IconChevronUp size="1rem" color="gray" />
+          </Flex>
+        }
       >
-        <Flex align="center" gap="md">
-          {appStrings.language.cv.shareUrlMessage}
-          {/* <CopyButton value={""} timeout={2000}>
-            {({ copied, copy }) => (
-              <Tooltip
-                label={copied ? "Copied" : "Copy"}
-                withArrow
-                position="right"
-              >
-                <ActionIcon
-                  color={copied ? "teal" : "gray"}
-                  variant="subtle"
-                  onClick={copy}
-                >
-                  {copied ? (
-                    <IconCheck style={{ width: rem(16) }} />
-                  ) : (
-                    <IconCopy style={{ width: rem(16) }} />
-                  )}
-                </ActionIcon>
-              </Tooltip>
-            )}
-          </CopyButton> */}
+        <Flex direction="column" gap="md">
+          {uploadFiles ? (
+            <ProgressList
+              items={uploadFiles.map((file) => ({
+                name: file.name,
+                progress: file.progress || 0,
+              }))}
+            />
+          ) : (
+            <UploadZone onFileSelected={(files) => handleUploadFiles(files)} />
+          )}
+          <Alert
+            variant="light"
+            color="grape"
+            radius="xs"
+            title={appStrings.language.cv.shareUrlTitle}
+            icon={<IconShare3 />}
+          >
+            <Flex align="center" gap="md">
+              {appStrings.language.cv.shareUrlMessage}
+              <CopyButton value={`https://upload/${positionId}`} timeout={2000}>
+                {({ copied, copy }) => (
+                  <Tooltip
+                    label={
+                      copied
+                        ? appStrings.language.btn.copied
+                        : appStrings.language.btn.copy
+                    }
+                    withArrow
+                    position="right"
+                  >
+                    <ActionIcon
+                      color={copied ? "teal" : "gray"}
+                      variant="subtle"
+                      onClick={copy}
+                    >
+                      {copied ? (
+                        <IconCheck size="1rem" />
+                      ) : (
+                        <IconCopy size="1rem" />
+                      )}
+                    </ActionIcon>
+                  </Tooltip>
+                )}
+              </CopyButton>
+            </Flex>
+          </Alert>
         </Flex>
-      </Alert>
+      </Spoiler>
       <Flex justify="space-between">
         <Flex gap="md">
           <Input
             placeholder={appStrings.language.cv.searchPlaceholder}
-            rightSection={<IconSearch size="1rem" />}
+            leftSection={<IconSearch size="1rem" />}
           />
-          <Select w="10rem" placeholder="choices" data={SelectData} />
         </Flex>
-        <Button>{appStrings.language.cv.matchBtn}</Button>
+        <Button
+          leftSection={<IconSparkles size="1rem" />}
+          onClick={handleMatchCVJD}
+          loading={isMatching}
+        >
+          {appStrings.language.cv.matchBtn}
+        </Button>
       </Flex>
-      <Table verticalSpacing="md">
-        <Table.Thead>
-          <Table.Tr>
-            <Table.Th>{appStrings.language.cv.tableCVName}</Table.Th>
-            <Table.Th>{appStrings.language.cv.tableUploadDate}</Table.Th>
-            <Table.Th>{appStrings.language.cv.tableScore}</Table.Th>
-            <Table.Th>{appStrings.language.cv.tableAction}</Table.Th>
-          </Table.Tr>
-        </Table.Thead>
-        <Table.Tbody>{rows}</Table.Tbody>
-      </Table>
-      <Flex justify="center">
-        <Pagination
-          total={totalPages}
-          color="rgba(74, 70, 70, 1)"
-          active={currentPage}
-          onChange={(page) => setCurrentPage(page)}
-        />
-      </Flex>
+      <AppTable
+        columns={columns}
+        loading={!cvs}
+        data={cvs?.map((data) => ({
+          cvName: (
+            <Flex align="center" gap="md">
+              {data.cvName.toLowerCase().includes(".pdf") ? (
+                <IconFileTypePdf size="1rem" color="#E03131" />
+              ) : data.cvName.toLowerCase().includes(".docx") ? (
+                <IconFileTypeDocx size="1rem" color="#3B5BDB" />
+              ) : (
+                <IconFile size="1rem" />
+              )}
+              <Text>{data.cvName}</Text>
+            </Flex>
+          ),
+          upload: data.upload,
+          score: data.score ? (
+            <Badge variant="light" color={getScoreColor(data.score)}>
+              {data.score}%
+            </Badge>
+          ) : (
+            <Text c="dimmed">{appStrings.language.cv.notScored}</Text>
+          ),
+          actions: (
+            <Flex gap="xs">
+              <ActionIcon
+                variant="subtle"
+                onClick={() => handleNavigateToCVDetail(data.id)}
+              >
+                <IconEye size="1rem" />
+              </ActionIcon>
+              <ActionIcon variant="subtle" color="red">
+                <IconTrash size="1rem" />
+              </ActionIcon>
+            </Flex>
+          ),
+        }))}
+        pageSize={5}
+      />
     </Flex>
   );
 }

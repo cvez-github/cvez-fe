@@ -11,7 +11,7 @@ import SubScript from "@tiptap/extension-subscript";
 import HeadingLayout from "../../components/Layout/HeadingLayout";
 import appStrings from "../../utils/strings";
 import { useLocation } from "react-router-dom";
-import { getJD, uploadJD } from "../../controllers/jd";
+import { getJDControl, uploadJDControl } from "../../controllers/jd";
 
 export default function JDPage() {
   const location = useLocation();
@@ -35,14 +35,14 @@ export default function JDPage() {
 
   function handleSaveJD() {
     setIsLoading(true);
-    uploadJD(projectId, positionId, editorController?.getHTML()).then((_) =>
-      setIsLoading(false)
+    uploadJDControl(projectId, positionId, editorController?.getHTML()).then(
+      (_) => setIsLoading(false)
     );
   }
 
   useEffect(() => {
-    getJD(projectId, positionId).then((data) => {
-      editorController.commands.setContent(data.content);
+    getJDControl(projectId, positionId).then((data) => {
+      editorController.commands.setContent(data?.content || "");
     });
   }, [editorController]);
 

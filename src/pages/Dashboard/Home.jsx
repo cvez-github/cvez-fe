@@ -39,9 +39,13 @@ export default function HomePage() {
 
   useEffect(() => {
     // Get your projects
-    getYourProjectsControl().then((data) => setProjects(data));
+    if (!projects) {
+      getYourProjectsControl().then((data) => setProjects(data));
+    }
     // Get shared projects
-    getSharedProjectsControl().then((data) => setShared(data));
+    if (!shared) {
+      getSharedProjectsControl().then((data) => setShared(data));
+    }
   }, [setProjects, setShared]);
 
   return (

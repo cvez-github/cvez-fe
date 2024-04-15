@@ -6,56 +6,84 @@ import {
   Paper,
   Title,
   ActionIcon,
-  SimpleGrid,
+  RingProgress,
   Text,
   Badge,
-  Menu
+  Menu,
+  Skeleton,
+  Center,
+  Tooltip,
+  Loader,
 } from "@mantine/core";
 import HeadingLayout from "../../components/Layout/HeadingLayout";
 import appStrings from "../../utils/strings";
-import { IconDownload, IconDots, IconTrash } from "@tabler/icons-react";
+import {
+  IconDownload,
+  IconDots,
+  IconTrash,
+  IconInfoSquareRounded,
+} from "@tabler/icons-react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { getCVDetailControl } from "../../controllers/cv";
+import { getScoreColor } from "../../utils/utils";
 
-const mockExperience = [
-  { company: "Company 1", project1: "Description of this project", project2: "Description of this project" },
-  { company: "Company 2", project1: "Description of this project", project2: "Description of this project" },
-]
-const mockData = [
-  { technical: "React", soft: "Teamwork", certificate: "Certificate 1" },
-  { technical: "Vue.js", soft: "Problem solving", certificate: "Certificate 2" },
-  { technical: "Angular", soft: "Communication", certificate: "Certificate 3" },
-  { technical: "Node.js", soft: "Time management", certificate: "Certificate 4" },
-  { technical: "Express.js", soft: "Leadership", certificate: "Certificate 5" },
-  { technical: "MongoDB", soft: "Adaptability", certificate: "Certificate 6" },
-  { technical: "SQL", soft: "Creativity", certificate: "Certificate 7" },
-
-]
 export default function CVDetailPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const projectId = location.pathname.split("/")[1];
   const positionId = location.pathname.split("/")[2];
-  const cvname = location.pathname.split("/")[4];
+  const cvId = location.pathname.split("/")[4];
+  const [cv, setCV] = useState(null);
 
-  function handleNavigateToCvName() {
-    navigate(`/${projectId}/${positionId}/cv`)
+  function handleNavigateToCVs() {
+    navigate(`/${projectId}/${positionId}/cv`);
   }
 
-  return (
-    <Flex direction="column" gap="xl" w="60%">
-      <Breadcrumbs>
-        <Anchor onClick={handleNavigateToCvName}>{appStrings.language.breadcrumb.cv}</Anchor>
-        <Anchor>
-          {decodeURIComponent(cvname)}
-        </Anchor>
-      </Breadcrumbs>
-      <Paper p="sm" withBorder>
-        <ScrollArea h={300} offsetScrollbars>
+  useEffect(() => {
+    // Get CV detail
+    getCVDetailControl(projectId, positionId, cvId).then((data) => {
+      setCV(data);
+    });
+  }, []);
 
-        </ScrollArea>
-      </Paper>
+  return (
+    <Flex direction="column" gap="xl">
+      <HeadingLayout>
+        <Breadcrumbs>
+          <Anchor onClick={handleNavigateToCVs}>
+            {appStrings.language.cv.title}
+          </Anchor>
+          {cv ? cv.name : <Skeleton width={200} height={25} />}
+        </Breadcrumbs>
+      </HeadingLayout>
+      {cv ? (
+        <Paper
+          withBorder
+          h={500}
+          style={{
+            overflow: "hidden",
+          }}
+        >
+          <iframe
+            src={cv.url}
+            height={500}
+            style={{
+              width: "100%",
+              height: "100%",
+              border: "none",
+            }}
+          />
+        </Paper>
+      ) : (
+        <Skeleton height={500} />
+      )}
       <Flex justify="space-between">
-        <Title order={1}>{decodeURIComponent(cvname)}</Title>
+        {cv ? (
+          <Title order={2}>{cv.name}</Title>
+        ) : (
+          <Skeleton width={200} height={36} />
+        )}
         <Menu withinPortal shadow="md" position="top-end" width={150}>
           <Menu.Target>
             <ActionIcon variant="light" color="gray">
@@ -63,7 +91,11 @@ export default function CVDetailPage() {
             </ActionIcon>
           </Menu.Target>
           <Menu.Dropdown p={5}>
-            <Menu.Item c="gray" leftSection={<IconDownload size="1rem" />} onClick={() => handleEdit(question, index)}>
+            <Menu.Item
+              c="gray"
+              leftSection={<IconDownload size="1rem" />}
+              onClick={() => handleEdit(question, index)}
+            >
               {appStrings.language.btn.download}
             </Menu.Item>
             <Menu.Item c="red" leftSection={<IconTrash size="1rem" />}>
@@ -72,36 +104,58 @@ export default function CVDetailPage() {
           </Menu.Dropdown>
         </Menu>
       </Flex>
-      <Title order={2}>{appStrings.language.cvDetail.summary}</Title>
-      Description of this CV
-      <Title order={2}>{appStrings.language.cvDetail.skillcert}</Title>
-      {mockExperience.map((experience, index) => (
-        <div key={index}>
-          <Text size='xl' c="blue">{experience.company}</Text>
-          <Text size='md' c="gray">Project 1: {experience.project1}</Text>
-          <Text size='md' c="gray">Project 2: {experience.project2}</Text>
-        </div>
-      ))}
-      <SimpleGrid cols={1} spacing="xl" verticalSpacing="lg">
-        <Title order={3}>{appStrings.language.cvDetail.technical}</Title>
-        <SimpleGrid cols={4} spacing='xs' verticalSpacing='md'>
-          {mockData.map((data, index) => (
-            <Badge variant="light" key={index} size='lg' c="blue">{data.technical}</Badge>
-          ))}
-        </SimpleGrid>
-        <Title order={3}>{appStrings.language.cvDetail.soft}</Title>
-        <SimpleGrid cols={4} spacing='xs' verticalSpacing='md'>
-          {mockData.map((data, index) => (
-            <Badge variant="light" key={index} size='lg' c="blue">{data.soft}</Badge >
-          ))}
-        </SimpleGrid>
-        <Title order={3}>{appStrings.language.cvDetail.certificate}</Title>
-        <SimpleGrid cols={4} spacing='xs' verticalSpacing='md'>
-          {mockData.map((data, index) => (
-            <Badge variant="light" key={index} size='lg' c="blue">{data.certificate}</Badge>
-          ))}
-        </SimpleGrid>
-      </SimpleGrid>
+      <Flex gap="lg">
+        {cv
+          ? Object.entries(cv.score).map(([key, value]) => (
+              <Flex direction="column" align="center">
+                <RingProgress
+                  label={
+                    <Text>
+                      <Center>{value}%</Center>
+                    </Text>
+                  }
+                  roundCaps
+                  sections={[{ value: value, color: getScoreColor(value) }]}
+                />
+                <Text>
+                  {key === "overall"
+                    ? appStrings.language.cvDetail.overall
+                    : key}
+                </Text>
+              </Flex>
+            ))
+          : null}
+      </Flex>
+      <Flex direction="column" align="start" gap="xl">
+        {cv
+          ? Object.entries(cv.extraction).map(([key, value]) => (
+              <Flex direction="column" align="start" gap="md">
+                <Flex align="center" gap="md">
+                  <Title order={3}>{key}</Title>
+                  <Tooltip>
+                    <IconInfoSquareRounded size="1rem" />
+                  </Tooltip>
+                </Flex>
+                <Flex wrap="wrap" gap="md">
+                  {Object.entries(value).map(([key, value]) => (
+                    <Badge
+                      color="blue"
+                      radius="xl"
+                      size="lg"
+                      rightSection={
+                        <Badge color="gray" size="md">
+                          {value}
+                        </Badge>
+                      }
+                    >
+                      {key}
+                    </Badge>
+                  ))}
+                </Flex>
+              </Flex>
+            ))
+          : null}
+      </Flex>
     </Flex>
   );
 }

@@ -14,12 +14,14 @@ export default function SharedProjectPage() {
   const setShared = useProjectsState((state) => state.setShared);
 
   useEffect(() => {
-    getSharedProjectsControl().then((data) => setShared(data));
+    if (!shared) {
+      getSharedProjectsControl().then((data) => setShared(data));
+    }
   }, [setShared]);
 
   return (
     <Flex direction="column" gap={30}>
-      <HeadingLayout>
+      <HeadingLayout loading={!shared}>
         <Title order={2}>{appStrings.language.sharedProjects.heading}</Title>
         <Flex>
           <Input
@@ -28,23 +30,21 @@ export default function SharedProjectPage() {
           />
         </Flex>
       </HeadingLayout>
-      {shared ? (
-        shared.length !== 0 ? (
-          <GridLayout>
-            {shared.map((data, index) => (
-              <ProjectCard
-                key={index}
-                title={data.name}
-                description={data.description}
-                alias={data.alias}
-                members={data.members}
-              />
-            ))}
-          </GridLayout>
-        ) : (
-          <Empty />
-        )
-      ) : null}
+      {shared?.length !== 0 ? (
+        <GridLayout loading={!shared}>
+          {shared?.map((data, index) => (
+            <ProjectCard
+              key={index}
+              title={data.name}
+              description={data.description}
+              alias={data.alias}
+              members={data.members}
+            />
+          ))}
+        </GridLayout>
+      ) : (
+        <Empty />
+      )}
     </Flex>
   );
 }

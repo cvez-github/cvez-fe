@@ -1,4 +1,4 @@
-import { Avatar, Menu, Text, Title } from "@mantine/core";
+import { Avatar, Menu, Text, Title, Skeleton } from "@mantine/core";
 import { IconLogout } from "@tabler/icons-react";
 import useGlobalState from "../../context/global";
 import appStrings from "../../utils/strings";
@@ -9,7 +9,7 @@ export default function User({ onUserTap, onLogoutTap }) {
   return (
     <Menu shadow="md" width={250}>
       <Menu.Target>
-        <Avatar src={user?.avatar} />
+        {user ? <Avatar src={user.avatar} /> : <Skeleton circle height={40} />}
       </Menu.Target>
       <Menu.Dropdown>
         <Menu.Item onClick={onUserTap}>

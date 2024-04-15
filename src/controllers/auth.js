@@ -1,6 +1,8 @@
 import apiHelper from "../utils/apiHelper";
 import { apiUrls } from "../utils/constants";
 import { getCookie, setCookie, removeCookie } from "../utils/cookie";
+import { notifications } from "@mantine/notifications";
+import appStrings from "../utils/strings";
 
 export async function loginControl(accessToken) {
   const response = await apiHelper.post(apiUrls.login, {
@@ -35,6 +37,11 @@ export async function getCurrentUserControl({ onFail, onSuccess }) {
       onSuccess(response.data);
     }
   } catch (error) {
+    notifications.show({
+      title: appStrings.language.utils.error,
+      color: "red",
+      message: error?.message,
+    });
     onFail(error);
   }
 }

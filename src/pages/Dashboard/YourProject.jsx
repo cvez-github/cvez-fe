@@ -32,12 +32,14 @@ export default function YourProjectPage() {
   }
 
   useEffect(() => {
-    getYourProjectsControl().then((data) => setProjects(data));
+    if (!projects) {
+      getYourProjectsControl().then((data) => setProjects(data));
+    }
   }, [setProjects]);
 
   return (
     <Flex direction="column" gap={30}>
-      <HeadingLayout>
+      <HeadingLayout loading={!projects}>
         <Title order={2}>{appStrings.language.yourProject.heading}</Title>
         <Flex gap={15}>
           <Input
@@ -52,28 +54,26 @@ export default function YourProjectPage() {
           </Button>
         </Flex>
       </HeadingLayout>
-      {projects ? (
-        projects.length !== 0 ? (
-          <GridLayout>
-            {projects.map((data) => (
-              <ProjectCard
-                key={data.id}
-                title={data.name}
-                description={data.description}
-                alias={data.alias}
-                members={data.members}
-                actions={
-                  <YourProjectAction
-                    onDeleteTap={() => handleDeleteProject(data.id)}
-                  />
-                }
-              />
-            ))}
-          </GridLayout>
-        ) : (
-          <Empty />
-        )
-      ) : null}
+      {projects?.length !== 0 ? (
+        <GridLayout loading={!projects}>
+          {projects?.map((data) => (
+            <ProjectCard
+              key={data.id}
+              title={data.name}
+              description={data.description}
+              alias={data.alias}
+              members={data.members}
+              actions={
+                <YourProjectAction
+                  onDeleteTap={() => handleDeleteProject(data.id)}
+                />
+              }
+            />
+          ))}
+        </GridLayout>
+      ) : (
+        <Empty />
+      )}
       <CreateProjectDrawer
         open={isNewProjectOpen}
         onClose={isNewProjectToggle.close}

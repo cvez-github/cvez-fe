@@ -1,7 +1,8 @@
-import { Flex, Title, ActionIcon, Text, Button } from "@mantine/core";
+import { Flex, Title, ActionIcon, Text, Button, Menu } from "@mantine/core";
 import { IconDots } from "@tabler/icons-react";
 import { DateInput } from "@mantine/dates";
 import HeadingLayout from "../../components/Layout/HeadingLayout";
+import PositionAction from "../../components/Actions/PositionAction";
 import { IconCalendarEvent } from "@tabler/icons-react";
 import appStrings from "../../utils/strings";
 
@@ -64,9 +65,16 @@ export default function PositionGeneralPage() {
     <Flex direction="column" gap="lg">
       <HeadingLayout>
         <Title order={1}>{position?.name}</Title>
-        <ActionIcon variant="light" color="gray">
-          <IconDots />
-        </ActionIcon>
+        <Menu withinPortal shadow="md" position="bottom-end" width={150}>
+          <Menu.Target>
+            <ActionIcon variant="light" color="gray">
+              <IconDots />
+            </ActionIcon>
+          </Menu.Target>
+          <Menu.Dropdown>
+            <PositionAction />
+          </Menu.Dropdown>
+        </Menu>
       </HeadingLayout>
       <Text size="lg">{position?.description}</Text>
       <Flex gap="lg">

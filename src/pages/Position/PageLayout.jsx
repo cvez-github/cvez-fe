@@ -14,6 +14,7 @@ import { getCurrentUserControl } from "../../controllers/auth";
 import { getPositionControl } from "../../controllers/positions";
 import usePositionsState from "../../context/position";
 import useGlobalState from "../../context/global";
+import PositionGeneralPage from "./PositionGeneral";
 
 export default function PositionPageLayout() {
   const location = useLocation();
@@ -21,6 +22,7 @@ export default function PositionPageLayout() {
   const setUser = useGlobalState((state) => state.setUser);
   const projectId = location.pathname.split("/")[1];
   const positionId = location.pathname.split("/")[2];
+  const isGeneral = location.pathname.split("/")[3] === undefined;
   const setPosition = usePositionsState((state) => state.setPosition);
 
   const navbarNavigation = [
@@ -68,7 +70,11 @@ export default function PositionPageLayout() {
   }, []);
 
   return (
-    <AppLayout navPreItems={navbarNavigation} navItems={navbarItems}>
+    <AppLayout
+      navPreItems={navbarNavigation}
+      navItems={navbarItems}
+      aside={!isGeneral ? <PositionGeneralPage /> : null}
+    >
       <Outlet />
     </AppLayout>
   );

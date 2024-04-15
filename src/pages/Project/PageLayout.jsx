@@ -8,7 +8,7 @@ import {
 } from "@tabler/icons-react";
 import AppLayout from "../../components/Layout/AppLayout";
 import appStrings from "../../utils/strings";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import {
   getSharedProjectsControl,
   getYourProjectsControl,
@@ -23,8 +23,8 @@ export default function ProjectPageLayout() {
   const projectId = location.pathname.split("/")[1];
   const setProjects = useProjectsState((state) => state.setProjects);
   const setShared = useProjectsState((state) => state.setShared);
+  const user = useGlobalState((state) => state.user);
   const setUser = useGlobalState((state) => state.setUser);
-  const [isLoading, setIsLoading] = useState(true);
 
   const navbarItems = [
     {
@@ -52,31 +52,27 @@ export default function ProjectPageLayout() {
 
   useEffect(() => {
     // Fetch user data
-    getCurrentUserControl({
-      onFail: () => navigate("/login"),
-      onSuccess: (user) => {
-        setUser(user);
-        // Fetch projects data
-        getYourProjectsControl().then((data) => {
-          setProjects(data);
+    if (!user) {
+      getCurrentUserControl({
+        onFail: () => navigate("/login"),
+        onSuccess: (user) => {
+          setUser(user);
+          // Fetch projects data
+          getYourProjectsControl().then((data) => {
+            setProjects(data);
+          });
+          // Fetch shared projects data
           getSharedProjectsControl().then((data) => {
             setShared(data);
-            setIsLoading(false);
           });
-        });
-      },
-    });
+        },
+      });
+    }
   }, [setProjects, setShared]);
 
   return (
-    <Box pos="relative">
-      <LoadingOverlay
-        visible={isLoading}
-        overlayProps={{ radius: "sm", blur: 2, opacity: 0.5 }}
-      />
-      <AppLayout navItems={navbarItems} navPostItems={navbarSettings}>
-        <Outlet />
-      </AppLayout>
-    </Box>
+    <AppLayout navItems={navbarItems} navPostItems={navbarSettings}>
+      <Outlet />
+    </AppLayout>
   );
 }

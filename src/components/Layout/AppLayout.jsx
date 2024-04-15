@@ -6,8 +6,10 @@ import {
   Container,
   Burger,
   Select,
+  ActionIcon,
 } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
+import { useDisclosure, useMediaQuery } from "@mantine/hooks";
+import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
 import Logo from "../Logo";
 import Navbar from "../Navbar";
 import User from "../User";
@@ -21,8 +23,11 @@ export default function AppLayout({
   navItems = [],
   navPreItems = [],
   navPostItems = [],
+  aside,
 }) {
   const [opened, { toggle }] = useDisclosure();
+  const [asideOpened, { toggle: toggleAside }] = useDisclosure();
+  const isMobile = useMediaQuery("(max-width: 768px)");
   const navigate = useNavigate();
   const location = useLocation();
   const projects = useProjectsState((state) => state.projects);
@@ -45,6 +50,7 @@ export default function AppLayout({
 
   function handleChangeProject(id) {
     navigate(`/${id}`);
+    window.location.reload();
   }
 
   function getActiveIndex() {
@@ -117,7 +123,15 @@ export default function AppLayout({
           postItems={navPostItems}
         />
       </AppShell.Navbar>
-      <AppShell.Main>
+      <AppShell.Main
+        style={{
+          marginRight: asideOpened
+            ? "40rem"
+            : aside && !isMobile
+            ? "48px"
+            : "0",
+        }}
+      >
         <Container
           style={{
             maxWidth: "1400px",
@@ -127,6 +141,24 @@ export default function AppLayout({
           {children}
         </Container>
       </AppShell.Main>
+      {aside && !isMobile ? (
+        <AppShell.Aside w={asideOpened ? "40rem" : "auto"}>
+          {asideOpened ? (
+            <Flex direction="column" p="md" gap="md">
+              <ActionIcon onClick={toggleAside} variant="subtle">
+                <IconChevronRight size="1rem" />
+              </ActionIcon>
+              {aside}
+            </Flex>
+          ) : (
+            <Flex direction="column" p="xs">
+              <ActionIcon onClick={toggleAside} variant="subtle">
+                <IconChevronLeft size="1rem" />
+              </ActionIcon>
+            </Flex>
+          )}
+        </AppShell.Aside>
+      ) : null}
     </AppShell>
   );
 }

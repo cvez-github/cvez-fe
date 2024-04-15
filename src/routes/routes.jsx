@@ -12,10 +12,10 @@ import PositionPageLayout from "../pages/Position/PageLayout";
 import PositionGeneralPage from "../pages/Position/PositionGeneral";
 import CVPage from "../pages/Position/CV";
 import JDPage from "../pages/Position/JD";
-import QuestionBankPage from "../pages/Position/QuestionBank";
+// import QuestionBankPage from "../pages/Position/QuestionBank";
 import RedirectPage from "../pages/Utils/Redirect";
 import CVDetailPage from "../pages/Position/CVDetail";
-import QuestionDetailPage from "../pages/Position/QuestionDetail";
+// import QuestionDetailPage from "../pages/Position/QuestionDetail";
 import NotFoundPage from "../pages/Utils/NotFound";
 import LoginPage from "../pages/Login/LoginPage";
 import LandingPage from "../pages/Landing/LandingPage";
@@ -99,7 +99,7 @@ const appRoutes = [
       },
       {
         path: "/:project-id/:position-id/questions",
-        element: <QuestionBankPage />,
+        // element: <QuestionBankPage />,
       },
       {
         path: "/:project-id/:position-id/cv/:cv-id",
@@ -107,7 +107,7 @@ const appRoutes = [
       },
       {
         path: "/:project-id/:position-id/questions/:question-id",
-        element: <QuestionDetailPage />,
+        // element: <QuestionDetailPage />,
       },
     ],
   },

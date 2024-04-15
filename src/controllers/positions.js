@@ -1,5 +1,7 @@
 import apiHelper from "../utils/apiHelper";
 import { apiUrls } from "../utils/constants";
+import { notifications } from "@mantine/notifications";
+import appStrings from "../utils/strings";
 
 export async function getPositionsControl(project_id) {
   const response = await apiHelper.get(apiUrls.position + project_id);
@@ -33,7 +35,12 @@ export async function createPositionControl(
   if (response?.data) {
     return response.data;
   } else {
-    throw new Error(response.detail);
+    notifications.show({
+      title: appStrings.language.utils.error,
+      color: "red",
+      message: response.detail,
+    });
+    return null;
   }
 }
 
@@ -45,6 +52,11 @@ export async function getPositionControl(project_id, position_id) {
   if (response?.data) {
     return response.data;
   } else {
-    throw new Error(response.detail);
+    notifications.show({
+      title: appStrings.language.utils.error,
+      color: "red",
+      message: response.detail,
+    });
+    return null;
   }
 }

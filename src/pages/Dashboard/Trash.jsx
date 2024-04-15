@@ -27,12 +27,14 @@ export default function TrashPage() {
   }
 
   useEffect(() => {
-    getTrashProjectsControl().then((data) => setTrash(data));
+    if (!trash) {
+      getTrashProjectsControl().then((data) => setTrash(data));
+    }
   }, [setTrash]);
 
   return (
     <Flex direction="column" gap={30}>
-      <HeadingLayout>
+      <HeadingLayout loading={!trash}>
         <Title order={2}>{appStrings.language.trashProjects.heading}</Title>
         <Flex>
           <Button color="red" leftSection={<IconTrash size="1rem" />}>
@@ -40,28 +42,26 @@ export default function TrashPage() {
           </Button>
         </Flex>
       </HeadingLayout>
-      {trash ? (
-        trash.length !== 0 ? (
-          <ProjectGridLayout>
-            {trash.map((data) => (
-              <ProjectCard
-                key={data.id}
-                title={data.name}
-                description={data.description}
-                alias={data.alias}
-                actions={
-                  <DeleteProjectAction
-                    onRestoreTap={() => handleRestoreProject(data.id)}
-                  />
-                }
-                disableNavigate
-              />
-            ))}
-          </ProjectGridLayout>
-        ) : (
-          <Empty />
-        )
-      ) : null}
+      {trash?.length !== 0 ? (
+        <ProjectGridLayout loading={!trash}>
+          {trash?.map((data) => (
+            <ProjectCard
+              key={data.id}
+              title={data.name}
+              description={data.description}
+              alias={data.alias}
+              actions={
+                <DeleteProjectAction
+                  onRestoreTap={() => handleRestoreProject(data.id)}
+                />
+              }
+              disableNavigate
+            />
+          ))}
+        </ProjectGridLayout>
+      ) : (
+        <Empty />
+      )}
     </Flex>
   );
 }

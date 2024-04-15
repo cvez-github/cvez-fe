@@ -1,5 +1,22 @@
 import apiHelper from "../utils/apiHelper";
 import { apiUrls } from "../utils/constants";
+import appStrings from "../utils/strings";
+import { notifications } from "@mantine/notifications";
+
+export async function getProjectByIdControl(id) {
+  const response = await apiHelper.get(apiUrls.project + id);
+  console.log(response.msg);
+  if (response?.data) {
+    return response.data;
+  } else {
+    notifications.show({
+      title: appStrings.language.utils.error,
+      color: "red",
+      message: response.detail,
+    });
+    return null;
+  }
+}
 
 export async function createProjectControl(name, alias, description) {
   const data = {
@@ -12,7 +29,12 @@ export async function createProjectControl(name, alias, description) {
   if (response?.data) {
     return response.data;
   } else {
-    throw new Error(response.detail);
+    notifications.show({
+      title: appStrings.language.utils.error,
+      color: "red",
+      message: response.detail,
+    });
+    return null;
   }
 }
 
