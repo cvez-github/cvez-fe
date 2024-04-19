@@ -21,10 +21,10 @@ export default function NotFoundPage() {
       >
         404
       </Title>
-      <Title order={2}>{appStrings.language.utils.notFound.title}</Title>
-      <Text>{appStrings.language.utils.notFound.message}</Text>
+      <Title order={2}>{appStrings.language.utils.notFoundTitle}</Title>
+      <Text>{appStrings.language.utils.notFoundMessage}</Text>
       <Button onClick={handleNavigateToHome}>
-        {appStrings.language.btn.return}
+        {appStrings.language.btn.backToHome}
       </Button>
     </Flex>
   );

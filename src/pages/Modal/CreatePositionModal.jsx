@@ -1,4 +1,3 @@
-import { v4 as uuidv4 } from "uuid";
 import {
   Modal,
   Title,
@@ -10,17 +9,18 @@ import {
   Select,
 } from "@mantine/core";
 import { DateInput } from "@mantine/dates";
-import { notifications } from "@mantine/notifications";
 import { IconCalendarEvent } from "@tabler/icons-react";
-import { useRef, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
 import appStrings from "../../utils/strings";
 import criteriaSet from "../../utils/criteria";
-import { getAliasByName } from "../../utils/utils";
-import { createPositionControl } from "../../controllers/positions";
-import usePositionsState from "../../context/position";
 
-// eslint-disable-next-line react/prop-types
+import { v4 as uuidv4 } from "uuid";
+import { useRef, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { getAliasByName } from "../../utils/utils";
+import { createPositionApi } from "../../apis/positions";
+import usePositionsState from "../../context/position";
+import useNotification from "../../hooks/useNotification";
+
 export default function CreatePositionModal({ title, open, onClose }) {
   const location = useLocation();
   const navigate = useNavigate();
@@ -34,7 +34,9 @@ export default function CreatePositionModal({ title, open, onClose }) {
   });
   const idAlias = useRef(uuidv4());
   const [isLoading, setIsLoading] = useState(false);
+  const [isFirstTimeError, setIsFirstTimeError] = useState(true);
   const setPosition = usePositionsState((state) => state.setPosition);
+  const errorNotify = useNotification({ type: "error" });
 
   const handleInputChange = (event) => {
     setForm({ ...form, positionName: event.target.value });
@@ -57,26 +59,31 @@ export default function CreatePositionModal({ title, open, onClose }) {
   };
 
   function handleSubmitForm() {
+    setIsFirstTimeError(false);
     if (!form.positionName || !form.startDate || !form.endDate) {
-      notifications.show({
-        title: appStrings.language.notification.fieldRequired,
-        color: "red",
+      errorNotify({
+        message: appStrings.language.createPosition.requiredErrorMessage,
       });
       return;
     }
     setIsLoading(true);
-    createPositionControl(
-      projectId,
-      form.positionName,
-      getAliasByName(form.positionName, idAlias.current),
-      form.positionDescription,
-      form.startDate.toISOString(),
-      form.endDate.toISOString(),
-      form.criteriaSet
-    ).then((data) => {
-      setIsLoading(false);
-      setPosition(data);
-      navigate(`/${projectId}/${data.id}`);
+    createPositionApi({
+      id: projectId,
+      name: form.positionName,
+      alias: getAliasByName(form.positionName, idAlias.current),
+      description: form.positionDescription,
+      startDate: form.startDate.toISOString(),
+      endDate: form.endDate.toISOString(),
+      criteria: form.criteriaSet,
+      onFail: (msg) => {
+        setIsLoading(false);
+        errorNotify({ message: msg });
+      },
+      onSuccess: (position) => {
+        setIsLoading(false);
+        setPosition(position);
+        navigate(`/${projectId}/${position.id}`);
+      },
     });
   }
 
@@ -94,6 +101,11 @@ export default function CreatePositionModal({ title, open, onClose }) {
           onChange={handleInputChange}
           value={form.positionName}
           required
+          error={
+            isFirstTimeError || form.positionName
+              ? null
+              : appStrings.language.createPosition.fieldRequired
+          }
         />
         <TextInput
           disabled
@@ -121,6 +133,11 @@ export default function CreatePositionModal({ title, open, onClose }) {
             onChange={handleStartDateChange}
             maxDate={form.endDate}
             required
+            error={
+              isFirstTimeError || form.startDate
+                ? null
+                : appStrings.language.createPosition.fieldRequired
+            }
           />
           <DateInput
             rightSection={<IconCalendarEvent />}
@@ -132,6 +149,11 @@ export default function CreatePositionModal({ title, open, onClose }) {
             onChange={handleEndDateChange}
             minDate={form.startDate}
             required
+            error={
+              isFirstTimeError || form.endDate
+                ? null
+                : appStrings.language.createPosition.fieldRequired
+            }
           />
         </Flex>
         <Select

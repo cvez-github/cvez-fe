@@ -1,3 +1,5 @@
+import LandingPage from "../pages/Landing/LandingPage";
+import LoginPage from "../pages/Login/LoginPage";
 import DashboardPageLayout from "../pages/Dashboard/PageLayout";
 import HomePage from "../pages/Dashboard/Home";
 import YourProjectPage from "../pages/Dashboard/YourProject";
@@ -5,20 +7,19 @@ import SharedProjectPage from "../pages/Dashboard/SharedProject";
 import TrashPage from "../pages/Dashboard/Trash";
 import SettingPage from "../pages/Dashboard/Setting";
 import ProjectPageLayout from "../pages/Project/PageLayout";
-import InsightsPage from "../pages/Project/Insight";
 import YourPositionPage from "../pages/Project/Position";
+import InsightsPage from "../pages/Project/Insight";
 import ProjectSettingPage from "../pages/Project/Setting";
 import PositionPageLayout from "../pages/Position/PageLayout";
 import PositionGeneralPage from "../pages/Position/PositionGeneral";
-import CVPage from "../pages/Position/CV";
 import JDPage from "../pages/Position/JD";
-// import QuestionBankPage from "../pages/Position/QuestionBank";
-import RedirectPage from "../pages/Utils/Redirect";
+import CVPage from "../pages/Position/CV";
 import CVDetailPage from "../pages/Position/CVDetail";
+import QuestionBankPage from "../pages/Position/QuestionBank";
 // import QuestionDetailPage from "../pages/Position/QuestionDetail";
+import RedirectPage from "../pages/Utils/Redirect";
 import NotFoundPage from "../pages/Utils/NotFound";
-import LoginPage from "../pages/Login/LoginPage";
-import LandingPage from "../pages/Landing/LandingPage";
+import UploadPage from "../pages/Upload/UploadPage";
 
 const appRoutes = [
   {
@@ -32,6 +33,10 @@ const appRoutes = [
   {
     path: "/404",
     element: <NotFoundPage />,
+  },
+  {
+    path: "/upload/:positionId",
+    element: <UploadPage />,
   },
   {
     path: "/dashboard",
@@ -99,7 +104,7 @@ const appRoutes = [
       },
       {
         path: "/:project-id/:position-id/questions",
-        // element: <QuestionBankPage />,
+        element: <QuestionBankPage />,
       },
       {
         path: "/:project-id/:position-id/cv/:cv-id",

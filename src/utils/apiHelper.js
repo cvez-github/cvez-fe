@@ -1,9 +1,12 @@
 import axios from "axios";
 import { baseUrl } from "./constants";
+import { formatErrorResponse } from "./utils";
+import { getCookie } from "./cookie";
 
 const api = axios.create({
   baseURL: baseUrl,
   headers: {
+    Authorization: `Bearer ${getCookie("token")}`,
     "Content-Type": "application/json",
   },
 });
@@ -21,7 +24,7 @@ const apiHelper = {
       const response = await api.get(url, { params });
       return response.data;
     } catch (error) {
-      throw new Error(error);
+      return formatErrorResponse(error);
     }
   },
 
@@ -33,7 +36,7 @@ const apiHelper = {
       });
       return response.data;
     } catch (error) {
-      throw new Error(error);
+      return formatErrorResponse(error);
     }
   },
 
@@ -45,7 +48,7 @@ const apiHelper = {
       });
       return response.data;
     } catch (error) {
-      throw new Error(error);
+      return formatErrorResponse(error);
     }
   },
 
@@ -57,7 +60,7 @@ const apiHelper = {
       });
       return response.data;
     } catch (error) {
-      throw new Error(error);
+      return formatErrorResponse(error);
     }
   },
 
@@ -66,7 +69,7 @@ const apiHelper = {
       const response = await api.delete(url, { ...config });
       return response.data;
     } catch (error) {
-      throw new Error(error);
+      return formatErrorResponse(error);
     }
   },
 };

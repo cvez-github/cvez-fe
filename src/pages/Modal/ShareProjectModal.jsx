@@ -1,60 +1,86 @@
-import { useDisclosure } from '@mantine/hooks';
-import { Modal, Button, Avatar, Group, Text, MultiSelect, Flex } from '@mantine/core';
-import appStrings from '../../utils/strings';
+import {
+  Modal,
+  Button,
+  Avatar,
+  Group,
+  Text,
+  MultiSelect,
+  Flex,
+  Title,
+  Loader,
+} from "@mantine/core";
+import appStrings from "../../utils/strings";
+import { useState } from "react";
+import { useDebouncedCallback } from "@mantine/hooks";
 
-const usersData = {
-    'Emily Johnson': {
-        image: 'https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-7.png',
-        email: 'emily92@gmail.com',
-    },
-    'Ava Rodriguez': {
-        image: 'https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-8.png',
-        email: 'ava_rose@gmail.com',
-    },
-    'Olivia Chen': {
-        image: 'https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-4.png',
-        email: 'livvy_globe@gmail.com',
-    },
-    'Ethan Barnes': {
-        image: 'https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-1.png',
-        email: 'ethan_explorer@gmail.com',
-    },
-    'Mason Taylor': {
-        image: 'https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-2.png',
-        email: 'mason_musician@gmail.com',
-    },
+const renderAutocompleteOption = ({ option, data }) => {
+  const user = data.find((item) => item.email === option.value);
+  return (
+    <Group gap="sm">
+      <Avatar src={user.avatar} size={36} radius="xl" />
+      <div>
+        <Text size="sm">{user.name}</Text>
+        <Text size="xs" opacity={0.5}>
+          {user.email}
+        </Text>
+      </div>
+    </Group>
+  );
 };
 
-const renderAutocompleteOption = ({ option }) => (
-    <Group gap="sm">
-        <Avatar src={usersData[option.value].image} size={36} radius="xl" />
-        <div>
-            <Text size="sm">{option.value}</Text>
-            <Text size="xs" opacity={0.5}>
-                {usersData[option.value].email}
-            </Text>
-        </div>
-    </Group>
-);
+export default function ShareProjectModal({
+  open,
+  onClose,
+  onSearch,
+  onShare,
+}) {
+  const [isSearchLoading, setSearchLoading] = useState(false);
+  const [data, setData] = useState([]);
+  const [selected, setSelected] = useState([]);
+  const handleSearch = useDebouncedCallback(async (query) => {
+    if (!query) return;
+    setSearchLoading(true);
+    onSearch(query).then((data) => {
+      setData(data);
+      setSearchLoading(false);
+    });
+  }, 500);
 
-export default function LangdingPage() {
-    const [opened, { open, close }] = useDisclosure(false);
-    return (
-        <>
-            <Modal opened={opened} onClose={close} title={appStrings.language.share.title}>
-                <MultiSelect
-                    data={['Emily Johnson', 'Ava Rodriguez', 'Olivia Chen', 'Ethan Barnes', 'Mason Taylor']}
-                    renderOption={renderAutocompleteOption}
-                    maxDropdownHeight={300}
-                    placeholder={appStrings.language.share.search}
-                    searchable
-                />
-                <Flex justify="flex-end" style={{ marginTop: '20px' }} gap='sm'>
-                    <Button variant='default' onClick={close}>{appStrings.language.share.cancel}</Button>
-                    <Button>{appStrings.language.Share.share}</Button>
-                </Flex>
-            </Modal>
-            <Button onClick={open}>{appStrings.language.Share.shareproject}</Button>
-        </>
-    );
+  return (
+    <Modal
+      opened={open}
+      onClose={onClose}
+      title={<Title order={4}>{appStrings.language.share.title}</Title>}
+    >
+      <Flex direction="column" gap="md">
+        <MultiSelect
+          data={data.map((item) => item.email)}
+          renderOption={({ option }) =>
+            renderAutocompleteOption({ option, data })
+          }
+          maxDropdownHeight={300}
+          placeholder={appStrings.language.share.searchPlaceholder}
+          searchable
+          onSearchChange={handleSearch}
+          leftSection={isSearchLoading && <Loader size="xs" />}
+          value={selected}
+          onChange={(value) => setSelected(value)}
+        />
+        <Flex justify="flex-end" gap="md">
+          <Button variant="default" onClick={onClose}>
+            {appStrings.language.btn.cancel}
+          </Button>
+          <Button
+            onClick={() => {
+              onShare &&
+                onShare(data.filter((item) => selected.includes(item.email)));
+              onClose();
+            }}
+          >
+            {appStrings.language.btn.share}
+          </Button>
+        </Flex>
+      </Flex>
+    </Modal>
+  );
 }

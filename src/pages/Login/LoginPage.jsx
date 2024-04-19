@@ -7,18 +7,26 @@ import appStrings from "../../utils/strings";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useGoogleLogin } from "@react-oauth/google";
-import { loginControl } from "../../controllers/auth";
+import useNotification from "../../hooks/useNotification";
+import { loginApi } from "../../apis/auth";
 
 export default function LoginPage() {
   const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(false);
+  const errorNofify = useNotification({ type: "error" });
 
   const login = useGoogleLogin({
     onSuccess: (tokenResponse) => {
       setIsLogin(true);
-      loginControl(tokenResponse.access_token).then(() => {
-        navigate("/dashboard");
-        setIsLogin(false);
+      loginApi({
+        accessToken: tokenResponse.access_token,
+        onFail: (msg) => {
+          errorNofify({ message: msg });
+        },
+        onSuccess: () => {
+          navigate("/dashboard");
+          setIsLogin(false);
+        },
       });
     },
   });

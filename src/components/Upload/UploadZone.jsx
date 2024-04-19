@@ -8,7 +8,12 @@ import {
 import { Dropzone } from "@mantine/dropzone";
 import appStrings from "../../utils/strings";
 
-export default function UploadZone({ onFileSelected, onFileRejected }) {
+export default function UploadZone({
+  onFileSelected,
+  onFileRejected,
+  multiple = true,
+  disabled = false,
+}) {
   return (
     <Dropzone
       onDrop={(files) => onFileSelected(files)}
@@ -18,6 +23,8 @@ export default function UploadZone({ onFileSelected, onFileRejected }) {
         "application/pdf",
         "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
       ]}
+      maxFiles={multiple ? null : 1}
+      disabled={disabled}
     >
       <Group
         justify="center"

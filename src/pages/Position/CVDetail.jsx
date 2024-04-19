@@ -2,7 +2,6 @@ import {
   Flex,
   Breadcrumbs,
   Anchor,
-  ScrollArea,
   Paper,
   Title,
   ActionIcon,
@@ -13,7 +12,6 @@ import {
   Skeleton,
   Center,
   Tooltip,
-  Loader,
 } from "@mantine/core";
 import HeadingLayout from "../../components/Layout/HeadingLayout";
 import appStrings from "../../utils/strings";
@@ -25,8 +23,10 @@ import {
 } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { getCVDetailControl } from "../../controllers/cv";
+import useNotification from "../../hooks/useNotification";
+import { getCVDetailApi } from "../../apis/cv";
 import { getScoreColor } from "../../utils/utils";
+import FileViewer from "../../components/FileViewer";
 
 export default function CVDetailPage() {
   const navigate = useNavigate();
@@ -35,6 +35,7 @@ export default function CVDetailPage() {
   const positionId = location.pathname.split("/")[2];
   const cvId = location.pathname.split("/")[4];
   const [cv, setCV] = useState(null);
+  const errorNotify = useNotification({ type: "error" });
 
   function handleNavigateToCVs() {
     navigate(`/${projectId}/${positionId}/cv`);
@@ -42,8 +43,16 @@ export default function CVDetailPage() {
 
   useEffect(() => {
     // Get CV detail
-    getCVDetailControl(projectId, positionId, cvId).then((data) => {
-      setCV(data);
+    getCVDetailApi({
+      projectId,
+      positionId,
+      cvId,
+      onFail: (msg) => {
+        errorNotify({ message: msg });
+      },
+      onSuccess: (cv) => {
+        setCV(cv);
+      },
     });
   }, []);
 
@@ -65,15 +74,7 @@ export default function CVDetailPage() {
             overflow: "hidden",
           }}
         >
-          <iframe
-            src={cv.url}
-            height={500}
-            style={{
-              width: "100%",
-              height: "100%",
-              border: "none",
-            }}
-          />
+          <FileViewer url={cv.url} />
         </Paper>
       ) : (
         <Skeleton height={500} />

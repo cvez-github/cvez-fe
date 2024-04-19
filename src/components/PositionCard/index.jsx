@@ -58,16 +58,14 @@ export default function PositionCard({
         <Text size="xs" c="dimmed">
           {alias}
         </Text>
-        <Text size="xs" c="dimmed">
-          <Flex gap="xs">
-            <Badge variant="light" color="teal">
-              {startDate}
-            </Badge>
-            <Badge variant="light" color="red">
-              {endDate}
-            </Badge>
-          </Flex>
-        </Text>
+        <Flex gap="xs">
+          <Badge variant="light" color="teal">
+            {startDate}
+          </Badge>
+          <Badge variant="light" color="red">
+            {endDate}
+          </Badge>
+        </Flex>
       </Group>
     </Card>
   );

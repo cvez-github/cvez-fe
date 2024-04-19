@@ -10,6 +10,7 @@ import {
   CopyButton,
   Spoiler,
   Badge,
+  Loader,
 } from "@mantine/core";
 import {
   IconTrash,
@@ -28,19 +29,29 @@ import {
 import HeadingLayout from "../../components/Layout/HeadingLayout";
 import UploadZone from "../../components/Upload/UploadZone";
 import appStrings from "../../utils/strings";
-import { useNavigate, useLocation } from "react-router-dom";
-import AppTable from "../../components/AppTable";
-import { useEffect, useState } from "react";
-import { notifications } from "@mantine/notifications";
-import {
-  getCVsControl,
-  uploadCVDataControl,
-  watchUploadProgressControl,
-} from "../../controllers/cv";
 import ProgressList from "../../components/Upload/ProgressList";
+import AppTable from "../../components/AppTable";
+
+import { useCallback, useEffect, useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import {
+  deleteCVDataApi,
+  getCVsApi,
+  uploadCVDataApi,
+  watchUploadProgressApi,
+} from "../../apis/cv";
+import { getMatchApi } from "../../apis/match";
+import usePositionsState from "../../context/position";
 import useCVState from "../../context/cv";
-import { getMatchControl } from "../../controllers/match";
-import { getScoreColor } from "../../utils/utils";
+import useNotification from "../../hooks/useNotification";
+import {
+  formatDate,
+  getScoreColor,
+  getShareUploadUrl,
+} from "../../utils/utils";
+import useInterval from "../../hooks/useInterval";
+import useSearch from "../../hooks/useSearch";
+import useConfirmModal from "../../hooks/useConfirmModal";
 
 const columns = [
   {
@@ -66,61 +77,155 @@ export default function CVPage() {
   const location = useLocation();
   const projectId = location.pathname.split("/")[1];
   const positionId = location.pathname.split("/")[2];
+  const position = usePositionsState((state) => state.position);
   const cvs = useCVState((state) => state.cvs);
   const setCVs = useCVState((state) => state.setCVs);
   const setCVScores = useCVState((state) => state.setCVScores);
   const uploadFiles = useCVState((state) => state.uploadFiles);
   const setUploadFiles = useCVState((state) => state.setUploadFiles);
   const [isMatching, setIsMatching] = useState(false);
+  const [progressObject, setProgressObject] = useState({});
+  const errorNotify = useNotification({ type: "error" });
+  const successNotify = useNotification({ type: "success" });
+  const intervalFunction = useInterval(500);
+
+  function handleSearchCVs(query) {
+    if (!query) return cvs;
+    const searchedCVs = cvs.filter((cv) =>
+      cv.cvName.toLowerCase().includes(query.toLowerCase())
+    );
+    return searchedCVs;
+  }
+
+  const { search, isSearching, handleSearch } = useSearch(cvs, handleSearchCVs);
 
   function handleNavigateToCVDetail(cvId) {
     navigate(`/${projectId}/${positionId}/cv/${cvId}`);
   }
 
+  const _isProgressComplete = useCallback(() => {
+    console.log(progressObject);
+    return (
+      Object.keys(progressObject).length &&
+      Object.values(progressObject).every((percent) => percent >= 100)
+    );
+  });
+
   function handleUploadFiles(files) {
-    setUploadFiles(files);
-    uploadCVDataControl(projectId, positionId, files).then((data) => {
-      watchUploadProgressControl(data.progress_id).then(() => {
-        setUploadFiles(null);
-        notifications.show({
-          title: appStrings.language.cv.uploadSuccessTitle,
-          message: appStrings.language.cv.uploadSuccessMessage,
-          color: "teal",
-        });
+    if (!position?.criterias?.length) {
+      errorNotify({
+        message: appStrings.language.cv.noCriteriaError,
       });
+      return;
+    }
+    setUploadFiles(files);
+    uploadCVDataApi({
+      projectId,
+      positionId,
+      files,
+      onFail: (msg) => {
+        errorNotify({ message: msg });
+        setUploadFiles(null);
+      },
+      onSuccess: (data) => {
+        // Set progress object
+        const initProgressObject = {};
+        files.forEach((file) => {
+          initProgressObject[file.name] = 0;
+        });
+        setProgressObject(initProgressObject);
+
+        // Start interval function to watch upload progress
+        intervalFunction({
+          callback: () => {
+            watchUploadProgressApi(data.progress_id).then((progressData) => {
+              // Only update progress if percent is available
+              if (progressData?.percent) {
+                setProgressObject((prev) => ({
+                  ...prev,
+                  ...progressData?.percent,
+                }));
+              }
+            });
+          },
+          stopCondition: () => _isProgressComplete(),
+        });
+      },
     });
   }
 
   function handleMatchCVJD() {
-    setIsMatching(true);
-    getMatchControl(projectId, positionId).then((data) => {
-      setIsMatching(false);
-      notifications.show({
-        title: appStrings.language.cv.matchSuccessTitle,
-        message: appStrings.language.cv.matchSuccessMessage,
-        color: "teal",
+    if (!search.length) {
+      errorNotify({
+        message: appStrings.language.cv.noCVError,
       });
-      // Set score to CVs
-      const formatedData = Object.entries(data).map(([key, value]) => ({
-        id: key,
-        score: value.overall,
-      }));
-      setCVScores(formatedData);
+      return;
+    }
+    setIsMatching(true);
+    getMatchApi({
+      projectId,
+      positionId,
+      onFail: (msg) => {
+        errorNotify({ message: msg });
+        setIsMatching(false);
+      },
+      onSuccess: (data) => {
+        setIsMatching(false);
+        successNotify({
+          title: appStrings.language.cv.matchSuccessTitle,
+          message: appStrings.language.cv.matchSuccessMessage,
+        });
+        // Set score to CVs
+        const formatedData = Object.entries(data).map(([key, value]) => ({
+          id: key,
+          score: value.overall,
+        }));
+        setCVScores(formatedData);
+      },
     });
   }
 
+  function handleDeleteCV(id) {
+    deleteCVDataApi({
+      projectId,
+      positionId,
+      cvId: id,
+      onFail: (msg) => {
+        errorNotify({ message: msg });
+      },
+      onSuccess: () => {
+        successNotify({
+          message: appStrings.language.cv.deleteCVSuccessMessage,
+        });
+        setCVs((prev) => prev.filter((cv) => cv.id !== id));
+      },
+    });
+  }
+
+  const deleteCVTrigger = useConfirmModal({
+    type: "delete",
+    onOk: handleDeleteCV,
+  });
+
   useEffect(() => {
-    getCVsControl(projectId, positionId).then((data) => {
-      // Sort data by score
-      data.sort((a, b) => b.score.overall - a.score.overall);
-      setCVs(
-        data.map((cv) => ({
+    getCVsApi({
+      projectId,
+      positionId,
+      onFail: (msg) => {
+        errorNotify({ message: msg });
+        setCVs([]);
+      },
+      onSuccess: (cvs) => {
+        // Sort data by score
+        cvs.sort((a, b) => b.score.overall - a.score.overall);
+        const formatedCVs = cvs.map((cv) => ({
           id: cv.id,
           cvName: cv.name,
           upload: cv.upload_at,
           score: cv.score.overall,
-        }))
-      );
+        }));
+        setCVs(formatedCVs);
+      },
     });
   }, [setCVs]);
 
@@ -147,12 +252,7 @@ export default function CVPage() {
       >
         <Flex direction="column" gap="md">
           {uploadFiles ? (
-            <ProgressList
-              items={uploadFiles.map((file) => ({
-                name: file.name,
-                progress: file.progress || 0,
-              }))}
-            />
+            <ProgressList items={progressObject} />
           ) : (
             <UploadZone onFileSelected={(files) => handleUploadFiles(files)} />
           )}
@@ -165,7 +265,7 @@ export default function CVPage() {
           >
             <Flex align="center" gap="md">
               {appStrings.language.cv.shareUrlMessage}
-              <CopyButton value={`https://upload/${positionId}`} timeout={2000}>
+              <CopyButton value={getShareUploadUrl(positionId)} timeout={2000}>
                 {({ copied, copy }) => (
                   <Tooltip
                     label={
@@ -198,7 +298,10 @@ export default function CVPage() {
         <Flex gap="md">
           <Input
             placeholder={appStrings.language.cv.searchPlaceholder}
-            leftSection={<IconSearch size="1rem" />}
+            leftSection={
+              isSearching ? <Loader size="1rem" /> : <IconSearch size="1rem" />
+            }
+            onChange={(e) => handleSearch(e.target.value)}
           />
         </Flex>
         <Button
@@ -211,8 +314,8 @@ export default function CVPage() {
       </Flex>
       <AppTable
         columns={columns}
-        loading={!cvs}
-        data={cvs?.map((data) => ({
+        loading={!search}
+        data={search?.map((data) => ({
           cvName: (
             <Flex align="center" gap="md">
               {data.cvName.toLowerCase().includes(".pdf") ? (
@@ -225,7 +328,7 @@ export default function CVPage() {
               <Text>{data.cvName}</Text>
             </Flex>
           ),
-          upload: data.upload,
+          upload: formatDate(data.upload, true),
           score: data.score ? (
             <Badge variant="light" color={getScoreColor(data.score)}>
               {data.score}%
@@ -235,15 +338,26 @@ export default function CVPage() {
           ),
           actions: (
             <Flex gap="xs">
-              <ActionIcon
-                variant="subtle"
-                onClick={() => handleNavigateToCVDetail(data.id)}
+              <Tooltip
+                label={appStrings.language.cv.viewActionTooltip}
+                withArrow
               >
-                <IconEye size="1rem" />
-              </ActionIcon>
-              <ActionIcon variant="subtle" color="red">
-                <IconTrash size="1rem" />
-              </ActionIcon>
+                <ActionIcon
+                  variant="subtle"
+                  onClick={() => handleNavigateToCVDetail(data.id)}
+                >
+                  <IconEye size="1rem" />
+                </ActionIcon>
+              </Tooltip>
+              <Tooltip label={appStrings.language.btn.delete} withArrow>
+                <ActionIcon
+                  variant="subtle"
+                  color="red"
+                  onClick={() => deleteCVTrigger(data.id)}
+                >
+                  <IconTrash size="1rem" />
+                </ActionIcon>
+              </Tooltip>
             </Flex>
           ),
         }))}

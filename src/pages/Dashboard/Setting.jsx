@@ -1,12 +1,13 @@
-import { useState } from "react";
-import { Center, Flex, Title } from "@mantine/core";
-import { IconSun, IconMoon } from "@tabler/icons-react";
+import { Center, Flex, Title, Tooltip } from "@mantine/core";
+import { IconSun, IconMoon, IconDevices } from "@tabler/icons-react";
 import HeadingLayout from "../../components/Layout/HeadingLayout";
-import appStrings from "../../utils/strings";
 import SettingLayout from "../../components/Layout/SettingLayout";
 import SelectSettingCard from "../../components/SettingCard/Select";
-import useGlobalState from "../../context/global";
 import DropdownSettingCard from "../../components/SettingCard/Dropdown";
+import appStrings, { languageOptions } from "../../utils/strings";
+
+import { useState } from "react";
+import useGlobalState from "../../context/global";
 
 export default function SettingPage() {
   const theme = useGlobalState((state) => state.theme);
@@ -31,7 +32,6 @@ export default function SettingPage() {
       </HeadingLayout>
       <SettingLayout title={appStrings.language.setting.general.title}>
         <SelectSettingCard
-          
           title={appStrings.language.setting.general.theme}
           warning={
             currentTheme !== theme
@@ -43,7 +43,9 @@ export default function SettingPage() {
               value: "light",
               label: (
                 <Center>
-                  <IconSun size="1rem" />
+                  <Tooltip label={appStrings.language.utils.theme.light}>
+                    <IconSun size="1rem" />
+                  </Tooltip>
                 </Center>
               ),
             },
@@ -51,7 +53,19 @@ export default function SettingPage() {
               value: "dark",
               label: (
                 <Center>
-                  <IconMoon size="1rem" />
+                  <Tooltip label={appStrings.language.utils.theme.dark}>
+                    <IconMoon size="1rem" />
+                  </Tooltip>
+                </Center>
+              ),
+            },
+            {
+              value: "system",
+              label: (
+                <Center>
+                  <Tooltip label={appStrings.language.utils.theme.system}>
+                    <IconDevices size="1rem" />
+                  </Tooltip>
                 </Center>
               ),
             },
@@ -66,15 +80,7 @@ export default function SettingPage() {
               ? appStrings.language.setting.requiredRestart
               : null
           }
-          options={[
-            { value: "en", label: "🇺🇸 English" },
-            { value: "vi", label: "🇻🇳 Tiếng Việt" },
-            { value: "ja", label: "🇯🇵 日本語" },
-            { value: "ko", label: "🇰🇷 한국어" },
-            { value: "zh", label: "🇨🇳 中文" },
-            { value: "hi", label: "🇮🇳 हिन्दी" },
-            { value: "fr", label: "🇫🇷 Français" },
-          ]}
+          options={languageOptions}
           value={currentLanguage}
           onChange={(value) => handleSetLanguage(value)}
         />

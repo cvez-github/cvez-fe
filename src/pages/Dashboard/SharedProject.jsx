@@ -1,38 +1,65 @@
-import { useEffect } from "react";
-import { Flex, Title, Input } from "@mantine/core";
+import { Flex, Title, Input, Loader } from "@mantine/core";
 import { IconSearch } from "@tabler/icons-react";
 import HeadingLayout from "../../components/Layout/HeadingLayout";
 import GridLayout from "../../components/Layout/GridLayout";
 import ProjectCard from "../../components/ProjectCard";
-import appStrings from "../../utils/strings";
-import { getSharedProjectsControl } from "../../controllers/dashboard";
-import useProjectsState from "../../context/project";
 import Empty from "../../components/Empty";
+import appStrings from "../../utils/strings";
+
+import { useEffect } from "react";
+import { getSharedProjectsApi } from "../../apis/dashboard";
+import useProjectsState from "../../context/project";
+import useNotification from "../../hooks/useNotification";
+import useSearch from "../../hooks/useSearch";
 
 export default function SharedProjectPage() {
   const shared = useProjectsState((state) => state.shared);
   const setShared = useProjectsState((state) => state.setShared);
+  const errorNotify = useNotification({ type: "error" });
+
+  function handleSearchShared(query) {
+    if (!query) return shared;
+    const searchedShared = shared.filter((share) =>
+      share.name.toLowerCase().includes(query.toLowerCase())
+    );
+    return searchedShared;
+  }
+
+  const {
+    search: currentShared,
+    isSearching,
+    handleSearch,
+  } = useSearch(shared, handleSearchShared);
 
   useEffect(() => {
     if (!shared) {
-      getSharedProjectsControl().then((data) => setShared(data));
+      getSharedProjectsApi({
+        onFail: (msg) => {
+          errorNotify({ message: msg });
+          setShared([]);
+        },
+        onSuccess: (data) => setShared(data),
+      });
     }
   }, [setShared]);
 
   return (
     <Flex direction="column" gap={30}>
-      <HeadingLayout loading={!shared}>
+      <HeadingLayout loading={!currentShared}>
         <Title order={2}>{appStrings.language.sharedProjects.heading}</Title>
         <Flex>
           <Input
             placeholder={appStrings.language.sharedProjects.searchPlaceholder}
-            rightSection={<IconSearch size="1rem" />}
+            leftSection={
+              isSearching ? <Loader size="1rem" /> : <IconSearch size="1rem" />
+            }
+            onChange={(event) => handleSearch(event.currentTarget.value)}
           />
         </Flex>
       </HeadingLayout>
-      {shared?.length !== 0 ? (
-        <GridLayout loading={!shared}>
-          {shared?.map((data, index) => (
+      {currentShared?.length !== 0 ? (
+        <GridLayout loading={!currentShared}>
+          {currentShared?.map((data, index) => (
             <ProjectCard
               key={index}
               title={data.name}

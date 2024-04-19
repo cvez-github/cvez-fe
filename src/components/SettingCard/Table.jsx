@@ -1,13 +1,29 @@
-import { Table, Flex, Input, Button, Skeleton } from "@mantine/core";
+import { Table, Flex, Input, Button, Skeleton, Loader } from "@mantine/core";
 import Empty from "../Empty";
 import { IconSearch } from "@tabler/icons-react";
 import appStrings from "../../utils/strings";
+import useSearch from "../../hooks/useSearch";
 
 export default function TableSettingCard({
   data = [],
   loading = false,
   disableActions = false,
 }) {
+  function handleSearchMembers(query) {
+    if (!query) {
+      return data;
+    }
+    return data.filter((member) =>
+      member[1].toLowerCase().includes(query.toLowerCase())
+    );
+  }
+
+  const {
+    search: currentMembers,
+    isSearching,
+    handleSearch,
+  } = useSearch(data, handleSearchMembers);
+
   const tableData = {
     head: [
       appStrings.language.setting.member.member,
@@ -15,15 +31,19 @@ export default function TableSettingCard({
       appStrings.language.setting.member.role,
       appStrings.language.setting.member.actions,
     ],
-    body: data,
+    body: currentMembers,
   };
+
   return (
     <Flex direction="column" gap="md">
       <Flex justify="space-between">
         {!loading ? (
           <Input
-            placeholder="Search"
-            leftSection={<IconSearch size="1rem" />}
+            placeholder={appStrings.language.setting.member.searchPlaceholder}
+            leftSection={
+              isSearching ? <Loader size="1rem" /> : <IconSearch size="1rem" />
+            }
+            onChange={(event) => handleSearch(event.currentTarget.value)}
           />
         ) : (
           <Skeleton width={300} height={36} />

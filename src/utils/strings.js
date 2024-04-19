@@ -10,8 +10,8 @@ function getLanguageStrings(language) {
   switch (language) {
     case "en":
       return english;
-    // case "vi":
-    //   return vietnamese;
+    case "vi":
+      return vietnamese;
     // case "ja":
     //   return japanese;
     // case "ko":
@@ -26,6 +26,16 @@ function getLanguageStrings(language) {
       return english;
   }
 }
+
+export const languageOptions = [
+  { value: "en", label: "🇺🇸 English" },
+  { value: "vi", label: "🇻🇳 Tiếng Việt" },
+  // { value: "ja", label: "🇯🇵 日本語" },
+  // { value: "ko", label: "🇰🇷 한국어" },
+  // { value: "zh", label: "🇨🇳 中文" },
+  // { value: "hi", label: "🇮🇳 हिन्दी" },
+  // { value: "fr", label: "🇫🇷 Français" },
+];
 
 const appStrings = {
   appName: "CVEZ",

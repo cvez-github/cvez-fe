@@ -1,6 +1,17 @@
-import { useEffect, useState } from "react";
-import { Flex, Title, Button, Alert, Group, FileButton } from "@mantine/core";
+import {
+  Flex,
+  Title,
+  Button,
+  Alert,
+  Group,
+  FileButton,
+  Skeleton,
+  Badge,
+  Tooltip,
+  Divider,
+} from "@mantine/core";
 import { RichTextEditor, Link } from "@mantine/tiptap";
+import { IconInfoSquareRounded } from "@tabler/icons-react";
 import { useEditor } from "@tiptap/react";
 import Highlight from "@tiptap/extension-highlight";
 import StarterKit from "@tiptap/starter-kit";
@@ -10,13 +21,20 @@ import Superscript from "@tiptap/extension-superscript";
 import SubScript from "@tiptap/extension-subscript";
 import HeadingLayout from "../../components/Layout/HeadingLayout";
 import appStrings from "../../utils/strings";
+
+import { Fragment, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { getJDControl, uploadJDControl } from "../../controllers/jd";
+import useNotification from "../../hooks/useNotification";
+import { getJDApi, uploadJDApi } from "../../apis/jd";
+import usePositionsState from "../../context/position";
 
 export default function JDPage() {
   const location = useLocation();
   const projectId = location.pathname.split("/")[1];
   const positionId = location.pathname.split("/")[2];
+  const position = usePositionsState((state) => state.position);
+  const errorNotify = useNotification({ type: "error" });
+  const successNotify = useNotification({ type: "success" });
 
   const editorController = useEditor({
     extensions: [
@@ -30,19 +48,50 @@ export default function JDPage() {
     ],
     content: "",
   });
-  // const { editor } = useRichTextEditorContext();
   const [isLoading, setIsLoading] = useState(false);
+  const [isFetching, setIsFetching] = useState(true);
+  const [jd, setJD] = useState(null);
 
   function handleSaveJD() {
+    if (!position?.criterias?.length) {
+      errorNotify({
+        message: appStrings.language.jd.noCriteriaError,
+      });
+      return;
+    }
     setIsLoading(true);
-    uploadJDControl(projectId, positionId, editorController?.getHTML()).then(
-      (_) => setIsLoading(false)
-    );
+    const content = editorController?.getHTML();
+    if (content === "<p></p>") {
+      errorNotify({
+        message: appStrings.language.jd.noContentError,
+      });
+      setIsLoading(false);
+      return;
+    }
+    uploadJDApi({
+      projectId,
+      positionId,
+      content,
+      onFail: (msg) => errorNotify({ message: msg }),
+      onSuccess: (_) => {
+        setIsLoading(false);
+        successNotify({ message: appStrings.language.jd.saveSuccess });
+      },
+    });
   }
 
   useEffect(() => {
-    getJDControl(projectId, positionId).then((data) => {
-      editorController.commands.setContent(data?.content || "");
+    getJDApi({
+      projectId,
+      positionId,
+      onFail: (msg) => {
+        errorNotify({ message: msg });
+      },
+      onSuccess: (jd) => {
+        setJD(jd);
+        setIsFetching(false);
+        editorController?.commands.setContent(jd?.content || "");
+      },
     });
   }, [editorController]);
 
@@ -64,60 +113,99 @@ export default function JDPage() {
           </FileButton>
         </Group>
       </Alert>
-      <RichTextEditor editor={editorController} style={{ height: "400px" }}>
-        <RichTextEditor.Toolbar sticky stickyOffset={60}>
-          <RichTextEditor.ControlsGroup>
-            <RichTextEditor.Bold />
-            <RichTextEditor.Italic />
-            <RichTextEditor.Underline />
-            <RichTextEditor.Strikethrough />
-            <RichTextEditor.ClearFormatting />
-            <RichTextEditor.Highlight />
-            <RichTextEditor.Code />
-          </RichTextEditor.ControlsGroup>
+      {isFetching ? (
+        <Skeleton height={400} />
+      ) : (
+        <RichTextEditor editor={editorController} style={{ height: "400px" }}>
+          <RichTextEditor.Toolbar sticky stickyOffset={60}>
+            <RichTextEditor.ControlsGroup>
+              <RichTextEditor.Bold />
+              <RichTextEditor.Italic />
+              <RichTextEditor.Underline />
+              <RichTextEditor.Strikethrough />
+              <RichTextEditor.ClearFormatting />
+              <RichTextEditor.Highlight />
+              <RichTextEditor.Code />
+            </RichTextEditor.ControlsGroup>
 
-          <RichTextEditor.ControlsGroup>
-            <RichTextEditor.H1 />
-            <RichTextEditor.H2 />
-            <RichTextEditor.H3 />
-            <RichTextEditor.H4 />
-          </RichTextEditor.ControlsGroup>
+            <RichTextEditor.ControlsGroup>
+              <RichTextEditor.H1 />
+              <RichTextEditor.H2 />
+              <RichTextEditor.H3 />
+              <RichTextEditor.H4 />
+            </RichTextEditor.ControlsGroup>
 
-          <RichTextEditor.ControlsGroup>
-            <RichTextEditor.Blockquote />
-            <RichTextEditor.Hr />
-            <RichTextEditor.BulletList />
-            <RichTextEditor.OrderedList />
-            <RichTextEditor.Subscript />
-            <RichTextEditor.Superscript />
-          </RichTextEditor.ControlsGroup>
+            <RichTextEditor.ControlsGroup>
+              <RichTextEditor.Blockquote />
+              <RichTextEditor.Hr />
+              <RichTextEditor.BulletList />
+              <RichTextEditor.OrderedList />
+              <RichTextEditor.Subscript />
+              <RichTextEditor.Superscript />
+            </RichTextEditor.ControlsGroup>
 
-          <RichTextEditor.ControlsGroup>
-            <RichTextEditor.Link />
-            <RichTextEditor.Unlink />
-          </RichTextEditor.ControlsGroup>
+            <RichTextEditor.ControlsGroup>
+              <RichTextEditor.Link />
+              <RichTextEditor.Unlink />
+            </RichTextEditor.ControlsGroup>
 
-          <RichTextEditor.ControlsGroup>
-            <RichTextEditor.AlignLeft />
-            <RichTextEditor.AlignCenter />
-            <RichTextEditor.AlignJustify />
-            <RichTextEditor.AlignRight />
-          </RichTextEditor.ControlsGroup>
+            <RichTextEditor.ControlsGroup>
+              <RichTextEditor.AlignLeft />
+              <RichTextEditor.AlignCenter />
+              <RichTextEditor.AlignJustify />
+              <RichTextEditor.AlignRight />
+            </RichTextEditor.ControlsGroup>
 
-          <RichTextEditor.ControlsGroup>
-            <RichTextEditor.Undo />
-            <RichTextEditor.Redo />
-          </RichTextEditor.ControlsGroup>
-        </RichTextEditor.Toolbar>
+            <RichTextEditor.ControlsGroup>
+              <RichTextEditor.Undo />
+              <RichTextEditor.Redo />
+            </RichTextEditor.ControlsGroup>
+          </RichTextEditor.Toolbar>
 
-        <RichTextEditor.Content
-          style={{ maxHeight: "350px", overflowY: "auto" }}
-        />
-      </RichTextEditor>
+          <RichTextEditor.Content
+            style={{ maxHeight: "350px", overflowY: "auto" }}
+          />
+        </RichTextEditor>
+      )}
       <Flex justify="flex-end" gap="md">
-        <Button loading={isLoading} onClick={handleSaveJD}>
+        <Button
+          loading={isLoading}
+          onClick={handleSaveJD}
+          disabled={isFetching}
+        >
           {appStrings.language.btn.save}
         </Button>
+      </Flex>
+      {Object.keys(jd?.extraction || {}).length ? <Divider /> : null}
+      <Flex direction="column" gap="xl">
+        {jd
+          ? Object.entries(jd.extraction).map(([key, value]) => (
+              <Flex direction="column" gap="md">
+                <Flex align="center" gap="md">
+                  <Title order={3}>{key}</Title>
+                  <Tooltip>
+                    <IconInfoSquareRounded size="1rem" />
+                  </Tooltip>
+                </Flex>
+                <Flex wrap="wrap" gap="md">
+                  {Object.entries(value).map(([key, value]) => (
+                    <Badge
+                      color="blue"
+                      radius="xl"
+                      size="lg"
+                      rightSection={
+                        <Badge color="gray" size="md">
+                          {value}
+                        </Badge>
+                      }
+                    >
+                      {key}
+                    </Badge>
+                  ))}
+                </Flex>
+              </Flex>
+            ))
+          : null}
       </Flex>
     </Flex>
   );

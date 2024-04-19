@@ -15,7 +15,7 @@ import { IconDots } from "@tabler/icons-react";
 import CriteriaAction from "../Actions/CriteriaAction";
 import appStrings from "../../utils/strings";
 import { useState } from "react";
-import removeWhiteSpace from "../../utils/utils";
+import { removeWhiteSpace } from "../../utils/utils";
 
 export default function EditableCriteriaCard({
   data,
@@ -23,6 +23,7 @@ export default function EditableCriteriaCard({
   onDelete,
   isEdit,
   onCancel,
+  saveBtnLoading = false,
 }) {
   const [isEditMode, setIsEditMode] = useState(isEdit || false);
   const [criteria, setCriteria] = useState(data);
@@ -98,6 +99,7 @@ export default function EditableCriteriaCard({
             {appStrings.language.btn.cancel}
           </Button>
           <Button
+            loading={saveBtnLoading}
             onClick={() => {
               onOk && onOk(criteria);
               setIsEditMode(false);

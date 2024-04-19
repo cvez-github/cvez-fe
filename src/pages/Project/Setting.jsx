@@ -35,12 +35,14 @@ export default function ProjectSettingPage() {
         role: appStrings.language.setting.member.roles.member,
       }));
       // Append the owner to the members if the user is the owner
-      mems.unshift({
-        name: user?.name,
-        email: user?.email,
-        avatar: user?.avatar,
-        role: appStrings.language.setting.member.roles.owner,
-      });
+      if (project.owner === user?.id) {
+        mems.unshift({
+          name: user?.name,
+          email: user?.email,
+          avatar: user?.avatar,
+          role: appStrings.language.setting.member.roles.owner,
+        });
+      }
       setMembers(mems);
     }
   }, []);
@@ -54,7 +56,7 @@ export default function ProjectSettingPage() {
         <TableSettingCard
           loading={!projects || !shared}
           disableActions={isDisableActions}
-          data={members.map((member, index) => {
+          data={members.map((member) => {
             return [
               <Group>
                 <Avatar size="sm" radius="xl" src={member.avatar} />
@@ -62,6 +64,7 @@ export default function ProjectSettingPage() {
               </Group>,
               member.email,
               member.role,
+              !isDisableActions &&
               member.role !== appStrings.language.setting.member.roles.owner ? (
                 <ActionIcon variant="subtle" size="sm" color="red">
                   <IconTrash size="1rem" />

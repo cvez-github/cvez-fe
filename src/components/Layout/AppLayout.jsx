@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import {
   AppShell,
   Flex,
@@ -8,15 +7,18 @@ import {
   Select,
   ActionIcon,
 } from "@mantine/core";
-import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
 import Logo from "../Logo";
 import Navbar from "../Navbar";
 import User from "../User";
-import { useLocation, useNavigate } from "react-router-dom";
 import appStrings from "../../utils/strings";
+
+import { useDisclosure, useMediaQuery } from "@mantine/hooks";
+import { useLocation, useNavigate } from "react-router-dom";
 import useProjectsState from "../../context/project";
-import { logoutControl } from "../../controllers/auth";
+import { logoutApi } from "../../apis/auth";
+import useNotification from "../../hooks/useNotification";
+import usePositionsState from "../../context/position";
 
 export default function AppLayout({
   children,
@@ -32,24 +34,34 @@ export default function AppLayout({
   const location = useLocation();
   const projects = useProjectsState((state) => state.projects);
   const shared = useProjectsState((state) => state.shared);
+  const setPositions = usePositionsState((state) => state.setPositions);
   const projectId = location.pathname.split("/")[1];
   const isDashboard = location.pathname.includes("dashboard");
+  const errorNotify = useNotification({ type: "error" });
 
   function handleNavigateToDashboard() {
     navigate("/dashboard");
+    setPositions(null);
   }
 
   function handleLogout() {
     // Logout
-    logoutControl();
-    // Navigate to login page
-    navigate("/login");
+    logoutApi({
+      onFail: (msg) => {
+        errorNotify(msg);
+      },
+      onSuccess: () => {
+        // Navigate to login page
+        navigate("/login");
+      },
+    });
   }
 
   function handleViewUser() {}
 
   function handleChangeProject(id) {
     navigate(`/${id}`);
+    setPositions(null);
     window.location.reload();
   }
 

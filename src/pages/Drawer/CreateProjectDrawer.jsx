@@ -13,14 +13,10 @@ import { v4 as uuidv4 } from "uuid";
 import { getAliasByName } from "../../utils/utils";
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { createProjectControl } from "../../controllers/projects";
+import { createProjectApi } from "../../apis/projects";
 import useProjectsState from "../../context/project";
+import useNotification from "../../hooks/useNotification";
 
-const demoProps = {
-  h: 50,
-  mt: "md",
-};
-// eslint-disable-next-line react/prop-types
 export default function CreateProjectDrawer({ open, onClose }) {
   const navigate = useNavigate();
   const [projectName, setProjectName] = useState("");
@@ -28,6 +24,7 @@ export default function CreateProjectDrawer({ open, onClose }) {
   const [isLoading, setIsLoading] = useState(false);
   const addProject = useProjectsState((state) => state.addProject);
   const idAlias = useRef(uuidv4());
+  const errorNotify = useNotification({ type: "error" });
 
   const handleInputChange = (event) => {
     setProjectName(event.target.value);
@@ -36,16 +33,25 @@ export default function CreateProjectDrawer({ open, onClose }) {
   function handleCreateProject() {
     const alias = getAliasByName(projectName, idAlias.current);
     setIsLoading(true);
-    createProjectControl(projectName, alias, description).then((project) => {
-      addProject(project);
-      setIsLoading(false);
-      navigate(`/${project.id}`);
+    createProjectApi({
+      name: projectName,
+      alias,
+      description,
+      onFail: (msg) => {
+        setIsLoading(false);
+        errorNotify({ message: msg });
+      },
+      onSuccess: (project) => {
+        addProject(project);
+        setIsLoading(false);
+        navigate(`/${project.id}`);
+      },
     });
   }
 
   return (
     <Drawer opened={open} onClose={onClose} size="100%" position="right">
-      <Container size="xs" {...demoProps}>
+      <Container size="xs" h={50} mt="md">
         <Flex
           gap="lg"
           justify="center"
