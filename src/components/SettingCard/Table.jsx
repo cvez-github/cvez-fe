@@ -8,6 +8,7 @@ export default function TableSettingCard({
   data = [],
   loading = false,
   disableActions = false,
+  onShareTap,
 }) {
   function handleSearchMembers(query) {
     if (!query) {
@@ -50,7 +51,9 @@ export default function TableSettingCard({
         )}
         {!disableActions ? (
           !loading ? (
-            <Button>{appStrings.language.setting.member.add}</Button>
+            <Button onClick={onShareTap}>
+              {appStrings.language.setting.member.add}
+            </Button>
           ) : (
             <Skeleton width={100} height={36} />
           )

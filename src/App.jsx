@@ -9,7 +9,7 @@ import { useColorScheme } from "@mantine/hooks";
 
 export default function App() {
   const theme = useGlobalState((state) => state.theme);
-  const colorScheme = useColorScheme();
+  const colorScheme = useColorScheme(theme);
 
   return (
     <MantineProvider

@@ -94,3 +94,19 @@ export async function shareProjectApi({ ids, projectId, onFail, onSuccess }) {
     onFail(response.detail);
   }
 }
+
+export async function removeAccessApi({ ids, projectId, onFail, onSuccess }) {
+  // Send post request
+  const data = {
+    members: ids,
+    is_add: false,
+  };
+  const response = await apiHelper.put(apiUrls.shareProject(projectId), data);
+  // Handle response
+  if (response.msg) {
+    console.log(response.msg);
+    onSuccess();
+  } else {
+    onFail(response.detail);
+  }
+}

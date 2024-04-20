@@ -16,7 +16,13 @@ export default function DropdownSettingCard({
             {warning}
           </Text>
         </Flex>
-        <Select withCheckIcon={false} data={options} value={value} onChange={onChange} />
+        <Select
+          withCheckIcon={false}
+          data={options}
+          value={value}
+          onChange={onChange}
+          allowDeselect={false}
+        />
       </Flex>
     </Card>
   );

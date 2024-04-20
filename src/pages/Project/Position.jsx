@@ -10,7 +10,7 @@ import PositionCard from "../../components/PositionCard";
 import PositionAction from "../../components/Actions/PositionAction";
 import appStrings from "../../utils/strings";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import usePositionsState from "../../context/position";
 import useNotification from "../../hooks/useNotification";
 import {

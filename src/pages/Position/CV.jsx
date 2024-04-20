@@ -259,11 +259,10 @@ export default function CVPage() {
           <Alert
             variant="light"
             color="grape"
-            radius="xs"
             title={appStrings.language.cv.shareUrlTitle}
             icon={<IconShare3 />}
           >
-            <Flex align="center" gap="md">
+            <Flex align="center" gap="xs">
               {appStrings.language.cv.shareUrlMessage}
               <CopyButton value={getShareUploadUrl(positionId)} timeout={2000}>
                 {({ copied, copy }) => (

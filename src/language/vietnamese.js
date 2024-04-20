@@ -66,6 +66,11 @@ const vietnamese = {
   },
   insight: {
     title: "Phân tích",
+    heading: "Phân Tích chuyên sâu CVEZ",
+    introduction:
+      "CVEZ Insight giúp bạn phân tích chi tiết về vị trí tuyển dụng, về phân phối kỹ năng giữa các điểm số của ứng viên.",
+    selectPlaceholder: "Chọn vị trí",
+    viewInsightBtn: "Xem Phân Tích",
   },
   createPosition: {
     title: "Tạo vị trí mới",
@@ -100,6 +105,7 @@ const vietnamese = {
         member: "Thành viên",
       },
       searchPlaceholder: "Tìm kiếm thành viên theo email",
+      removeAccessSuccess: "Thành viên đã bị xóa thành công",
     },
   },
   positionDetail: {

@@ -9,6 +9,7 @@ import {
   Badge,
   Tooltip,
   Divider,
+  Box,
 } from "@mantine/core";
 import { RichTextEditor, Link } from "@mantine/tiptap";
 import { IconInfoSquareRounded } from "@tabler/icons-react";
@@ -163,7 +164,7 @@ export default function JDPage() {
           </RichTextEditor.Toolbar>
 
           <RichTextEditor.Content
-            style={{ maxHeight: "350px", overflowY: "auto" }}
+            style={{ maxHeight: "calc(100% - 47px)", overflowY: "auto" }}
           />
         </RichTextEditor>
       )}

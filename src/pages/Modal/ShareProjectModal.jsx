@@ -36,12 +36,20 @@ export default function ShareProjectModal({
 }) {
   const [isSearchLoading, setSearchLoading] = useState(false);
   const [data, setData] = useState([]);
+  const [displayData, setDisplayData] = useState([]);
   const [selected, setSelected] = useState([]);
   const handleSearch = useDebouncedCallback(async (query) => {
     if (!query) return;
     setSearchLoading(true);
-    onSearch(query).then((data) => {
-      setData(data);
+    onSearch(query).then((queryData) => {
+      const notDuplicateData = queryData.filter(
+        (item) => !data.find((d) => d.email === item.email)
+      );
+      setData([...data, ...notDuplicateData]);
+      const notSelectedData = queryData.filter(
+        (item) => !selected.includes(item.email)
+      );
+      setDisplayData(notSelectedData);
       setSearchLoading(false);
     });
   }, 500);
@@ -54,9 +62,9 @@ export default function ShareProjectModal({
     >
       <Flex direction="column" gap="md">
         <MultiSelect
-          data={data.map((item) => item.email)}
+          data={displayData.map((item) => item.email)}
           renderOption={({ option }) =>
-            renderAutocompleteOption({ option, data })
+            renderAutocompleteOption({ option, data: displayData })
           }
           maxDropdownHeight={300}
           placeholder={appStrings.language.share.searchPlaceholder}

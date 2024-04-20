@@ -62,6 +62,7 @@ export default function SharedProjectPage() {
           {currentShared?.map((data, index) => (
             <ProjectCard
               key={index}
+              id={data.id}
               title={data.name}
               description={data.description}
               alias={data.alias}

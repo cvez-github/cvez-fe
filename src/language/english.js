@@ -67,6 +67,11 @@ const english = {
   },
   insight: {
     title: "Insight",
+    heading: "CVEZ Insight",
+    introduction:
+      "CVEZ Insight help you analyze detail about the recruitment position, about the distribution of skills among candidates' scores.",
+    selectPlaceholder: "Select position",
+    viewInsightBtn: "View Insight",
   },
   createPosition: {
     title: "Create new position",
@@ -101,6 +106,7 @@ const english = {
         member: "Member",
       },
       searchPlaceholder: "Search member by email",
+      removeAccessSuccess: "Member has been removed successfully",
     },
   },
   positionDetail: {
