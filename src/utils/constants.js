@@ -40,6 +40,10 @@ export const apiUrls = {
   getCVs: (projectId, positionId) => `/api/v1/cv/${projectId}/${positionId}`,
   getCV: (projectId, positionId, cvId) =>
     `/api/v1/cv/${projectId}/${positionId}/${cvId}`,
+  summaryCV: (projectId, positionId, cvId) =>
+    `/api/v1/cv/${projectId}/${positionId}/${cvId}/summary`,
+  detailCV: (projectId, positionId, cvId) =>
+    `/api/v1/cv/${projectId}/${positionId}/${cvId}/detail`,
   uploadCV: (projectId, positionId) =>
     `/api/v1/cv/${projectId}/${positionId}/uploads`,
   watchUploadProgress: (progressId) => `/api/v1/cv/${progressId}`,
@@ -48,6 +52,17 @@ export const apiUrls = {
   uploadCVPublic: (positionId) => `/api/v1/cv/${positionId}/upload`,
   deleteCV: (projectId, positionId, cvId) =>
     `/api/v1/cv/${projectId}/${positionId}/${cvId}`,
+  // Questions
+  getQuestionBanks: (projectId, positionId) =>
+    `/api/v1/question_bank/${projectId}/${positionId}`,
+  getQuestionBank: (projectId, positionId, bankId) =>
+    `/api/v1/question_bank/${projectId}/${positionId}/${bankId}`,
+  updateQuestionBank: (projectId, positionId, bankId) =>
+    `/api/v1/question_bank/${projectId}/${positionId}/${bankId}`,
+  createQuestionBank: (projectId, positionId) =>
+    `/api/v1/question_bank/${projectId}/${positionId}`,
+  deleteQuestionBank: (projectId, positionId, bankId) =>
+    `/api/v1/question_bank/${projectId}/${positionId}/${bankId}`,
   // Match
   matchCVJD: (projectId, positionId) =>
     `/api/v1/match/match_cv_jd/${projectId}/${positionId}`,

@@ -1,9 +1,9 @@
 import { Avatar, Menu, Text, Title, Skeleton } from "@mantine/core";
-import { IconLogout } from "@tabler/icons-react";
+import { IconLogout, IconSettings } from "@tabler/icons-react";
 import useGlobalState from "../../context/global";
 import appStrings from "../../utils/strings";
 
-export default function User({ onUserTap, onLogoutTap }) {
+export default function User({ onUserTap, onSettingTap, onLogoutTap }) {
   const user = useGlobalState((state) => state.user);
 
   return (
@@ -15,6 +15,13 @@ export default function User({ onUserTap, onLogoutTap }) {
         <Menu.Item onClick={onUserTap}>
           <Title size="sm">{user?.name}</Title>
           <Text size="xs">{user?.email}</Text>
+        </Menu.Item>
+        <Menu.Divider />
+        <Menu.Item
+          leftSection={<IconSettings size="1rem" />}
+          onClick={onSettingTap}
+        >
+          {appStrings.language.setting.title}
         </Menu.Item>
         <Menu.Item
           leftSection={<IconLogout size="1rem" />}

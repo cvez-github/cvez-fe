@@ -57,6 +57,10 @@ export default function AppLayout({
     });
   }
 
+  function handleNavigateToSettings() {
+    navigate("/dashboard/setting");
+  }
+
   function handleViewUser() {}
 
   function handleChangeProject(id) {
@@ -124,7 +128,11 @@ export default function AppLayout({
               />
             ) : null}
           </Group>
-          <User onUserTap={handleViewUser} onLogoutTap={handleLogout} />
+          <User
+            onUserTap={handleViewUser}
+            onLogoutTap={handleLogout}
+            onSettingTap={handleNavigateToSettings}
+          />
         </Flex>
       </AppShell.Header>
       <AppShell.Navbar>

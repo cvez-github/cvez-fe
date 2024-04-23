@@ -16,7 +16,7 @@ import JDPage from "../pages/Position/JD";
 import CVPage from "../pages/Position/CV";
 import CVDetailPage from "../pages/Position/CVDetail";
 import QuestionBankPage from "../pages/Position/QuestionBank";
-// import QuestionDetailPage from "../pages/Position/QuestionDetail";
+import QuestionDetailPage from "../pages/Position/QuestionDetail";
 import RedirectPage from "../pages/Utils/Redirect";
 import NotFoundPage from "../pages/Utils/NotFound";
 import UploadPage from "../pages/Upload/UploadPage";
@@ -112,7 +112,7 @@ const appRoutes = [
       },
       {
         path: "/:project-id/:position-id/questions/:question-id",
-        // element: <QuestionDetailPage />,
+        element: <QuestionDetailPage />,
       },
     ],
   },

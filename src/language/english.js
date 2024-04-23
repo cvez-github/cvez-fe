@@ -19,6 +19,7 @@ const english = {
     copied: "Copied",
     download: "Download",
     backToHome: "Back to home",
+    ai: "AI Summary",
   },
   home: {
     title: "Home",
@@ -139,6 +140,8 @@ const english = {
     shareUrlTitle: "Share this URL",
     shareUrlMessage: "Share this URL with your candidates",
     notScored: "Not scored",
+    adjustLimit: "Limit",
+    adjustThreshold: "Threshold",
     uploadSuccessTitle: "Upload success",
     uploadSuccessMessage: "Your CVs has been uploaded successfully",
     matchSuccessTitle: "Match success",
@@ -168,6 +171,11 @@ const english = {
     overall: "Overall",
     criteriaInformation:
       "There are keywords and the score of the criteria.\n The keyword is the word that is extracted from the CV.\n The score is the level of the keyword analized in the CV.",
+    stepApply: "Applying",
+    stepAccept: "Accepted",
+    stepInterview: "Interviewing",
+    stepHire: "Hired",
+    detailTable: "Keyword Detail",
   },
   share: {
     title: "Share member",
@@ -183,10 +191,18 @@ const english = {
     tableLevel: "Level",
     tableAction: "Actions",
     addBtn: "Add Question Bank",
+    nameLabel: "Question Bank Name",
+    deleteSuccessMessage: "Your question bank has been deleted successfully",
   },
   questionBankDetail: {
     searchPlaceholder: "Search question",
     addQuestionBtn: "Add Question",
+    createBtn: "Add Question",
+    totalQuestion: "Total question",
+    questionContentLabel: "Question content",
+    createQuestionSuccessMessage: "Your question has been created successfully",
+    updateQuestionSuccessMessage: "Your question has been updated successfully",
+    deleteQuestionSuccessMessage: "Your question has been deleted successfully",
   },
   utils: {
     emptyData: "No data available",

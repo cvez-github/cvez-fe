@@ -5,12 +5,19 @@ import appStrings from "../utils/strings";
 export async function getMatchApi({
   projectId,
   positionId,
+  limit,
+  threshold,
   onFail,
   onSuccess,
 }) {
+  const query = {
+    limit,
+    threshold,
+  };
   // Get match
   const response = await apiHelper.get(
-    apiUrls.matchCVJD(projectId, positionId)
+    apiUrls.matchCVJD(projectId, positionId),
+    query
   );
   // Handle response
   if (response.msg) {

@@ -14,179 +14,183 @@ import {
   Menu,
   Group,
   Breadcrumbs,
-  Anchor
+  Anchor,
+  Skeleton,
 } from "@mantine/core";
-import { IconDots, IconTrash, IconEdit } from "@tabler/icons-react";
-import { useState } from 'react';
+import { IconSearch, IconTrash, IconEdit } from "@tabler/icons-react";
+import { useEffect, useState } from "react";
 import appStrings from "../../utils/strings";
 import HeadingLayout from "../../components/Layout/HeadingLayout";
 import { useLocation, useNavigate } from "react-router-dom";
+import {
+  getQuestionBankByIdApi,
+  updateQuestionBankApi,
+} from "../../apis/question";
+import useNotification from "../../hooks/useNotification";
+import EditableQuestionCard from "../../components/QuestionCard";
+import Empty from "../../components/Empty";
 
 export default function QuestionDetailPage() {
-  const [content, setContent] = useState('');
-  const [answer, setAnswer] = useState('');
-  const [level, setLevel] = useState('');
-  const [questions, setQuestions] = useState([]);
-  const [editingIndex, setEditingIndex] = useState(null);
-  const [isCreating, setIsCreating] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const projectId = location.pathname.split("/")[1];
   const positionId = location.pathname.split("/")[2];
-
-  const bankname = location.pathname.split("/")[4];
+  const bankId = location.pathname.split("/")[4];
+  const [bank, setBank] = useState(null);
+  const [isNewQuestion, setIsNewQuestion] = useState(false);
+  const [isNewQuestionUploading, setIsNewQuestionUploading] = useState(false);
+  const errorNotify = useNotification({ type: "error" });
 
   function handleNavigateToQuestionBank() {
-    navigate(`/${projectId}/${positionId}/questions`)
+    navigate(`/${projectId}/${positionId}/questions`);
   }
 
-  const handleOk = () => {
-    if (editingIndex !== null) {
-      setQuestions(questions.map((question, index) => index === editingIndex ? { content, answer, level } : question));
-      setEditingIndex(null);
-    } else {
-      setQuestions([{ content, answer, level }, ...questions]);
-    }
-    setContent('');
-    setAnswer('');
-    setLevel('');
-    setIsCreating(false); // Set isCreating to false when OK is clicked
+  function handleAddQuestion(data) {
+    // Push new criteria to the list
+    const newBank = {
+      ...bank,
+      questions: [
+        ...bank.questions,
+        {
+          content: data.content,
+          answer: data.answer,
+          correctAnswer: data.correctAnswer,
+        },
+      ],
+    };
+    setIsNewQuestionUploading(true);
+    updateQuestionBankApi({
+      projectId,
+      positionId,
+      bankId,
+      questions: newBank.questions,
+      onFail: (msg) => {
+        errorNotify({ message: msg });
+        setIsNewQuestionUploading(false);
+      },
+      onSuccess: (_) => {
+        setIsNewQuestionUploading(false);
+        setIsNewQuestion(false);
+        setBank(newBank);
+        successNotify({
+          message:
+            appStrings.language.questionBankDetail.createQuestionSuccessMessage,
+        });
+      },
+    });
+  }
 
-  };
+  function handleUpdateQuestion(index, data) {
+    // Update question in the list
+    const newBank = {
+      ...bank,
+      questions: bank.questions.map((question, i) => {
+        if (i === index) {
+          return {
+            name: data.content,
+            answer: data.answer,
+            correctAnswer: data.correctAnswer,
+          };
+        }
+        return question;
+      }),
+    };
+    updateQuestionBankApi({
+      projectId,
+      positionId,
+      bankId,
+      questions: newBank.questions,
+      onFail: (msg) => errorNotify({ message: msg }),
+      onSuccess: (_) => {
+        setBank(newBank);
+        successNotify({
+          message:
+            appStrings.language.questionBankDetail.updateQuestionSuccessMessage,
+        });
+      },
+    });
+  }
 
-  const handleEdit = (question, index) => {
-    setContent(question.content);
-    setAnswer(question.answer);
-    setLevel(question.level);
-    setEditingIndex(index);
-  };
+  useEffect(() => {
+    getQuestionBankByIdApi({
+      projectId,
+      positionId,
+      bankId,
+      onFail: (msg) => errorNotify({ message: msg }),
+      onSuccess: (data) => setBank(data),
+    });
+  }, []);
 
   return (
-    <>
-      <Flex direction="column" gap="xl" w='60%'>
-        <HeadingLayout>
-          <Breadcrumbs>
-            <Anchor onClick={handleNavigateToQuestionBank}>{appStrings.language.breadcrumb.questionBank}</Anchor>
-            <Anchor>{bankname}</Anchor>
-          </Breadcrumbs>
-        </HeadingLayout>
-        <Flex justify='space-between'>
-          <Title order={1}>{bankname}</Title>
-          <Flex gap='xs'>
-            <Button>{appStrings.language.button.save}</Button>
-            <Button variant="default" onClick={
-              () => handleNavigateToQuestionBank()
-            }>
-              {appStrings.language.button.cancel}</Button>
-          </Flex>
+    <Flex direction="column" gap="xl">
+      <HeadingLayout loading={!bank}>
+        <Breadcrumbs>
+          <Anchor onClick={handleNavigateToQuestionBank}>
+            {appStrings.language.questionBanks.title}
+          </Anchor>
+          {bank?.name}
+        </Breadcrumbs>
+      </HeadingLayout>
+      <Flex justify="space-between" align="center">
+        <Title order={1}>{bank?.name}</Title>
+        <Flex align="center" gap="md">
+          {appStrings.language.questionBankDetail.totalQuestion}
+          <Badge variant="light" color="blue" size="lg" circle>
+            {bank?.questions.length}
+          </Badge>
         </Flex>
-        <Flex gap='md'>
-          <Input
-            placeholder={appStrings.language.questionDetail.search}
-          />
-          <Select w="15%"
-            placeholder={appStrings.language.choice.title}
-            data={['React', 'Angular', 'Vue', 'Svelte']}
-          />
-        </Flex>
-        <Flex justify='space-between'>
-          <Title order={2}>{appStrings.language.questionDetail.questions}</Title>
-          <Button onClick={() => setIsCreating(true)}>{appStrings.language.questionDetail.create}</Button>
-        </Flex>
-        {isCreating && (
-          <Fieldset variant="unstyled">
-            <Flex gap='md' direction='column'>
-              <Textarea
-                placeholder={appStrings.language.questionDetail.questioncontent}
-                autosize
-                minRows={6}
-                value={content}
-                onChange={(event) => setContent(event.target.value)}
-              />
-              <Flex gap='md'>
-                <TextInput w='90%'
-                  placeholder={appStrings.language.questionDetail.answer}
-                  value={answer}
-                  onChange={(event) => setAnswer(event.target.value)}
-                />
-                <TextInput w='10%'
-                  placeholder={appStrings.language.questionDetail.level}
-                  value={level}
-                  onChange={(event) => setLevel(event.target.value)}
-                />
-              </Flex>
-              <Flex justify='flex-end' gap='md'>
-                <Button variant="default" onClick={() => setIsCreating(false)}>{appStrings.language.button.cancel}</Button>
-                <Button onClick={handleOk}>{appStrings.language.questionDetail.ok}</Button>
-              </Flex>
-            </Flex>
-          </Fieldset>
-        )}
-        {questions.map((question, index) => {
-          if (index === editingIndex) {
-            return (
-              <Fieldset variant="unstyled" key={index}>
-                <Flex gap='md' direction='column'>
-                  <Textarea
-                    placeholder={appStrings.language.questionDetail.questioncontent}
-                    autosize
-                    minRows={6}
-                    value={content}
-                    onChange={(event) => setContent(event.target.value)}
-                  />
-                  <Flex gap='md'>
-                    <TextInput w='90%'
-                      placeholder={appStrings.language.questionDetail.answer}
-                      value={answer}
-                      onChange={(event) => setAnswer(event.target.value)}
-                    />
-                    <TextInput w='10%'
-                      placeholder={appStrings.language.questionDetail.level}
-                      value={level}
-                      onChange={(event) => setLevel(event.target.value)}
-                    />
-                  </Flex>
-                  <Flex justify='flex-end' gap='md'>
-                    <Button variant="default" onClick={() => setEditingIndex(null)}>{appStrings.language.button.cancel}</Button>
-                    <Button onClick={handleOk}>{appStrings.language.questionDetail.ok}</Button>
-                  </Flex>
-                </Flex>
-              </Fieldset>
-            );
-          } else {
-            return (
-              <Paper key={index} shadow="sm" withBorder p="xl">
-                <Flex gap='md' direction='column'>
-                  <Flex justify='space-between'>
-                    <Text>{question.content}</Text>
-                    <Menu withinPortal shadow="md" position="top-end" width={150}>
-                      <Menu.Target>
-                        <ActionIcon variant="light" color="gray">
-                          <IconDots />
-                        </ActionIcon>
-                      </Menu.Target>
-                      <Menu.Dropdown p={5}>
-                        <Menu.Item c="gray" leftSection={<IconEdit size="1rem" />} onClick={() => handleEdit(question, index)}>
-                          {appStrings.language.btn.edit}
-                        </Menu.Item>
-                        <Menu.Item c="red" leftSection={<IconTrash size="1rem" />}>
-                          {appStrings.language.btn.delete}
-                        </Menu.Item>
-                      </Menu.Dropdown>
-                    </Menu>
-                  </Flex>
-                  <Group justify="space-between">
-                    <Text c="blue">{appStrings.language.questionDetail.answer}: {question.answer}</Text>
-                    <Badge variant="light" color="gray" size="sm" circle>
-                      {question.level}
-                    </Badge>
-                  </Group>
-                </Flex>
-              </Paper>
-            );
-          }
-        })}
       </Flex>
-    </>
+      <Flex gap="md" justify="space-between">
+        <Input
+          placeholder={appStrings.language.questionBankDetail.searchPlaceholder}
+          leftSection={<IconSearch size="1rem" />}
+        />
+        <Button onClick={() => setIsNewQuestion(true)}>
+          {appStrings.language.questionBankDetail.createBtn}
+        </Button>
+      </Flex>
+      {isNewQuestion ? (
+        <EditableQuestionCard
+          data={{
+            content: "",
+            answer: {
+              a: "",
+              b: "",
+              c: "",
+              d: "",
+            },
+            correctAnswer: [],
+          }}
+          onOk={handleAddQuestion}
+          onCancel={() => setIsNewQuestion(false)}
+          isEdit={true}
+          saveBtnLoading={isNewQuestionUploading}
+        />
+      ) : null}
+      {bank ? (
+        !bank.questions.length ? (
+          <Empty />
+        ) : (
+          bank.questions.map((question, index) => (
+            <EditableQuestionCard
+              key={index}
+              data={{
+                content: question.content,
+                answer: question.answer,
+                correctAnswer: question.correct_answer || [],
+              }}
+              // onDelete={() => handleDeleteCriteria(index)}
+              onOk={(newData) => handleUpdateQuestion(index, newData)}
+              isEdit={false}
+            />
+          ))
+        )
+      ) : (
+        <Flex direction="column" gap="md">
+          <Skeleton h={150} />
+          <Skeleton h={150} />
+        </Flex>
+      )}
+    </Flex>
   );
 }

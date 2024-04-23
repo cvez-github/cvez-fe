@@ -4,7 +4,7 @@ import appStrings from "../../utils/strings";
 
 export default function FileViewer({ url }) {
   const fileExtension = url.split(".").pop();
-  if (fileExtension === "pdf") {
+  if (fileExtension === "pdf" || fileExtension === "PDF") {
     return (
       <iframe
         src={url}
@@ -15,7 +15,7 @@ export default function FileViewer({ url }) {
         }}
       />
     );
-  } else if (fileExtension === "docx") {
+  } else if (fileExtension === "docx" || fileExtension === "DOCX") {
     return (
       <DocViewer
         documents={[{ uri: url, fileType: "docx" }]}

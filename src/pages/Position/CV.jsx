@@ -11,6 +11,8 @@ import {
   Spoiler,
   Badge,
   Loader,
+  Popover,
+  Slider,
 } from "@mantine/core";
 import {
   IconTrash,
@@ -25,6 +27,7 @@ import {
   IconFileTypePdf,
   IconFileTypeDocx,
   IconFile,
+  IconAdjustments,
 } from "@tabler/icons-react";
 import HeadingLayout from "../../components/Layout/HeadingLayout";
 import UploadZone from "../../components/Upload/UploadZone";
@@ -83,8 +86,13 @@ export default function CVPage() {
   const setCVScores = useCVState((state) => state.setCVScores);
   const uploadFiles = useCVState((state) => state.uploadFiles);
   const setUploadFiles = useCVState((state) => state.setUploadFiles);
+  const [isUploading, setIsUploading] = useState(false);
   const [isMatching, setIsMatching] = useState(false);
   const [progressObject, setProgressObject] = useState({});
+  const [adjustment, setAdjustment] = useState({
+    limit: 20,
+    threshold: 0.6,
+  });
   const errorNotify = useNotification({ type: "error" });
   const successNotify = useNotification({ type: "success" });
   const intervalFunction = useInterval(500);
@@ -103,8 +111,8 @@ export default function CVPage() {
     navigate(`/${projectId}/${positionId}/cv/${cvId}`);
   }
 
-  const _isProgressComplete = useCallback(() => {
-    console.log(progressObject);
+  const _isProgressComplete = useCallback((progressObject) => {
+    if (!progressObject) return true;
     return (
       Object.keys(progressObject).length &&
       Object.values(progressObject).every((percent) => percent >= 100)
@@ -134,10 +142,11 @@ export default function CVPage() {
           initProgressObject[file.name] = 0;
         });
         setProgressObject(initProgressObject);
+        setIsUploading(true);
 
         // Start interval function to watch upload progress
         intervalFunction({
-          callback: () => {
+          callback: (stop) => {
             watchUploadProgressApi(data.progress_id).then((progressData) => {
               // Only update progress if percent is available
               if (progressData?.percent) {
@@ -146,9 +155,16 @@ export default function CVPage() {
                   ...progressData?.percent,
                 }));
               }
+              // Check if all progress is complete
+              if (_isProgressComplete(progressData?.percent)) {
+                stop();
+                setIsUploading(false);
+                successNotify({
+                  message: appStrings.language.cv.uploadSuccessMessage,
+                });
+              }
             });
           },
-          stopCondition: () => _isProgressComplete(),
         });
       },
     });
@@ -165,6 +181,8 @@ export default function CVPage() {
     getMatchApi({
       projectId,
       positionId,
+      limit: adjustment.limit,
+      threshold: adjustment.threshold,
       onFail: (msg) => {
         errorNotify({ message: msg });
         setIsMatching(false);
@@ -252,7 +270,11 @@ export default function CVPage() {
       >
         <Flex direction="column" gap="md">
           {uploadFiles ? (
-            <ProgressList items={progressObject} />
+            <ProgressList
+              items={progressObject}
+              isClosable={!isUploading}
+              onClose={() => setUploadFiles(null)}
+            />
           ) : (
             <UploadZone onFileSelected={(files) => handleUploadFiles(files)} />
           )}
@@ -293,8 +315,8 @@ export default function CVPage() {
           </Alert>
         </Flex>
       </Spoiler>
-      <Flex justify="space-between">
-        <Flex gap="md">
+      <Flex align="center" gap="md">
+        <Flex gap="md" flex={1}>
           <Input
             placeholder={appStrings.language.cv.searchPlaceholder}
             leftSection={
@@ -303,10 +325,41 @@ export default function CVPage() {
             onChange={(e) => handleSearch(e.target.value)}
           />
         </Flex>
+        <Popover width={300} position="top">
+          <Popover.Target>
+            <ActionIcon variant="subtle" color="gray">
+              <IconAdjustments size="1rem" />
+            </ActionIcon>
+          </Popover.Target>
+          <Popover.Dropdown>
+            <Flex direction="column" gap="sm">
+              <Text>{appStrings.language.cv.adjustLimit}</Text>
+              <Slider
+                min={0}
+                max={cvs?.length * 10}
+                defaultValue={adjustment.limit}
+                onChangeEnd={(value) =>
+                  setAdjustment((prev) => ({ ...prev, limit: value }))
+                }
+              />
+              <Text>{appStrings.language.cv.adjustThreshold}</Text>
+              <Slider
+                min={0}
+                max={1}
+                step={0.005}
+                defaultValue={adjustment.threshold}
+                onChangeEnd={(value) =>
+                  setAdjustment((prev) => ({ ...prev, threshold: value }))
+                }
+              />
+            </Flex>
+          </Popover.Dropdown>
+        </Popover>
         <Button
           leftSection={<IconSparkles size="1rem" />}
           onClick={handleMatchCVJD}
           loading={isMatching}
+          disabled={isUploading}
         >
           {appStrings.language.cv.matchBtn}
         </Button>

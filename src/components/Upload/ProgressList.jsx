@@ -1,7 +1,17 @@
-import { Paper, List, ThemeIcon, Loader, rem, Flex, Text } from "@mantine/core";
+import {
+  Paper,
+  List,
+  ThemeIcon,
+  Loader,
+  rem,
+  Flex,
+  Text,
+  Button,
+} from "@mantine/core";
 import { IconCircleCheck } from "@tabler/icons-react";
+import appStrings from "../../utils/strings";
 
-export default function ProgressList({ items }) {
+export default function ProgressList({ items, isClosable, onClose }) {
   return (
     <Paper shadow="lg" p="md" withBorder>
       <List spacing="md" center>
@@ -29,6 +39,11 @@ export default function ProgressList({ items }) {
           </List.Item>
         ))}
       </List>
+      {isClosable ? (
+        <Button onClick={onClose} size="xs" mt="md">
+          {appStrings.language.btn.close}
+        </Button>
+      ) : null}
     </Paper>
   );
 }

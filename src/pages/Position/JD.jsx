@@ -178,7 +178,7 @@ export default function JDPage() {
         </Button>
       </Flex>
       {Object.keys(jd?.extraction || {}).length ? <Divider /> : null}
-      <Flex direction="column" gap="xl">
+      <Flex direction="column" gap="xl" mb="xl">
         {jd
           ? Object.entries(jd.extraction).map(([key, value]) => (
               <Flex direction="column" gap="md">

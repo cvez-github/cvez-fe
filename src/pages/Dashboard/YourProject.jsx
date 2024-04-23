@@ -123,6 +123,7 @@ export default function YourProjectPage() {
           {currentProjects?.map((data, index) => (
             <ProjectCard
               key={data.id}
+              id={data.id}
               title={data.name}
               description={data.description}
               alias={data.alias}
