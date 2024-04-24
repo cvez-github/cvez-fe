@@ -2,7 +2,7 @@
 
 ### 🚀 Deployment
 
-Deployed on Vercel
+Deployed on [Vercel](cvez-fe.vercel.com)
 
 ### ⚡ How to run this project
 
@@ -14,7 +14,7 @@ git clone https://github.com/cvez-team/frontend.git
 cd ./frontend
 
 # Install node dependencies
-npm i
+npm install
 
 # Start development
 npm run dev
