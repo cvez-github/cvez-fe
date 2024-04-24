@@ -69,6 +69,7 @@ export default function CreateProjectDrawer({ open, onClose }) {
             style={{ width: "100%" }}
             onChange={handleInputChange}
             value={projectName}
+            required
           />
           <TextInput
             disabled
@@ -90,7 +91,11 @@ export default function CreateProjectDrawer({ open, onClose }) {
           <Button variant="default" onClick={onClose}>
             {appStrings.language.btn.cancel}
           </Button>
-          <Button onClick={handleCreateProject} loading={isLoading}>
+          <Button
+            onClick={handleCreateProject}
+            loading={isLoading}
+            disabled={!projectName}
+          >
             {appStrings.language.btn.create}
           </Button>
         </Flex>

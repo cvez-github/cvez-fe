@@ -79,6 +79,7 @@ export default function EditableCriteriaCard({
             onChange={(value) => setCriteria({ ...criteria, priority: value })}
             style={{ flex: 1 }}
             max={10}
+            min={1}
           />
         </Flex>
         <TextInput
@@ -104,6 +105,7 @@ export default function EditableCriteriaCard({
               onOk && onOk(criteria);
               setIsEditMode(false);
             }}
+            disabled={saveBtnLoading || !criteria.content || !criteria.example}
           >
             {appStrings.language.btn.save}
           </Button>

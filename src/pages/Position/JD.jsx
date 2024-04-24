@@ -73,7 +73,10 @@ export default function JDPage() {
       projectId,
       positionId,
       content,
-      onFail: (msg) => errorNotify({ message: msg }),
+      onFail: (msg) => {
+        errorNotify({ message: msg });
+        setIsLoading(false);
+      },
       onSuccess: (_) => {
         setIsLoading(false);
         successNotify({ message: appStrings.language.jd.saveSuccess });
@@ -87,6 +90,7 @@ export default function JDPage() {
       positionId,
       onFail: (msg) => {
         errorNotify({ message: msg });
+        setIsFetching(false);
       },
       onSuccess: (jd) => {
         setJD(jd);

@@ -206,7 +206,8 @@ export default function CVDetailPage() {
         <Blockquote color="violet" icon={<IconSparkles size="1rem" />}>
           {isSummary ? (
             <Flex direction="column" gap="sm">
-              <Skeleton h={20} /> <Skeleton h={20} w={200} />
+              <Skeleton h={20} />
+              <Skeleton h={20} w={200} />
             </Flex>
           ) : (
             cv?.summary

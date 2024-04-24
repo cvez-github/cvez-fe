@@ -20,8 +20,8 @@ export default function ProgressList({ items, isClosable, onClose }) {
             key={index}
             icon={
               progress < 100 ? (
-                <ThemeIcon color="gray" size={24} radius="xl">
-                  <Loader size={rem(16)} />
+                <ThemeIcon size={24} radius="xl">
+                  <Loader size={rem(16)} color="white" />
                 </ThemeIcon>
               ) : (
                 <ThemeIcon color="teal" size={24} radius="xl">

@@ -142,11 +142,13 @@ export default function CVPage() {
           initProgressObject[file.name] = 0;
         });
         setProgressObject(initProgressObject);
-        setIsUploading(true);
 
         // Start interval function to watch upload progress
         intervalFunction({
           callback: (stop) => {
+            if (!isUploading) {
+              setIsUploading(true);
+            }
             watchUploadProgressApi(data.progress_id).then((progressData) => {
               // Only update progress if percent is available
               if (progressData?.percent) {
