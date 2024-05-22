@@ -1,8 +1,8 @@
 export const googleClientId =
   "765198139881-0vdveqqf338q0g9nvkclphnockf9f35n.apps.googleusercontent.com";
 
-export const baseUrl = "https://cvez-team-cvez-server.hf.space";
-// export const baseUrl = "http://localhost:8000";
+// export const baseUrl = "https://cvez-team-cvez-server.hf.space";
+export const baseUrl = "https://cvez-606563724.ap-southeast-1.elb.amazonaws.com";
 
 export const apiUrls = {
   // Auth
